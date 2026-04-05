@@ -8,13 +8,13 @@ Opstarten
 --------------------------------
 
 ## Backend
-cd backend
-node index.js
+- cd backend
+- node index.js
 
 ## Frontend
-cd frontend
-npm run dev
+- cd frontend
+- npm run dev
 
 ## Electron
-cd electron
-npm start
+- cd electron
+- npm start
