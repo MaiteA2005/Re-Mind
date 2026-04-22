@@ -1,13 +1,265 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import { formatDateTime } from "../utils/date";
 import "./CheckInPage.css";
 
+import checkinIcon from "../assets/icons_groen/check-in_groen.svg";
+import infoIcon from "../assets/info_blauw.svg";
+import pijlRechtsIcon from "../assets/icons_wit/pijl_rechts_wit.svg";
+import energieIcon from "../assets/icons_groen/bliksem_groen.svg";
+import checkIcon from "../assets/icons_groen/check_groen.svg";
+import notitieIcon from "../assets/icons_groen/notitie_groen.svg";
+
 function CheckInPage() {
+  const [step, setStep] = useState(1);
+  const [stress, setStress] = useState(1);
+  const [energy, setEnergy] = useState(5);
+  const [note, setNote] = useState("");
+
+  const stressLabel =
+    stress <= 3 ? "Laag" : stress <= 7 ? "Gemiddeld" : "Hoog";
+
+  const energyLabel =
+    energy <= 3 ? "Weinig energie" : energy <= 7 ? "Energiek genoeg" : "Heel energiek";
+
+  const getSliderStyle = (value, min = 1, max = 10) => {
+  const percentage = ((value - min) / (max - min)) * 100;
+
+  return {
+      background: `linear-gradient(
+        to right,
+        #7e9a88 0%,
+        #7e9a88 ${percentage}%,
+        #dbe3de ${percentage}%,
+        #dbe3de 100%
+      )`,
+    };
+  };
+
+  const goNext = () => setStep((prev) => Math.min(prev + 1, 5));
+  const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
+
   return (
-    <MainLayout
-      title="Check-in"
-      subtitle="30 maart 2026"
-    >
-      
+    <MainLayout title="Check-in" subtitle={formatDateTime()}>
+      <div className="checkInPage">
+        <section className="checkInPanel">
+          {step === 1 && (
+            <div className="checkInStep checkInIntro">
+              <p className="checkInIntroText">
+                Neem even een moment om bij jezelf te checken. Dit duurt maar
+                30 seconden.
+              </p>
+
+              <div className="checkInReasonBox">
+                <h3>Waarom inchecken?</h3>
+                <ul>
+                  <li>Krijg inzicht in hoe de werkdag voor jou verloopt</li>
+                  <li>Help patronen herkennen in stress en energieniveau</li>
+                  <li>Ontvang op het juiste moment passende suggesties</li>
+                  <li>Bouw aan duurzame gewoontes voor jezelf op het werk</li>
+                </ul>
+              </div>
+
+              <button type="button" className="btn btnPrimary checkInStartButton" onClick={goNext}>
+                Start check-in
+              </button>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="checkInStep">
+              <div className="checkInIconWrap">
+                <img src={checkinIcon} alt="Stress" aria-hidden="true" className="checkInTopIcon" />
+              </div>
+
+              <h2>Hoe is je stressniveau?</h2>
+              <p className="checkInDescription">
+                Schuif de slider naar het niveau dat het best bij je past.
+              </p>
+
+              <div className="checkInScaleCard">
+                <div className="checkInValue">{stress}</div>
+                <div className="checkInValueLabel">{stressLabel}</div>
+
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={stress}
+                  onChange={(e) => setStress(Number(e.target.value))}
+                  className="checkInRange"
+                  style={getSliderStyle(stress)}
+                />
+
+                <div className="checkInRangeLabels">
+                  <span>Geen stress</span>
+                  <span>Zeer hoog</span>
+                </div>
+
+                <div className="checkInInfoBox">
+                  <img src={infoIcon} alt="" aria-hidden="true" />
+                  <p>
+                    Dit helpt ons om beter te begrijpen wanneer jij extra ondersteuning
+                    nodig hebt.
+                  </p>
+                </div>
+              </div>
+
+              <div className="checkInActions">
+                <button type="button" className="checkInTextButton" onClick={goBack}>
+                  ← Terug
+                </button>
+
+                <button type="button" className="btn btnPrimary checkInNextButton" onClick={goNext}>
+                  Volgende
+                  <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="checkInStep">
+              <div className="checkInIconWrap">
+                <img src={energieIcon} alt="Energie" aria-hidden="true" className="checkInTopIcon" />
+              </div>
+
+              <h2>Hoe is je energieniveau?</h2>
+              <p className="checkInDescription">
+                Schuif de slider naar het niveau dat het best bij je past.
+              </p>
+
+              <div className="checkInScaleCard">
+                <div className="checkInValue">{energy}</div>
+                <div className="checkInValueLabel">{energyLabel}</div>
+
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={energy}
+                  onChange={(e) => setEnergy(Number(e.target.value))}
+                  className="checkInRange"
+                  style={getSliderStyle(energy)}
+                />
+
+                <div className="checkInRangeLabels">
+                  <span>Weinig energie</span>
+                  <span>Heel hoog</span>
+                </div>
+
+                <div className="checkInInfoBox">
+                  <img src={infoIcon} alt="" aria-hidden="true" />
+                  <p>
+                    Met je energieniveau kunnen we betere pauze- en focusvoorstellen tonen.
+                  </p>
+                </div>
+              </div>
+
+              <div className="checkInActions">
+                <button type="button" className="checkInTextButton" onClick={goBack}>
+                  ← Terug
+                </button>
+
+                <button type="button" className="btn btnPrimary checkInNextButton" onClick={goNext}>
+                  Volgende
+                  <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="checkInStep">
+              <div className="checkInIconWrap">
+                <img src={notitieIcon} alt="Notitie" aria-hidden="true" className="checkInTopIcon" />
+              </div>
+
+              <h2>Wil je iets toevoegen?</h2>
+              <p className="checkInDescription">
+                Optioneel: voeg een korte notitie toe over hoe je je voelt.
+              </p>
+
+              <div className="checkInNoteCard">
+                <textarea
+                  className="checkInTextarea"
+                  placeholder="Ik voel me moe aan het einde van de week en wil even focussen op herstel."
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+                <p className="checkInNoteHint">
+                  Dit is optioneel, je notitie helpt bij het begrijpen van je situatie.
+                </p>
+              </div>
+
+              <div className="checkInActions">
+                <button type="button" className="checkInTextButton" onClick={goBack}>
+                  ← Terug
+                </button>
+
+                <div className="checkInActionGroup">
+                  <button type="button" className="btn btnSecondary" onClick={goNext}>
+                    Overslaan
+                  </button>
+
+                  <button type="button" className="btn btnPrimary" onClick={goNext}>
+                    Afronden
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 5 && (
+            <div className="checkInStep checkInSummaryStep">
+              <div className="checkInIconWrap">
+                <img src={checkIcon} alt="Check" aria-hidden="true" className="checkInTopIcon" />
+              </div>
+
+              <h2>Check-in voltooid</h2>
+              <p className="checkInDescription">
+                Bedankt voor het inchecken. Je data wordt opgeslagen.
+              </p>
+
+              <div className="checkInSummaryCard">
+                <h3>Je check-in samenvatting</h3>
+
+                <div className="checkInSummaryGrid">
+                  <div className="checkInSummaryItem">
+                    <span>Stress</span>
+                    <strong>{stress}</strong>
+                    <small>{stressLabel}</small>
+                  </div>
+
+                  <div className="checkInSummaryItem">
+                    <span>Energie</span>
+                    <strong>{energy}</strong>
+                    <small>{energyLabel}</small>
+                  </div>
+                </div>
+
+                {note && (
+                  <div className="checkInNoteSummary">
+                    <span>Notitie</span>
+                    <p>{note}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="checkInActions checkInActionsCenter">
+                <Link to="/dashboard" className="btn btnSecondary">
+                  Naar dashboard
+                </Link>
+
+                <Link to="/inzichten" className="btn btnPrimary">
+                  Bekijk inzichten
+                </Link>
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
     </MainLayout>
   );
 }

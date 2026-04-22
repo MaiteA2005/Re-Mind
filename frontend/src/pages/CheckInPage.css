@@ -1,0 +1,406 @@
+.checkInPage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.checkInPanel {
+  width: 100%;
+  max-width: 760px;
+  min-height: 560px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12px;
+}
+
+.checkInStep {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.checkInStep h2 {
+  margin: 0 0 8px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #2d2b28;
+}
+
+.checkInDescription {
+  margin: 0 0 22px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #6a6b67;
+  max-width: 420px;
+}
+
+.checkInIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: #edf2ed;
+  border: 1px solid #769382;
+}
+
+.checkInTopIcon {
+  width: 24px;
+  height: 24px;
+}
+
+/* intro */
+.checkInIntro {
+  margin-top: 40px;
+}
+
+.checkInIntroText {
+  margin: 0 0 24px;
+  font-size: 0.98rem;
+  color: #5f615d;
+  max-width: 430px;
+  line-height: 1.5;
+}
+
+.checkInReasonBox {
+  width: 100%;
+  background: #f1ead7;
+  border: 1px solid #ddd1b9;
+  border-radius: 10px;
+  padding: 18px 20px;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.checkInReasonBox h3 {
+  margin: 0 0 12px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #2d2b28;
+}
+
+.checkInReasonBox ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #5f615d;
+}
+
+.checkInReasonBox li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+  font-size: 0.92rem;
+}
+
+.checkInStartButton {
+  min-width: 150px;
+}
+
+/* scale card */
+.checkInScaleCard {
+  width: 100%;
+  background: #f1ead7;
+  border: 1px solid #ddd1b9;
+  border-radius: 10px;
+  padding: 18px 18px 16px;
+  margin-bottom: 14px;
+}
+
+.checkInValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2b28;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.checkInValueLabel {
+  font-size: 0.9rem;
+  color: #4f514d;
+  margin-bottom: 18px;
+}
+
+.checkInRange {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  margin: 0 0 8px;
+  border-radius: 999px;
+}
+
+.checkInRange::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.checkInRange::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -4px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #7e9a88;
+  cursor: pointer;
+}
+
+.checkInRange::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: #d8dfd9;
+}
+
+.checkInRange::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #7e9a88;
+  cursor: pointer;
+}
+
+.checkInRangeLabels {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.72rem;
+  color: #7a7d77;
+}
+
+/* info box */
+.checkInInfoBox {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #8CB2C8;
+  background: #F4F7FA;
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 18px;
+  margin-top: 18px;
+}
+
+.checkInInfoBox img {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.checkInInfoBox p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #617065;
+}
+
+/* note */
+.checkInNoteCard {
+  width: 100%;
+  background: #f1ead7;
+  border: 1px solid #ddd1b9;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.checkInTextarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  border: 1px solid #d6d8d3;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fbfaf6;
+  color: #2d2b28;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.checkInTextarea:focus {
+  border-color: #8ea897;
+}
+
+.checkInNoteHint {
+  margin: 10px 0 0;
+  font-size: 0.78rem;
+  color: #7a7d77;
+  line-height: 1.4;
+}
+
+/* summary */
+.checkInSummaryStep {
+  margin-top: 10px;
+}
+
+.checkInSuccessIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: #e8efe8;
+  color: #7e9a88;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.checkInSummaryCard {
+  width: 100%;
+  background: #f1ead7;
+  border: 1px solid #ddd1b9;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.checkInSummaryCard h3 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d2b28;
+  text-align: center;
+}
+
+.checkInSummaryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.checkInSummaryItem {
+  text-align: center;
+}
+
+.checkInSummaryItem span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: #666864;
+}
+
+.checkInSummaryItem strong {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: #2d2b28;
+  margin-bottom: 6px;
+}
+
+.checkInSummaryItem small {
+  font-size: 0.8rem;
+  color: #666864;
+}
+
+.checkInNoteSummary {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd1b9;
+  width: 100%;
+}
+
+.checkInNoteSummary span {
+  display: block;
+  font-size: 0.9rem;
+  color: #6a6b67;
+  margin-bottom: 8px;
+  min-width: 0;
+}
+
+.checkInNoteSummary p {
+  margin: 0;
+  width: 100%;
+  display: block; 
+  font-size: 0.95rem;
+  color: #2d2b28;
+  line-height: 1.5;
+  background: #fbfaf6;
+  border: 1px solid #e2e0d8;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* actions */
+.checkInActions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.checkInActionsCenter {
+  justify-content: center;
+}
+
+.checkInActionGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkInTextButton {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: #4f514d;
+  font: inherit;
+  cursor: pointer;
+}
+
+.checkInNextButton {
+  min-width: 128px;
+}
+
+.btnPrimary , .btnSecondary {
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .checkInPanel {
+    min-height: auto;
+    padding-top: 0;
+  }
+
+  .checkInStep {
+    max-width: 100%;
+  }
+
+  .checkInSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkInActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .checkInActionGroup {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .checkInActionGroup .btn,
+  .checkInActions .btn {
+    width: 100%;
+  }
+}
