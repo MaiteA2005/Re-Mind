@@ -1,12 +1,16 @@
 import MainLayout from "../components/layout/MainLayout";
-import { formatDate } from "../utils/date";
+import { formatDate, getGreeting } from "../utils/date";
 import "./DashboardPage.css";
 
 function DashboardPage() {
+  const name = "John Doe"; // later dynamisch
+  const greeting = getGreeting();
+
   return (
     <MainLayout
-      title="Goedemiddag, Maite"
+      title={`${greeting}, ${name}`}
       subtitle={formatDate()}
+      variant="dashboard"
     >
       <div className="dashboard-grid">
         <div className="card card--wide">

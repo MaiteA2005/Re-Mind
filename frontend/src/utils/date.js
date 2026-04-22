@@ -20,3 +20,15 @@ export function formatDateTime(date = new Date()) {
 
   return `${formattedDate} - ${formattedTime}`;
 }
+
+export function getGreeting(date = new Date()) {
+  const hour = date.getHours();
+
+  if (hour < 12) {
+    return "Goedemorgen";
+  } else if (hour < 18) {
+    return "Goedemiddag";
+  } else {
+    return "Goedenavond";
+  }
+}
