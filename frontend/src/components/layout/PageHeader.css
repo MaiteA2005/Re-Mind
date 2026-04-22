@@ -1,4 +1,4 @@
-.page-header {
+.pageHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -6,53 +6,51 @@
   margin-bottom: 28px;
 }
 
-.page-header__content {
+.pageHeaderContent {
   min-width: 0;
 }
 
-.page-header__title {
+.pageHeaderTitle {
   margin: 0;
   color: #1f1f1f;
   line-height: 1.1;
   font-weight: 700;
 }
 
-.page-header__subtitle {
+.pageHeaderSubtitle {
   margin: 12px 0 0;
   color: #4f5558;
   line-height: 1.4;
 }
 
-.page-header__action {
+.pageHeaderAction {
   flex-shrink: 0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
 }
 
-/* Algemene pagina's */
-.page-header--default .page-header__title {
+.pageHeaderDefault .pageHeaderTitle {
   font-size: 2.25rem;
 }
 
-.page-header--default .page-header__subtitle {
+.pageHeaderDefault .pageHeaderSubtitle {
   font-size: 0.95rem;
 }
 
-/* Dashboard */
-.page-header--dashboard {
+.pageHeaderDashboard {
   margin-bottom: 32px;
 }
 
-.page-header--dashboard .page-header__title {
-  font-size: 3.4rem;
+.pageHeaderDashboard .pageHeaderTitle {
+  font-size: 2.5rem;
 }
 
-.page-header--dashboard .page-header__subtitle {
+.pageHeaderDashboard .pageHeaderSubtitle {
   font-size: 1rem;
 }
 
-.page-header__icon-button {
+.pageHeaderButton {
   width: 56px;
   height: 56px;
   border: none;
@@ -64,28 +62,28 @@
   cursor: pointer;
 }
 
-.page-header__icon {
+.pageHeaderIcon {
   width: 44px;
   height: 44px;
   display: block;
 }
 
 @media (max-width: 768px) {
-  .page-header {
+  .pageHeader {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .page-header__action {
+  .pageHeaderAction {
     width: 100%;
     justify-content: flex-start;
   }
 
-  .page-header--dashboard .page-header__title {
+  .pageHeaderDashboard .pageHeaderTitle {
     font-size: 2.5rem;
   }
 
-  .page-header--default .page-header__title {
+  .pageHeaderDefault .pageHeaderTitle {
     font-size: 1.9rem;
   }
 }

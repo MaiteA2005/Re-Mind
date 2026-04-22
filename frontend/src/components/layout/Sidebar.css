@@ -12,48 +12,48 @@
   justify-content: space-between;
 }
 
-.sidebar__top {
+.sidebarTop {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
 }
 
-.sidebar__brand {
+.brand {
   padding: 0 4px 20px;
 }
 
-.sidebar__logo {
+.brandLogo {
   width: 180px;
   max-width: 100%;
   display: block;
 }
 
-.sidebar__brand p {
+.brand p {
   margin: 8px 0 0;
   font-size: 0.92rem;
   line-height: 1.4;
   color: #6f776c;
 }
 
-.sidebar__nav,
-.sidebar__subnav {
+.mainNav,
+.subNav {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.sidebar__nav {
+.mainNav {
   margin-top: 8px;
   overflow-y: auto;
   min-height: 0;
 }
 
-.sidebar__navlink {
+.navLink {
   text-decoration: none;
 }
 
-.sidebar__link {
+.sideLink {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -66,29 +66,29 @@
   transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.sidebar__link span {
+.sideLink span {
   line-height: 1;
   transform: translateY(1px);
 }
 
-.sidebar__icon {
+.sideIcon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
   display: block;
 }
 
-.sidebar__link:hover {
+.sideLink:hover {
   background: rgba(126, 160, 139, 0.12);
 }
 
-.sidebar__link--active {
+.sideLinkActive {
   background: #7ea08b;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
-.sidebar__bottom {
+.sidebarBottom {
   margin-top: 22px;
   padding-top: 14px;
   border-top: 1px solid #d8cfb8;
@@ -98,35 +98,23 @@
   flex-shrink: 0;
 }
 
-.sidebar__premium {
-  width: 100%;
-  border: none;
-  border-radius: 14px;
-  min-height: 44px;
-  padding: 11px 14px;
-  background: #7ea08b;
-  color: #ffffff;
-  font-size: 0.98rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-}
-
-.sidebar__premium:hover {
-  background: #6d907c;
-}
-
 @media (max-width: 1024px) {
   .sidebar {
     width: 210px;
     padding: 20px 12px 16px;
   }
 
-  .sidebar__logo {
+  .brandLogo {
     width: 165px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #d8cfb8;
   }
 }

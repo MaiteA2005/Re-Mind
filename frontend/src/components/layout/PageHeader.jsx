@@ -7,13 +7,13 @@ function PageHeader({
   action = null,
 }) {
   return (
-    <header className={`page-header page-header--${variant}`}>
-      <div className="page-header__content">
-        <h1 className="page-header__title">{title}</h1>
-        {subtitle && <p className="page-header__subtitle">{subtitle}</p>}
+    <header className={`pageHeader ${variant === "dashboard" ? "pageHeaderDashboard" : "pageHeaderDefault"}`}>
+      <div className="pageHeaderContent">
+        <h1 className="pageHeaderTitle">{title}</h1>
+        {subtitle && <p className="pageHeaderSubtitle">{subtitle}</p>}
       </div>
 
-      {action && <div className="page-header__action">{action}</div>}
+      {action && <div className="pageHeaderAction">{action}</div>}
     </header>
   );
 }

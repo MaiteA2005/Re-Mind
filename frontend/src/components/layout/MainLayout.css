@@ -4,11 +4,27 @@
   background: #f6f1e8;
 }
 
-.layout__content {
+.layoutContent {
   flex: 1;
   padding: 32px;
 }
 
-.layout__body {
+.layoutBody {
   width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .layoutContent {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .layoutContent {
+    padding: 20px;
+  }
 }

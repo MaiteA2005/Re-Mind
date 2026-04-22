@@ -2,19 +2,20 @@ import Sidebar from "./Sidebar";
 import PageHeader from "./PageHeader";
 import "./MainLayout.css";
 
-function MainLayout({ title, subtitle, action, children }) {
+function MainLayout({ title, subtitle, variant = "default", action, children }) {
   return (
     <div className="layout">
       <Sidebar />
 
-      <main className="layout__content">
+      <main className="layoutContent">
         <PageHeader
           title={title}
           subtitle={subtitle}
+          variant={variant}
           action={action}
         />
 
-        <section className="layout__body">
+        <section className="layoutBody">
           {children}
         </section>
       </main>

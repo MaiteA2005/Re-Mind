@@ -78,13 +78,13 @@ const bottomLinks = [
 
 function SidebarLink({ to, label, icon, activeIcon }) {
   return (
-    <NavLink to={to} className="sidebar__navlink">
+    <NavLink to={to} className="navLink">
       {({ isActive }) => (
-        <div className={isActive ? "sidebar__link sidebar__link--active" : "sidebar__link"}>
+        <div className={isActive ? "sideLink sideLinkActive" : "sideLink"}>
           <img
             src={isActive ? activeIcon : icon}
             alt=""
-            className="sidebar__icon"
+            className="sideIcon"
             aria-hidden="true"
           />
           <span>{label}</span>
@@ -97,21 +97,21 @@ function SidebarLink({ to, label, icon, activeIcon }) {
 function Sidebar() {
   return (
     <aside className="sidebar">
-      <div className="sidebar__top">
-        <div className="sidebar__brand">
-          <img src={logo} alt="Re:Mind" className="sidebar__logo" />
+      <div className="sidebarTop">
+        <div className="brand">
+          <img src={logo} alt="Re:Mind" className="brandLogo" />
           <p>Slim pauzeren, sterk presteren</p>
         </div>
 
-        <nav className="sidebar__nav" aria-label="Hoofdnavigatie">
+        <nav className="mainNav" aria-label="Hoofdnavigatie">
           {mainLinks.map((link) => (
             <SidebarLink key={link.to} {...link} />
           ))}
         </nav>
       </div>
 
-      <div className="sidebar__bottom">
-        <nav className="sidebar__subnav" aria-label="Ondernavigatie">
+      <div className="sidebarBottom">
+        <nav className="subNav" aria-label="Ondernavigatie">
           {bottomLinks.map((link) => (
             <SidebarLink key={link.to} {...link} />
           ))}
