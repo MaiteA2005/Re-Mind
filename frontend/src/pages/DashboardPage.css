@@ -1,0 +1,135 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: #f3edde;
+  border: 1px solid #ddd3bc;
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  color: #2f3a2f;
+}
+
+.card p {
+  margin: 0;
+  color: #6f776c;
+  line-height: 1.5;
+}
+
+.card--wide {
+  grid-column: span 2;
+}
+
+.card--large {
+  min-height: 260px;
+}
+
+.card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.metrics {
+  display: flex;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.metrics > div {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.metrics span {
+  display: block;
+  font-size: 0.9rem;
+  color: #6f776c;
+  margin-bottom: 6px;
+}
+
+.metrics strong {
+  font-size: 1.3rem;
+  color: #2f3a2f;
+}
+
+.checkins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkins-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #2f3a2f;
+  font-size: 0.95rem;
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.stats-row > div {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.stats-row span {
+  display: block;
+  font-size: 0.88rem;
+  color: #6f776c;
+  margin-bottom: 6px;
+}
+
+.stats-row strong {
+  font-size: 1.2rem;
+  color: #2f3a2f;
+}
+
+.btn {
+  border: 1px solid #d7cdb6;
+  background: #ffffff;
+  color: #2f3a2f;
+  padding: 10px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  background: #f7f3ea;
+}
+
+.btn-primary {
+  background: #7ea08b;
+  border-color: #7ea08b;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #6d907c;
+  border-color: #6d907c;
+}
