@@ -1,7 +1,6 @@
 import MainLayout from "../components/layout/MainLayout";
 import { Link } from "react-router-dom";
 import { formatDate, getGreeting } from "../utils/date";
-import documentIcon from "../assets/icons_zwart/notitie_zwart.svg";
 import "./DashboardPage.css";
 
 // icons
@@ -13,6 +12,7 @@ import koffieIcon from "../assets/icons_groen/koffie_groen.svg";
 import timerIcon from "../assets/icons_groen/timer_groen.svg";
 import sterrenIcon from "../assets/icons_groen/stretchen_groen.svg";
 import pijlRechtsIcon from "../assets/icons_wit/pijl_rechts_wit.svg";
+import documentIcon from "../assets/icons_zwart/notitie_zwart.svg";
 
 function DashboardPage() {
   const name = "John Doe"; // later dynamisch
