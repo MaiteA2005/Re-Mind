@@ -1,7 +1,8 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
+  width: 100%;
 }
 
 /* banner */
@@ -9,36 +10,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 16px 18px;
-  border: 1px solid #90a794;
+  gap: 20px;
+  padding: 18px 24px;
+  border: 1px solid #97ab9f;
   border-radius: 18px;
-  background: #f8f6ef;
+  background: #f8f6f0;
+  min-height: 92px;
 }
 
 .bannerLeft {
   display: flex;
   align-items: flex-start;
   gap: 14px;
+  min-width: 0;
 }
 
 .bannerIcon {
-  width: 18px;
-  height: 18px;
-  margin-top: 4px;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
   flex-shrink: 0;
 }
 
 .banner h3 {
-  margin: 0 0 4px;
-  font-size: 1rem;
-  color: #1f1f1f;
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #2d2b28;
 }
 
 .banner p {
   margin: 0;
-  font-size: 0.95rem;
-  color: #4f5558;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: #5f615d;
+  max-width: 760px;
 }
 
 /* check-in card */
@@ -46,11 +53,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding: 20px 22px;
-  border-radius: 20px;
-  border: 1px solid #d8cfb8;
-  background: #f3ebd6;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: 18px;
+  border: 1px solid #d8ceb5;
+  background: #f1ead7;
+  min-height: 108px;
 }
 
 .checkinLeft {
@@ -60,36 +68,42 @@
 }
 
 .iconCircle {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 999px;
-  background: #d7e4d8;
+  background: #dbe5da;
+  border: 1px solid #bdd0c1;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .checkinIcon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 .checkinCard h3 {
-  margin: 0 0 4px;
-  font-size: 1.05rem;
-  color: #1f1f1f;
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #2d2b28;
 }
 
 .checkinCard p {
   margin: 0;
-  color: #4f5558;
+  font-size: 0.97rem;
+  color: #666864;
 }
 
 /* main layout */
 .dashboardMain {
   display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr);
+  grid-template-columns: minmax(0, 2.2fr) minmax(300px, 1fr);
   gap: 22px;
+  align-items: stretch;
 }
 
 .dashboardLeft,
@@ -102,9 +116,10 @@
 /* generic cards */
 .card {
   background: #f8f6f0;
-  border: 1px solid #cfd8cf;
+  border: 1px solid #c8d4ca;
   border-radius: 18px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .cardToday {
@@ -113,43 +128,66 @@
 
 .cardHighlight {
   padding: 22px;
-  background: #f2ead4;
-  border-color: #d8cfb8;
+  background: #f1ead7;
+  border: 1px solid #d8ceb5;
   min-height: 126px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .cardHighlight h3 {
-  margin: 4px 0 0;
-  font-size: 1.05rem;
+  margin: 6px 0 0;
+  font-size: 1rem;
   font-weight: 500;
-  color: #1f1f1f;
-  line-height: 1.35;
+  line-height: 1.45;
+  color: #2d2b28;
 }
 
 .cardPause {
   padding: 0;
+  min-height: 216px;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardMonth {
   position: relative;
   min-height: 160px;
+  background: #f1ead7;
+  border: 1px solid #d8ceb5;
 }
 
 .cardAction {
-  padding: 22px;
-  min-height: 156px;
+  padding: 24px 22px;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #f7f8f7;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .cardAction h3 {
-  margin: 14px 0 8px;
+  margin: 16px 0 10px;
   font-size: 1rem;
-  color: #1f1f1f;
+  font-weight: 700;
+  color: #2d2b28;
 }
 
 .cardAction p {
   margin: 0;
-  color: #4f5558;
+  color: #5f615d;
   line-height: 1.5;
+  font-size: 0.97rem;
+}
+
+.cardAction:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 .cardHeader {
@@ -161,7 +199,7 @@
 }
 
 .cardHeaderBordered {
-  border-bottom: 1px solid #cfd8cf;
+  border-bottom: 1px solid #b9cabc;
 }
 
 .cardHeaderLeft {
@@ -172,21 +210,25 @@
 
 .cardHeaderLeft h3 {
   margin: 0;
-  font-size: 1rem;
-  color: #1f1f1f;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #2d2b28;
 }
 
 .cardBody {
-  padding: 20px;
+  padding: 22px 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 22px;
+  flex: 1;
+  justify-content: space-between;
 }
 
 .cardBody p {
   margin: 0;
-  color: #4f5558;
+  color: #5f615d;
   line-height: 1.5;
+  font-size: 0.97rem;
 }
 
 .cardIcon {
@@ -196,9 +238,9 @@
 }
 
 .cardMiniLabel {
-  margin: 18px 0 4px;
+  margin: 14px 0 6px;
   font-size: 0.95rem;
-  color: #4f5558;
+  color: #5f615d;
 }
 
 /* metrics */
@@ -206,40 +248,41 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 34px;
-  padding: 0 20px 24px;
-  border-top: 1px solid #cfd8cf;
-  padding-top: 22px;
+  padding: 22px 20px 24px;
+  border-top: 1px solid #c8d4ca;
 }
 
 .metricTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .metricTop span {
   font-size: 1rem;
-  color: #1f1f1f;
+  font-weight: 500;
+  color: #2d2b28;
 }
 
 .metricTop strong {
   font-size: 1rem;
-  color: #1f1f1f;
+  font-weight: 700;
+  color: #2d2b28;
 }
 
 .progress {
   width: 100%;
   height: 10px;
   border-radius: 999px;
-  background: #dde7e1;
+  background: #dfe8e2;
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
   border-radius: 999px;
-  background: #7ea08b;
+  background: #7d9987;
 }
 
 /* check-ins */
@@ -250,7 +293,8 @@
 .checkins h4 {
   margin: 0 0 14px;
   font-size: 1rem;
-  color: #1f1f1f;
+  font-weight: 700;
+  color: #2d2b28;
 }
 
 .checkinsList {
@@ -264,10 +308,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 14px 18px;
+  padding: 14px 20px;
   border-radius: 12px;
-  background: #e2e9e4;
-  color: #2f3a2f;
+  background: #dfe6e2;
+  color: #2f3a34;
+  font-size: 0.98rem;
 }
 
 /* month section */
@@ -284,7 +329,7 @@
 
 .monthStats > div {
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.38);
   padding: 14px;
 }
 
@@ -292,17 +337,17 @@
   display: block;
   margin-bottom: 6px;
   font-size: 0.88rem;
-  color: #6f776c;
+  color: #6a6c67;
 }
 
 .monthStats strong {
-  font-size: 1.15rem;
-  color: #1f1f1f;
+  font-size: 1.12rem;
+  color: #2d2b28;
 }
 
 .monthStatsBlurred {
   filter: blur(4px);
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 /* premium */
@@ -310,8 +355,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #5d6364;
-  font-size: 0.95rem;
+  color: #5f615d;
+  font-size: 0.94rem;
 }
 
 .premiumLabelIcon {
@@ -325,37 +370,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(2px);
+  padding: 18px;
+  background: rgba(248, 246, 240, 0.22);
+  backdrop-filter: blur(1.5px);
 }
 
 .premiumBox {
-  width: 100%;
-  max-width: 460px;
-  padding: 28px 26px;
-  border-radius: 20px;
-  background: #f8f5ee;
-  border: 1px solid #d7cdb8;
+  width: min(100%, 360px);
+  padding: 22px 24px;
+  border-radius: 18px;
+  background: #f8f6f0;
+  border: 1px solid #d8ceb5;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(45, 43, 40, 0.08);
 }
 
 .premiumOverlayIcon {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   margin-bottom: 12px;
 }
 
 .premiumBox h4 {
-  margin: 0 0 10px;
-  font-size: 1.15rem;
-  color: #1f1f1f;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #2d2b28;
 }
 
 .premiumBox p {
-  margin: 0 0 18px;
-  color: #4f5558;
-  line-height: 1.45;
+  margin: 0 0 16px;
+  font-size: 0.97rem;
+  color: #5f615d;
+  line-height: 1.5;
 }
 
 /* actions */
@@ -371,12 +419,15 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border-radius: 14px;
-  padding: 10px 18px;
+  min-height: 46px;
+  border-radius: 12px;
+  padding: 10px 20px;
   font-size: 0.98rem;
   font-weight: 500;
+  line-height: 1;
   cursor: pointer;
   transition: 0.2s ease;
+  font-family: inherit;
 }
 
 .btn img {
@@ -385,42 +436,47 @@
 }
 
 .btnPrimary {
-  border: 1px solid #7ea08b;
-  background: #7ea08b;
+  border: 1px solid #7d9987;
+  background: #7d9987;
   color: #ffffff;
 }
 
 .btnPrimary:hover {
-  background: #6d907c;
-  border-color: #6d907c;
+  background: #6f8d7a;
+  border-color: #6f8d7a;
 }
 
 .btnSecondary {
-  border: 1px solid #d7cdb8;
-  background: #fbf8f1;
-  color: #2f3a2f;
+  border: 1px solid #d8ceb5;
+  background: #fbf8f2;
+  color: #2f3a34;
 }
 
 .btnSecondary:hover {
-  background: #f4efe3;
+  background: #f5f0e5;
 }
 
 .btnFull {
   width: 100%;
 }
 
-/* optional: same style as your page header button naming */
+/* page header action button */
 .pageHeaderButton {
-  width: 56px;
-  height: 56px;
-  border: none;
-  background: transparent;
-  color: #1f1f1f;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #d8ceb5;
+  border-radius: 14px;
+  background: #fbf8f2;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pageHeaderButton:hover {
+  background: #f3eee3;
 }
 
 .pageHeaderIcon {
@@ -434,8 +490,18 @@
     grid-template-columns: 1fr;
   }
 
+  .dashboardRight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
   .actionsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .cardMonth {
+    min-height: 220px;
   }
 }
 
@@ -446,8 +512,14 @@
     align-items: flex-start;
   }
 
+  .banner .btn,
+  .checkinCard .btn {
+    width: 100%;
+  }
+
   .metrics,
-  .monthStats {
+  .monthStats,
+  .dashboardRight {
     grid-template-columns: 1fr;
   }
 

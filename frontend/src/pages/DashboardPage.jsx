@@ -1,4 +1,5 @@
 import MainLayout from "../components/layout/MainLayout";
+import { Link } from "react-router-dom";
 import { formatDate, getGreeting } from "../utils/date";
 import documentIcon from "../assets/icons_zwart/notitie_zwart.svg";
 import "./DashboardPage.css";
@@ -183,23 +184,23 @@ function DashboardPage() {
         </section>
 
         <section className="actionsGrid">
-          <article className="card cardAction">
-            <img src={timerIcon} alt="Timer" className="cardIcon" aria-hidden="true" />
+          <Link to="/timer" className="card cardAction">
+            <img src={timerIcon} alt="Timer" className="cardIcon" />
             <h3>Start focusblok</h3>
             <p>Begin een gefocuste sessie van 25 min</p>
-          </article>
+          </Link>
 
-          <article className="card cardAction">
-            <img src={inzichtenIcon} alt="Inzichten" className="cardIcon" aria-hidden="true" />
+          <Link to="/inzichten" className="card cardAction">
+            <img src={inzichtenIcon} alt="Inzichten" className="cardIcon" />
             <h3>Inzichten</h3>
             <p>Bekijk je voortgang en patronen</p>
-          </article>
+          </Link>
 
-          <article className="card cardAction">
-            <img src={koffieIcon} alt="Koffie" className="cardIcon" aria-hidden="true" />
+          <Link to="/pauze" className="card cardAction">
+            <img src={koffieIcon} alt="Koffie" className="cardIcon" />
             <h3>Pauze suggesties</h3>
             <p>Ontdek effectieve pauzes</p>
-          </article>
+          </Link>
         </section>
       </div>
     </MainLayout>
