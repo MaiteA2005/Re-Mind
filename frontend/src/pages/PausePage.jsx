@@ -43,6 +43,7 @@ function PausePage() {
               icon={suggestion.icon}
               isFavorite={favorites.includes(suggestion.id)}
               onToggleFavorite={() => toggleFavorite(suggestion.id)}
+              to={`/pause/${suggestion.slug}`}
             />
           ))}
         </div>

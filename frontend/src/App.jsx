@@ -1,7 +1,12 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import CheckInPage from "./pages/CheckInPage";
+
 import PausePage from "./pages/PausePage";
+import PauseDetailPage from "./pages/PauseDetailPage";
+import PauseSessionPage from "./pages/PauseSessionPage";
+import PauseCompletePage from "./pages/PauseCompletePage";
+
 import InsightsPage from "./pages/InsightsPage";
 import DagAfsluistingPage from "./pages/DagAfsluistingPage";
 import TimerPage from "./pages/TimerPage";
@@ -16,6 +21,9 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/check-in" element={<CheckInPage />} />
         <Route path="/pauze" element={<PausePage />} />
+        <Route path="/pause/:slug" element={<PauseDetailPage />} />
+        <Route path="/pause/:slug/session" element={<PauseSessionPage />} />
+        <Route path="/pause/:slug/complete" element={<PauseCompletePage />} />
         <Route path="/inzichten" element={<InsightsPage />} />
         <Route path="/dagafsluiting" element={<DagAfsluistingPage />} />
         <Route path="/timer" element={<TimerPage />} />
