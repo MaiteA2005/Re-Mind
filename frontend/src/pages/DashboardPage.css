@@ -1,135 +1,458 @@
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
-.card {
-  background: #f3edde;
-  border: 1px solid #ddd3bc;
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+/* banner */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border: 1px solid #90a794;
+  border-radius: 18px;
+  background: #f8f6ef;
 }
 
-.card h3 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
-  color: #2f3a2f;
+.bannerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
 }
 
-.card p {
+.bannerIcon {
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.banner h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.banner p {
   margin: 0;
-  color: #6f776c;
+  font-size: 0.95rem;
+  color: #4f5558;
+}
+
+/* check-in card */
+.checkinCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  border-radius: 20px;
+  border: 1px solid #d8cfb8;
+  background: #f3ebd6;
+}
+
+.checkinLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconCircle {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: #d7e4d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkinIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.checkinCard h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  color: #1f1f1f;
+}
+
+.checkinCard p {
+  margin: 0;
+  color: #4f5558;
+}
+
+/* main layout */
+.dashboardMain {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr);
+  gap: 22px;
+}
+
+.dashboardLeft,
+.dashboardRight {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* generic cards */
+.card {
+  background: #f8f6f0;
+  border: 1px solid #cfd8cf;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.cardToday {
+  padding: 0;
+}
+
+.cardHighlight {
+  padding: 22px;
+  background: #f2ead4;
+  border-color: #d8cfb8;
+  min-height: 126px;
+}
+
+.cardHighlight h3 {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #1f1f1f;
+  line-height: 1.35;
+}
+
+.cardPause {
+  padding: 0;
+}
+
+.cardMonth {
+  position: relative;
+  min-height: 160px;
+}
+
+.cardAction {
+  padding: 22px;
+  min-height: 156px;
+}
+
+.cardAction h3 {
+  margin: 14px 0 8px;
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.cardAction p {
+  margin: 0;
+  color: #4f5558;
   line-height: 1.5;
 }
 
-.card--wide {
-  grid-column: span 2;
-}
-
-.card--large {
-  min-height: 260px;
-}
-
-.card__row {
+.cardHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
+  padding: 18px 20px;
 }
 
-.metrics {
+.cardHeaderBordered {
+  border-bottom: 1px solid #cfd8cf;
+}
+
+.cardHeaderLeft {
   display: flex;
-  gap: 16px;
-  margin: 20px 0;
-}
-
-.metrics > div {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.metrics span {
-  display: block;
-  font-size: 0.9rem;
-  color: #6f776c;
-  margin-bottom: 6px;
-}
-
-.metrics strong {
-  font-size: 1.3rem;
-  color: #2f3a2f;
-}
-
-.checkins-list {
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
-.checkins-item {
+.cardHeaderLeft h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.cardBody {
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 14px;
-  padding: 12px 14px;
-  color: #2f3a2f;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cardBody p {
+  margin: 0;
+  color: #4f5558;
+  line-height: 1.5;
+}
+
+.cardIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.cardMiniLabel {
+  margin: 18px 0 4px;
   font-size: 0.95rem;
+  color: #4f5558;
 }
 
-.stats-row {
+/* metrics */
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px;
+  padding: 0 20px 24px;
+  border-top: 1px solid #cfd8cf;
+  padding-top: 22px;
+}
+
+.metricTop {
   display: flex;
-  gap: 16px;
-  margin-top: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.stats-row > div {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.45);
+.metricTop span {
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.metricTop strong {
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #dde7e1;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: #7ea08b;
+}
+
+/* check-ins */
+.checkins {
+  padding: 0 20px 22px;
+}
+
+.checkins h4 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  color: #1f1f1f;
+}
+
+.checkinsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkinsItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #e2e9e4;
+  color: #2f3a2f;
+}
+
+/* month section */
+.monthSection {
+  width: 100%;
+}
+
+.monthStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 0 20px 20px;
+}
+
+.monthStats > div {
   border-radius: 14px;
+  background: rgba(255, 255, 255, 0.45);
   padding: 14px;
 }
 
-.stats-row span {
+.monthStats span {
   display: block;
+  margin-bottom: 6px;
   font-size: 0.88rem;
   color: #6f776c;
-  margin-bottom: 6px;
 }
 
-.stats-row strong {
-  font-size: 1.2rem;
-  color: #2f3a2f;
+.monthStats strong {
+  font-size: 1.15rem;
+  color: #1f1f1f;
 }
 
-.btn {
-  border: 1px solid #d7cdb6;
-  background: #ffffff;
-  color: #2f3a2f;
-  padding: 10px 16px;
-  border-radius: 14px;
-  cursor: pointer;
+.monthStatsBlurred {
+  filter: blur(4px);
+  opacity: 0.5;
+}
+
+/* premium */
+.premiumLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5d6364;
   font-size: 0.95rem;
+}
+
+.premiumLabelIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.premiumOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.premiumBox {
+  width: 100%;
+  max-width: 460px;
+  padding: 28px 26px;
+  border-radius: 20px;
+  background: #f8f5ee;
+  border: 1px solid #d7cdb8;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.premiumOverlayIcon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 12px;
+}
+
+.premiumBox h4 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  color: #1f1f1f;
+}
+
+.premiumBox p {
+  margin: 0 0 18px;
+  color: #4f5558;
+  line-height: 1.45;
+}
+
+/* actions */
+.actionsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-size: 0.98rem;
   font-weight: 500;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.btn:hover {
-  background: #f7f3ea;
+.btn img {
+  width: 16px;
+  height: 16px;
 }
 
-.btn-primary {
+.btnPrimary {
+  border: 1px solid #7ea08b;
   background: #7ea08b;
-  border-color: #7ea08b;
   color: #ffffff;
 }
 
-.btn-primary:hover {
+.btnPrimary:hover {
   background: #6d907c;
   border-color: #6d907c;
+}
+
+.btnSecondary {
+  border: 1px solid #d7cdb8;
+  background: #fbf8f1;
+  color: #2f3a2f;
+}
+
+.btnSecondary:hover {
+  background: #f4efe3;
+}
+
+.btnFull {
+  width: 100%;
+}
+
+/* optional: same style as your page header button naming */
+.pageHeaderButton {
+  width: 56px;
+  height: 56px;
+  border: none;
+  background: transparent;
+  color: #1f1f1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pageHeaderIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* responsive */
+@media (max-width: 1100px) {
+  .dashboardMain {
+    grid-template-columns: 1fr;
+  }
+
+  .actionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .banner,
+  .checkinCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .metrics,
+  .monthStats {
+    grid-template-columns: 1fr;
+  }
+
+  .checkinsItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
