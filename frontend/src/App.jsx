@@ -1,48 +1,29 @@
-import { useMemo, useState } from "react";
-import "./App.css";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import CheckInPage from "./pages/CheckInPage";
+import PausePage from "./pages/PausePage";
+import InsightsPage from "./pages/InsightsPage";
+import DagAfsluistingPage from "./pages/DagAfsluistingPage";
+import TimerPage from "./pages/TimerPage";
+import SettingsPage from "./pages/SettingsPage";
+import PremiumPage from "./pages/PremiumPage";
 
-import Navbar from "./components/Navbar";
-import WorkTimerCard from "./components/WorkTimerCard";
-import PauseSuggestions from "./components/PauseSuggestions";
-import BreathingExercises from "./components/BreathingExercises";
-import BreathingExerciseDetail from "./components/BreathingExerciseDetail";
-
-export default function App() {
-  const [name] = useState("John Doe");
-
-  const [currentPage, setCurrentPage] = useState("home"); 
-  const [selectedExercise, setSelectedExercise] = useState(null);
-  
-
+function App() {
   return (
-    <div className="app">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-
-      {currentPage === "exercise-detail" ? (
-        <BreathingExerciseDetail 
-          exerciseId={selectedExercise} 
-          onBack={() => setCurrentPage("breathing")}
-          onChangeMethod={() => setCurrentPage("breathing")}
-        />
-      ) : currentPage === "breathing" ? (
-        <BreathingExercises 
-          onBack={() => setCurrentPage("pause")} 
-          onSelectExercise={(id) => {
-            setSelectedExercise(id);
-            setCurrentPage("exercise-detail");
-          }}
-        />
-      ) : currentPage === "pause" ? (
-        <PauseSuggestions onNavigateToBreathing={() => setCurrentPage("breathing")} />
-      ) : (
-        <main className="page">
-          <h1 className="greeting">Hallo,</h1>
-
-          <section className="section">
-            <WorkTimerCard />
-          </section>
-        </main>
-      )}
-    </div>
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/check-in" element={<CheckInPage />} />
+        <Route path="/pauze" element={<PausePage />} />
+        <Route path="/inzichten" element={<InsightsPage />} />
+        <Route path="/dagafsluiting" element={<DagAfsluistingPage />} />
+        <Route path="/timer" element={<TimerPage />} />
+        <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/instellingen" element={<SettingsPage />} />
+      </Routes>
+    </HashRouter>
   );
 }
+
+export default App;
