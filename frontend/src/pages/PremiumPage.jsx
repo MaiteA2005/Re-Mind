@@ -1,10 +1,10 @@
 import MainLayout from "../components/layout/MainLayout";
-import "./PausePage.css";
+import "./PremiumPage.css";
 
-function PausePage() {
+function PremiumPage() {
   return (
     <MainLayout
-      title="Pauzesuggesties"
+      title="Premium"
       subtitle="30 maart 2026"
     >
       
@@ -12,4 +12,4 @@ function PausePage() {
   );
 }
 
-export default PausePage;
+export default PremiumPage;
