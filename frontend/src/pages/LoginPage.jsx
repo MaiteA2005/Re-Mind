@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/authService";
 import "./AuthPages.css";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -27,7 +29,8 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      await loginUser(formData);
+      const data = await loginUser(formData);
+      login(data.user);
       navigate("/dashboard");
     } catch (error) {
       setError(error.message);

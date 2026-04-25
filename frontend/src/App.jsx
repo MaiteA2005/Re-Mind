@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
@@ -18,25 +19,157 @@ import TimerPage from "./pages/TimerPage";
 import SettingsPage from "./pages/SettingsPage";
 import PremiumPage from "./pages/PremiumPage";
 
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+function PublicRoute({ children }) {
+  const { user } = useAuth();
+
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <HashRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/welcome" replace />} />
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/onboarding" element={<OnboardingPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/check-in" element={<CheckInPage />} />
-        <Route path="/pause" element={<PausePage />} />
-        <Route path="/pause/:slug" element={<PauseDetailPage />} />
-        <Route path="/pause/:slug/session" element={<PauseSessionPage />} />
-        <Route path="/pause/:slug/complete" element={<PauseCompletePage />} />
-        <Route path="/inzichten" element={<InsightsPage />} />
-        <Route path="/dagafsluiting" element={<DagAfsluistingPage />} />
-        <Route path="/timer" element={<TimerPage />} />
-        <Route path="/premium" element={<PremiumPage />} />
-        <Route path="/instellingen" element={<SettingsPage />} />
+
+        <Route 
+          path="/welcome"
+          element={
+            <PublicRoute>
+              <WelcomePage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/onboarding"
+          element={
+            <PublicRoute>
+              <OnboardingPage />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/check-in"
+          element={
+            <ProtectedRoute>
+              <CheckInPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pause"
+          element={
+            <ProtectedRoute>
+              <PausePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pause/:slug"
+          element={
+            <ProtectedRoute>
+              <PauseDetailPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pause/:slug/session"
+          element={
+            <ProtectedRoute>
+              <PauseSessionPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pause/:slug/complete"
+          element={
+            <ProtectedRoute>
+              <PauseCompletePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/inzichten"
+          element={
+            <ProtectedRoute>
+              <InsightsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dagafsluiting"
+          element={
+            <ProtectedRoute>
+              <DagAfsluistingPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/timer"
+          element={
+            <ProtectedRoute>
+              <TimerPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/premium"
+          element={
+            <ProtectedRoute>
+              <PremiumPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/instellingen"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </HashRouter>
   );
