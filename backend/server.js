@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import pauseSuggestionRoutes from "./routes/pauseSuggestionRoutes.js";
+import pauseSessionRoutes from "./routes/pauseSessionRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/pause-suggestions", pauseSuggestionRoutes);
+app.use("/api/pause-sessions", pauseSessionRoutes);
 
 app.get("/", (req, res) => {
   res.send("API werkt");

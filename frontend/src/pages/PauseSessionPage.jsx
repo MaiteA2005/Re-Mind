@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import { savePauseSession } from "../services/pauseSessionService";
 import "./PausePage.css";
 
 function getDurationSeconds(duration) {
@@ -65,6 +66,22 @@ function PauseSessionPage() {
     setTimeLeft(totalSeconds);
   }, [totalSeconds]);
 
+  const completePause = async () => {
+    try {
+      await savePauseSession(pause);
+
+      navigate(`/pause/${pause.slug}/complete`, {
+        state: { pauseItem: pause },
+      });
+    } catch (error) {
+      console.error("Fout bij opslaan pauze:", error);
+
+      navigate(`/pause/${pause.slug}/complete`, {
+        state: { pauseItem: pause },
+      });
+    }
+  };
+
   useEffect(() => {
     if (!pause || isPaused || timeLeft <= 0) return;
 
@@ -72,9 +89,7 @@ function PauseSessionPage() {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          navigate(`/pause/${pause.slug}/complete`, {
-            state: { pauseItem: pause },
-          });
+          completePause(); // 🔥 hier wordt nu opgeslagen
           return 0;
         }
 
@@ -83,7 +98,7 @@ function PauseSessionPage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [pause, isPaused, timeLeft, navigate]);
+  }, [pause, isPaused, timeLeft]);
 
   if (loading) {
     return (
@@ -170,11 +185,7 @@ function PauseSessionPage() {
           <button
             type="button"
             className="pauseOutlineButton"
-            onClick={() =>
-              navigate(`/pause/${pause.slug}/complete`, {
-                state: { pauseItem: pause },
-              })
-            }
+            onClick={completePause}
           >
             Markeer als voltooid
           </button>
