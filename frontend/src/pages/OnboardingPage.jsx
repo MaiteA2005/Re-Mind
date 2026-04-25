@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { registerUser, saveOnboarding } from "../services/authService";
 import "./AuthPages.css";
 
 const totalSteps = 6;
@@ -42,9 +43,26 @@ function OnboardingPage() {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const finishOnboarding = () => {
-    console.log("Onboarding data:", formData);
-    navigate("/dashboard");
+  const finishOnboarding = async () => {
+    try {
+        await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        });
+
+        await saveOnboarding({
+        workSituation: formData.workSituation,
+        workload: formData.workload,
+        goals: formData.goals,
+        notificationsEnabled: formData.notificationsEnabled,
+        });
+
+        navigate("/dashboard");
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
   };
 
   return (
