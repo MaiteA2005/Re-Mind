@@ -1,20 +1,32 @@
-export const pauseSuggestions = [
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import PauseSuggestion from "../models/PauseSuggestion.js";
+
+dotenv.config();
+
+const pauseSuggestions = [
   {
     id: 1,
     slug: "houding-check",
     type: "short",
     title: "Houding check",
     description: "Verbeter je lichaamshouding en voorkom spanning",
-    duration: "1 min",
+    duration: "2 min",
     icon: "posture",
     instructionTitle: "Houding check instructies",
-    instructions: [],
-    infoTitle: "Waarom een houding check?",
+    instructions: [
+      "Ga rechtop zitten met je voeten plat op de grond",
+      "Rol je schouders naar achteren",
+      "Trek je kin licht naar binnen",
+      "Ontspan je kaak en gezicht",
+      "Neem 3 diepe ademhalingen in deze houding",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een houding check helpt je bewust te worden van je lichaamshouding. Door regelmatig je houding te controleren en aan te passen, kun je spanning en ongemak verminderen, vooral als je lange tijd achter een bureau zit. Het bevordert ook een betere bloedcirculatie en kan helpen bij het voorkomen van rug- en nekklachten.",
-    completeTitle: "Houding check voltooid",
+      "Een slechte houding beïnvloedt stress en focus direct. Een korte houding check helpt om spanning in je nek, schouders en rug te verminderen en zorgt voor meer rust en concentratie.",
+    completeTitle: "Goed bezig!",
     completeText:
-      "Goed gedaan! Je hebt een belangrijke stap gezet naar een gezondere werkhouding.",
+      "Je hebt een pauze genomen. Even vertragen helpt je om met meer focus verder te gaan.",
   },
   {
     id: 2,
@@ -25,13 +37,18 @@ export const pauseSuggestions = [
     duration: "1 min",
     icon: "win",
     instructionTitle: "Name one win instructies",
-    instructions: [],
-    infoTitle: "Waarom 'Name one win'?",
+    instructions: [
+      "Denk terug aan je dag tot nu toe",
+      "Noem één ding dat goed ging, hoe klein ook",
+      "Voel de positieve emotie van dit moment",
+      "Neem een moment om jezelf te feliciteren",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Het benoemen van een positieve gebeurtenis, hoe klein ook, kan je mindset verbeteren en je helpen focussen op het goede in je dag. Het is een eenvoudige manier om dankbaarheid te cultiveren en stress te verminderen, vooral tijdens drukke of uitdagende dagen.",
-    completeTitle: "Win benoemd",
+      "Deze oefening helpt je om bewust stil te staan bij kleine overwinningen. Zo verschuif je je aandacht naar wat goed loopt en bouw je aan een positievere mindset.",
+    completeTitle: "Goed bezig!",
     completeText:
-      "Fantastisch! Het erkennen van een positieve gebeurtenis kan je dag echt verbeteren.",
+      "Je hebt een positief moment erkend. Neem dat gevoel mee in de rest van je dag.",
   },
   {
     id: 3,
@@ -42,12 +59,19 @@ export const pauseSuggestions = [
     duration: "2 min",
     icon: "hand",
     instructionTitle: "Hand stretch instructies",
-    instructions: [],
-    infoTitle: "Waarom een hand stretch?",
+    instructions: [
+      "Strek je armen naar voren",
+      "Spreid je vingers wijd uit",
+      "Maak vuisten en open ze weer 5 keer",
+      "Draai je polsen 5 keer rechtsom en 5 keer linksom",
+      "Schud je handen losjes uit",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een hand stretch helpt spanning in je handen en polsen te verminderen, vooral als je veel typt of een muis gebruikt. Het kan de bloedcirculatie verbeteren en het risico op RSI-klachten verminderen. Regelmatig stretchen houdt je handen soepel en comfortabel.",
-    completeTitle: "Hand stretch voltooid",
-    completeText: "Goed gedaan! Je handen zullen je dankbaar zijn.",
+      "Je handen en polsen staan vaak onder spanning door typen en muisgebruik. Deze korte reset helpt om spanning los te laten en je handen weer soepeler te laten aanvoelen.",
+    completeTitle: "Goed bezig!",
+    completeText:
+      "Je handen hebben even kunnen ontspannen. Kleine pauzes maken een groot verschil.",
   },
   {
     id: 4,
@@ -58,13 +82,19 @@ export const pauseSuggestions = [
     duration: "2 min",
     icon: "touch",
     instructionTitle: "Hand to chest reset instructies",
-    instructions: [],
-    infoTitle: "Waarom een hand to chest reset?",
+    instructions: [
+      "Leg je hand op je borst",
+      "Voel je hartslag",
+      "Adem rustig in en uit",
+      "Focus op de warmte van je hand",
+      "Blijf zo voor 1 tot 2 minuten",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een hand to chest reset is een eenvoudige techniek om je zenuwstelsel te kalmeren. Door je hand op je borst te leggen, kun je een gevoel van veiligheid en comfort creëren, wat stress kan verminderen en je kan helpen ontspannen tijdens een drukke dag.",
-    completeTitle: "Hand to chest reset voltooid",
+      "Deze oefening helpt je om terug contact te maken met je lichaam. De combinatie van aanraking en rustige ademhaling kan een gevoel van veiligheid en kalmte geven.",
+    completeTitle: "Goed bezig!",
     completeText:
-      "Goed gedaan! Je hebt een moment van rust voor jezelf gecreëerd.",
+      "Je hebt jezelf een rustig moment gegeven. Ga met zachtere focus verder.",
   },
   {
     id: 5,
@@ -75,13 +105,19 @@ export const pauseSuggestions = [
     duration: "1 - 2 min",
     icon: "water",
     instructionTitle: "Drink pauze instructies",
-    instructions: [],
-    infoTitle: "Waarom een drink pauze?",
+    instructions: [
+      "Sta op en loop naar de keuken",
+      "Pak een glas water of thee",
+      "Ga ergens anders zitten dan je werkplek",
+      "Drink langzaam en bewust",
+      "Let op de smaak en temperatuur",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een drink pauze is een perfecte gelegenheid om even weg te stappen van je werk en jezelf te hydrateren. Het drinken van water kan je energie een boost geven, je concentratie verbeteren en helpt bij het verminderen van vermoeidheid. Bovendien geeft het je een moment om mentaal te resetten.",
-    completeTitle: "Drink pauze voltooid",
+      "Een drinkpauze helpt je om even weg te stappen van je scherm en jezelf te hydrateren. Dit geeft je lichaam én je hoofd een korte reset.",
+    completeTitle: "Goed bezig!",
     completeText:
-      "Goed gedaan! Je hebt jezelf gehydrateerd en een mentale reset gegeven.",
+      "Je hebt jezelf gehydrateerd en even afstand genomen van je werkplek.",
   },
   {
     id: 6,
@@ -92,12 +128,19 @@ export const pauseSuggestions = [
     duration: "1 min",
     icon: "eye",
     instructionTitle: "Oog reset instructies",
-    instructions: [],
-    infoTitle: "Waarom een oog reset?",
+    instructions: [
+      "Kijk weg van je scherm",
+      "Focus op iets op ongeveer 6 meter afstand",
+      "Kijk hier 20 seconden naar",
+      "Knipper 10 keer langzaam met je ogen",
+      "Sluit je ogen voor 10 seconden",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een oog reset helpt vermoeide ogen te verlichten, vooral na langdurig naar een scherm te hebben gekeken. Het kan de bloedcirculatie verbeteren en het risico op digitale oogvermoeidheid verminderen. Regelmatig je ogen rust geven is essentieel voor je visuele gezondheid en comfort.",
-    completeTitle: "Oog reset voltooid",
-    completeText: "Goed gedaan! Je ogen zullen je dankbaar zijn.",
+      "Deze oefening ontlast je oogspieren en vermindert visuele inspanning. Door bewust te knipperen en even weg te kijken, krijgen je ogen opnieuw rust.",
+    completeTitle: "Goed bezig!",
+    completeText:
+      "Je ogen hebben even kunnen rusten. Dat helpt om frisser verder te werken.",
   },
   {
     id: 7,
@@ -241,7 +284,7 @@ export const pauseSuggestions = [
         ],
         },
     ],
-  },
+    },
   {
     id: 8,
     slug: "stretchen",
@@ -251,12 +294,21 @@ export const pauseSuggestions = [
     duration: "10 min",
     icon: "stretch",
     instructionTitle: "Stretchen instructies",
-    instructions: [],
-    infoTitle: "Waarom stretchen?",
+    instructions: [
+      "Sta op van je werkplek",
+      "Rek je armen boven je hoofd",
+      "Buig naar links en rechts, 30 seconden per kant",
+      "Draai je bovenlichaam 10 keer rustig",
+      "Stretch je nekspieren voorzichtig",
+      "Buig rustig voorover richting je tenen",
+      "Kom langzaam weer omhoog",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Stretchen helpt om spieren en gewrichten te verlenen, waardoor je bewegelijkheid en flexibiliteit verbetert. Het kan ook helpen om spanning in het lichaam te verminderen en de bloedcirculatie te verbeteren.",
-    completeTitle: "Stretchen voltooid",
-    completeText: "Goed gedaan! Je lichaam zullen je dankbaar zijn.",
+      "Stretchen helpt om spierspanning te verminderen en je lichaam opnieuw in beweging te brengen. Het kan je flexibiliteit, doorbloeding en energieniveau ondersteunen.",
+    completeTitle: "Goed bezig!",
+    completeText:
+      "Je lichaam heeft beweging gekregen. Dat helpt om spanning los te laten.",
   },
   {
     id: 9,
@@ -267,12 +319,32 @@ export const pauseSuggestions = [
     duration: "10 min",
     icon: "walk",
     instructionTitle: "Korte wandeling instructies",
-    instructions: [],
-    infoTitle: "Waarom een korte wandeling?",
+    instructions: [
+      "Sta op en pak je jas indien nodig",
+      "Loop naar buiten of door het gebouw",
+      "Loop in een comfortabel tempo",
+      "Let op je omgeving: wat zie, hoor of ruik je?",
+      "Adem de frisse lucht diep in",
+      "Kom rustig terug naar je werkplek",
+    ],
+    infoTitle: "Wat doet dit?",
     infoText:
-      "Een korte wandeling is een uitstekende manier om je lichaam in beweging te brengen en frisse lucht in te ademen. Het kan je energie verhogen, je focus verbeteren en je mentale welzijn bevorderen.",
-    completeTitle: "Korte wandeling voltooid",
+      "Een korte wandeling brengt je lichaam in beweging en geeft je hoofd ruimte. Het kan je energie verhogen, je stemming verbeteren en je creativiteit stimuleren.",
+    completeTitle: "Goed bezig!",
     completeText:
-      "Goed gedaan! Je hebt een moment van rust voor jezelf gecreëerd.",
+      "Je hebt bewogen en afstand genomen van je werk. Dat helpt om met nieuwe energie verder te gaan.",
   },
 ];
+
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+
+  await PauseSuggestion.deleteMany();
+  await PauseSuggestion.insertMany(pauseSuggestions);
+
+  console.log("Pause suggestions toegevoegd");
+  process.exit();
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}

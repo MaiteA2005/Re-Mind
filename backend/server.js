@@ -2,15 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
+import pauseSuggestionRoutes from "./routes/pauseSuggestionRoutes.js";
 
 dotenv.config();
-
-connectDB(); 
+connectDB();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/pause-suggestions", pauseSuggestionRoutes);
 
 app.get("/", (req, res) => {
   res.send("API werkt");
