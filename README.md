@@ -9,7 +9,7 @@ Opstarten
 
 ## Backend
 - cd backend
-- node index.js
+- node server.js
 
 ## Frontend
 - cd frontend

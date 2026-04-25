@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/check-in" element={<CheckInPage />} />
-        <Route path="/pauze" element={<PausePage />} />
+        <Route path="/pause" element={<PausePage />} />
         <Route path="/pause/:slug" element={<PauseDetailPage />} />
         <Route path="/pause/:slug/session" element={<PauseSessionPage />} />
         <Route path="/pause/:slug/complete" element={<PauseCompletePage />} />

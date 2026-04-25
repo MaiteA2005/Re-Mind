@@ -36,8 +36,8 @@ const mainLinks = [
     activeIcon: checkinWhite,
   },
   {
-    to: "/pauze",
-    label: "Pauze",
+    to: "/pause",
+    label: "Pause",
     icon: koffieBlack,
     activeIcon: koffieWhite,
   },
