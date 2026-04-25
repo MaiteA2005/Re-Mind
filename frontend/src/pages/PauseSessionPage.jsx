@@ -1,41 +1,80 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
-import { pauseSuggestions } from "../data/pauseSuggestionsData";
 import "./PausePage.css";
+
+function getDurationSeconds(duration) {
+  if (!duration) return 60;
+
+  if (duration.includes("10")) return 600;
+  if (duration.includes("5")) return 300;
+  if (duration.includes("3")) return 180;
+  if (duration.includes("2")) return 120;
+
+  return 60;
+}
 
 function formatTime(totalSeconds) {
   const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
   const seconds = String(totalSeconds % 60).padStart(2, "0");
-  return `00:${minutes}:${seconds}`;
+
+  return `${minutes}:${seconds}`;
 }
 
 function PauseSessionPage() {
   const { slug } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const pauseItem = useMemo(
-    () => pauseSuggestions.find((item) => item.slug === slug),
-    [slug]
+  const statePauseItem = location.state?.pauseItem || null;
+
+  const [pause, setPause] = useState(statePauseItem);
+  const [loading, setLoading] = useState(!statePauseItem);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(true);
+
+  useEffect(() => {
+    if (statePauseItem) return;
+
+    const fetchPause = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/pause-suggestions/${slug}`
+        );
+        const data = await response.json();
+
+        setPause(data);
+      } catch (error) {
+        console.error("Fout bij ophalen pauze:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPause();
+  }, [slug, statePauseItem]);
+
+  const totalSeconds = useMemo(
+    () => getDurationSeconds(pause?.duration),
+    [pause?.duration]
   );
 
-  const [timeLeft, setTimeLeft] = useState(pauseItem?.durationSeconds || 0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(totalSeconds);
 
   useEffect(() => {
-    if (!pauseItem) return;
-    setTimeLeft(pauseItem.durationSeconds);
-  }, [pauseItem]);
+    setTimeLeft(totalSeconds);
+  }, [totalSeconds]);
 
   useEffect(() => {
-    if (!pauseItem || isPaused || timeLeft <= 0) return;
+    if (!pause || isPaused || timeLeft <= 0) return;
 
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          navigate(`/pause/${pauseItem.slug}/complete`);
+          navigate(`/pause/${pause.slug}/complete`, {
+            state: { pauseItem: pause },
+          });
           return 0;
         }
 
@@ -44,47 +83,57 @@ function PauseSessionPage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [pauseItem, isPaused, timeLeft, navigate]);
+  }, [pause, isPaused, timeLeft, navigate]);
 
-  if (!pauseItem) {
+  if (loading) {
     return (
-      <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
-        <div className="pauseDetailWrapper">
-          <Link to="/pause" className="pauseBackButton">
-            ← Terug
-          </Link>
-        </div>
+      <MainLayout title="Pauze laden" subtitle="Even geduld">
+        <p className="pauseStatusText">Pauze laden...</p>
       </MainLayout>
     );
   }
 
-  const progress =
-    ((pauseItem.durationSeconds - timeLeft) / pauseItem.durationSeconds) * 100;
+  if (!pause || pause.message) {
+    return (
+      <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
+        <section className="pauseSessionWrapper">
+          <Link to="/pause" className="pauseBackButton">
+            ← Terug naar pauzes
+          </Link>
+        </section>
+      </MainLayout>
+    );
+  }
+
+  const progress = ((totalSeconds - timeLeft) / totalSeconds) * 100;
 
   return (
-    <MainLayout title={pauseItem.title} subtitle={pauseItem.description}>
-      <div className="pauseSessionWrapper">
-        <Link to={`/pause/${pauseItem.slug}`} className="pauseBackButton">
-          ← Terug
+    <MainLayout title={pause.title} subtitle={pause.description}>
+      <section className="pauseSessionWrapper">
+        <Link to="/pause" className="pauseBackButton">
+          ← Terug naar pauzes
         </Link>
 
         <div className="pauseSessionContent">
-          <div className="pauseSessionIconCircle" />
-          <h2>{pauseItem.title}</h2>
+          <div className="pauseSessionIconCircle">
+            <span>{pause.icon}</span>
+          </div>
+
+          <h2>{pause.title}</h2>
 
           <button
             type="button"
             className="pauseDropdownButton"
-            onClick={() => setIsInstructionsOpen((prev) => !prev)}
+            onClick={() => setShowInstructions((prev) => !prev)}
           >
             <span>Instructies</span>
-            <span>{isInstructionsOpen ? "⌃" : "⌄"}</span>
+            <span>{showInstructions ? "⌃" : "⌄"}</span>
           </button>
 
-          {isInstructionsOpen && (
+          {showInstructions && (
             <div className="pauseDropdownContent">
               <ol className="pauseInstructionsList">
-                {pauseItem.instructions.map((step, index) => (
+                {pause.instructions?.map((step, index) => (
                   <li key={index}>{step}</li>
                 ))}
               </ol>
@@ -112,7 +161,7 @@ function PauseSessionPage() {
             <button
               type="button"
               className="pauseStopButton"
-              onClick={() => navigate(`/pause/${pauseItem.slug}`)}
+              onClick={() => navigate("/pause")}
             >
               Stop
             </button>
@@ -121,12 +170,16 @@ function PauseSessionPage() {
           <button
             type="button"
             className="pauseOutlineButton"
-            onClick={() => navigate(`/pause/${pauseItem.slug}/complete`)}
+            onClick={() =>
+              navigate(`/pause/${pause.slug}/complete`, {
+                state: { pauseItem: pause },
+              })
+            }
           >
             Markeer als voltooid
           </button>
         </div>
-      </div>
+      </section>
     </MainLayout>
   );
 }
