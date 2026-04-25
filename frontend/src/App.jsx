@@ -1,4 +1,9 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import WelcomePage from "./pages/WelcomePage";
+import LoginPage from "./pages/LoginPage";
+import OnboardingPage from "./pages/OnboardingPage";
+
 import DashboardPage from "./pages/DashboardPage";
 import CheckInPage from "./pages/CheckInPage";
 
@@ -17,7 +22,10 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/welcome" replace />} />
+        <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/check-in" element={<CheckInPage />} />
         <Route path="/pause" element={<PausePage />} />
