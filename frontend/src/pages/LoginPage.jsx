@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { loginUser } from "../services/authService";
 import "./AuthPages.css";
 
 function LoginPage() {
@@ -10,6 +11,9 @@ function LoginPage() {
     password: "",
   });
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (event) => {
     setFormData((prev) => ({
       ...prev,
@@ -17,12 +21,19 @@ function LoginPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError("");
+    setLoading(true);
 
-    console.log("Login data:", formData);
-
-    navigate("/dashboard");
+    try {
+      await loginUser(formData);
+      navigate("/dashboard");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,6 +44,8 @@ function LoginPage() {
         </Link>
 
         <h1>Inloggen</h1>
+
+        {error && <p className="authError">{error}</p>}
 
         <form className="authForm" onSubmit={handleSubmit}>
           <label>
@@ -59,8 +72,8 @@ function LoginPage() {
             />
           </label>
 
-          <button type="submit" className="authPrimaryButton">
-            Naar mijn dashboard
+          <button type="submit" className="authPrimaryButton" disabled={loading}>
+            {loading ? "Bezig..." : "Naar mijn dashboard"}
           </button>
         </form>
 

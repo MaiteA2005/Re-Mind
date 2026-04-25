@@ -165,6 +165,15 @@
   margin-bottom: 0;
 }
 
+.authError {
+  background: #f7dddd;
+  color: #8a2f2f;
+  border: 1px solid #e2aaaa;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
 @media (max-width: 640px) {
   .authPage {
     padding: 20px;
