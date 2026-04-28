@@ -375,6 +375,16 @@
   text-decoration: none;
 }
 
+.checkInError {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f7dddd;
+  color: #8a2f2f;
+  border: 1px solid #e2aaaa;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 640px) {
   .checkInPanel {
     min-height: auto;

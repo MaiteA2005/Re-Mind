@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import { formatDateTime } from "../utils/date";
+import { createCheckIn } from "../services/checkInService";
 import "./CheckInPage.css";
 
 import checkinIcon from "../assets/icons_groen/check-in_groen.svg";
@@ -16,17 +17,23 @@ function CheckInPage() {
   const [stress, setStress] = useState(1);
   const [energy, setEnergy] = useState(5);
   const [note, setNote] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const stressLabel =
     stress <= 3 ? "Laag" : stress <= 7 ? "Gemiddeld" : "Hoog";
 
   const energyLabel =
-    energy <= 3 ? "Weinig energie" : energy <= 7 ? "Energiek genoeg" : "Heel energiek";
+    energy <= 3
+      ? "Weinig energie"
+      : energy <= 7
+      ? "Energiek genoeg"
+      : "Heel energiek";
 
   const getSliderStyle = (value, min = 1, max = 10) => {
-  const percentage = ((value - min) / (max - min)) * 100;
+    const percentage = ((value - min) / (max - min)) * 100;
 
-  return {
+    return {
       background: `linear-gradient(
         to right,
         #7e9a88 0%,
@@ -39,6 +46,26 @@ function CheckInPage() {
 
   const goNext = () => setStep((prev) => Math.min(prev + 1, 5));
   const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  const finishCheckIn = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      await createCheckIn({
+        stressLevel: stress,
+        energyLevel: energy,
+        note,
+      });
+
+      setStep(5);
+    } catch (error) {
+      console.error(error);
+      setError(error.message || "Check-in opslaan mislukt");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <MainLayout title="Check-in" subtitle={formatDateTime()}>
@@ -61,7 +88,11 @@ function CheckInPage() {
                 </ul>
               </div>
 
-              <button type="button" className="btn btnPrimary checkInStartButton" onClick={goNext}>
+              <button
+                type="button"
+                className="btn btnPrimary checkInStartButton"
+                onClick={goNext}
+              >
                 Start check-in
               </button>
             </div>
@@ -70,7 +101,12 @@ function CheckInPage() {
           {step === 2 && (
             <div className="checkInStep">
               <div className="checkInIconWrap">
-                <img src={checkinIcon} alt="Stress" aria-hidden="true" className="checkInTopIcon" />
+                <img
+                  src={checkinIcon}
+                  alt="Stress"
+                  aria-hidden="true"
+                  className="checkInTopIcon"
+                />
               </div>
 
               <h2>Hoe is je stressniveau?</h2>
@@ -100,18 +136,26 @@ function CheckInPage() {
                 <div className="checkInInfoBox">
                   <img src={infoIcon} alt="" aria-hidden="true" />
                   <p>
-                    Dit helpt ons om beter te begrijpen wanneer jij extra ondersteuning
-                    nodig hebt.
+                    Dit helpt ons om beter te begrijpen wanneer jij extra
+                    ondersteuning nodig hebt.
                   </p>
                 </div>
               </div>
 
               <div className="checkInActions">
-                <button type="button" className="checkInTextButton" onClick={goBack}>
+                <button
+                  type="button"
+                  className="checkInTextButton"
+                  onClick={goBack}
+                >
                   ← Terug
                 </button>
 
-                <button type="button" className="btn btnPrimary checkInNextButton" onClick={goNext}>
+                <button
+                  type="button"
+                  className="btn btnPrimary checkInNextButton"
+                  onClick={goNext}
+                >
                   Volgende
                   <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
                 </button>
@@ -122,12 +166,17 @@ function CheckInPage() {
           {step === 3 && (
             <div className="checkInStep">
               <div className="checkInIconWrap">
-                <img src={energieIcon} alt="Energie" aria-hidden="true" className="checkInTopIcon" />
+                <img
+                  src={energieIcon}
+                  alt="Energie"
+                  aria-hidden="true"
+                  className="checkInTopIcon"
+                />
               </div>
 
               <h2>Hoe is je energieniveau?</h2>
               <p className="checkInDescription">
-                Schuif de slider naar het niveau dat het best bij je past.
+                Schuif de slider naar het niveau dat nu het beste bij je past.
               </p>
 
               <div className="checkInScaleCard">
@@ -145,24 +194,32 @@ function CheckInPage() {
                 />
 
                 <div className="checkInRangeLabels">
-                  <span>Weinig energie</span>
-                  <span>Heel hoog</span>
+                  <span>Geen energie</span>
+                  <span>Zeer hoog</span>
                 </div>
 
                 <div className="checkInInfoBox">
                   <img src={infoIcon} alt="" aria-hidden="true" />
                   <p>
-                    Met je energieniveau kunnen we betere pauze- en focusvoorstellen tonen.
+                    Je energieniveau helpt om betere pauzesuggesties te geven.
                   </p>
                 </div>
               </div>
 
               <div className="checkInActions">
-                <button type="button" className="checkInTextButton" onClick={goBack}>
+                <button
+                  type="button"
+                  className="checkInTextButton"
+                  onClick={goBack}
+                >
                   ← Terug
                 </button>
 
-                <button type="button" className="btn btnPrimary checkInNextButton" onClick={goNext}>
+                <button
+                  type="button"
+                  className="btn btnPrimary checkInNextButton"
+                  onClick={goNext}
+                >
                   Volgende
                   <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
                 </button>
@@ -173,7 +230,12 @@ function CheckInPage() {
           {step === 4 && (
             <div className="checkInStep">
               <div className="checkInIconWrap">
-                <img src={notitieIcon} alt="Notitie" aria-hidden="true" className="checkInTopIcon" />
+                <img
+                  src={notitieIcon}
+                  alt="Notitie"
+                  aria-hidden="true"
+                  className="checkInTopIcon"
+                />
               </div>
 
               <h2>Wil je iets toevoegen?</h2>
@@ -181,30 +243,51 @@ function CheckInPage() {
                 Optioneel: voeg een korte notitie toe over hoe je je voelt.
               </p>
 
+              {error && <p className="checkInError">{error}</p>}
+
               <div className="checkInNoteCard">
                 <textarea
                   className="checkInTextarea"
-                  placeholder="Ik voel me moe aan het einde van de week en wil even focussen op herstel."
+                  placeholder="Bijv. Drukke vergadering net achter de rug."
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                 />
                 <p className="checkInNoteHint">
-                  Dit is optioneel, je notitie helpt bij het begrijpen van je situatie.
+                  Dit is optioneel, je notitie helpt bij het begrijpen van je
+                  situatie.
                 </p>
               </div>
 
               <div className="checkInActions">
-                <button type="button" className="checkInTextButton" onClick={goBack}>
+                <button
+                  type="button"
+                  className="checkInTextButton"
+                  onClick={goBack}
+                  disabled={loading}
+                >
                   ← Terug
                 </button>
 
                 <div className="checkInActionGroup">
-                  <button type="button" className="btn btnSecondary" onClick={goNext}>
+                  <button
+                    type="button"
+                    className="btn btnSecondary"
+                    onClick={() => {
+                      setNote("");
+                      finishCheckIn();
+                    }}
+                    disabled={loading}
+                  >
                     Overslaan
                   </button>
 
-                  <button type="button" className="btn btnPrimary" onClick={goNext}>
-                    Afronden
+                  <button
+                    type="button"
+                    className="btn btnPrimary"
+                    onClick={finishCheckIn}
+                    disabled={loading}
+                  >
+                    {loading ? "Opslaan..." : "Afronden"}
                   </button>
                 </div>
               </div>
@@ -214,12 +297,17 @@ function CheckInPage() {
           {step === 5 && (
             <div className="checkInStep checkInSummaryStep">
               <div className="checkInIconWrap">
-                <img src={checkIcon} alt="Check" aria-hidden="true" className="checkInTopIcon" />
+                <img
+                  src={checkIcon}
+                  alt="Check"
+                  aria-hidden="true"
+                  className="checkInTopIcon"
+                />
               </div>
 
               <h2>Check-in voltooid</h2>
               <p className="checkInDescription">
-                Bedankt voor het inchecken. Je data wordt opgeslagen.
+                Bedankt voor het inchecken. Je data is opgeslagen.
               </p>
 
               <div className="checkInSummaryCard">

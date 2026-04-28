@@ -3,6 +3,7 @@ import MainLayout from "../components/layout/MainLayout";
 import { Link } from "react-router-dom";
 import { formatDate, getGreeting } from "../utils/date";
 import { getMyPauseSessions } from "../services/pauseStatsService";
+import { getMyCheckIns } from "../services/checkInService";
 import { useAuth } from "../context/AuthContext";
 import "./DashboardPage.css";
 
@@ -47,6 +48,24 @@ function DashboardPage() {
     fetchPauseSessions();
   }, []);
 
+  const [checkIns, setCheckIns] = useState([]);
+  const [checkInsLoading, setCheckInsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCheckIns = async () => {
+      try {
+        const data = await getMyCheckIns();
+        setCheckIns(data);
+      } catch (error) {
+        console.error("Fout bij ophalen check-ins:", error);
+      } finally {
+        setCheckInsLoading(false);
+      }
+    };
+
+    fetchCheckIns();
+  }, []);
+
   const pausesToday = useMemo(
     () => getTodaySessions(pauseSessions),
     [pauseSessions]
@@ -55,6 +74,29 @@ function DashboardPage() {
   const pausesTodayCount = pausesToday.length;
   const totalPauses = pauseSessions.length;
   const lastPause = pauseSessions[0];
+
+  const today = new Date().toDateString();
+  const checkInsToday = checkIns.filter((checkIn) => {
+    return new Date(checkIn.createdAt).toDateString() === today;
+  });
+
+  const latestCheckIn = checkIns[0];
+
+  const averageStress =
+    checkInsToday.length > 0
+      ? (
+          checkInsToday.reduce((total, item) => total + item.stressLevel, 0) /
+          checkInsToday.length
+        ).toFixed(1)
+      : null;
+
+  const averageEnergy =
+    checkInsToday.length > 0
+      ? (
+          checkInsToday.reduce((total, item) => total + item.energyLevel, 0) /
+          checkInsToday.length
+        ).toFixed(1)
+      : null;
 
   return (
     <MainLayout
@@ -97,7 +139,14 @@ function DashboardPage() {
 
             <div>
               <h3>Hoe voel je je nu?</h3>
-              <p>Laatste check-in: nog niet beschikbaar</p>
+              <p>
+                {latestCheckIn
+                  ? `Laatste check-in: ${new Date(latestCheckIn.createdAt).toLocaleTimeString(
+                      "nl-BE",
+                      { hour: "2-digit", minute: "2-digit" }
+                    )}`
+                  : "Laatste check-in: nog niet beschikbaar"}
+              </p>
             </div>
           </div>
 
@@ -121,20 +170,26 @@ function DashboardPage() {
                 <div className="metric">
                   <div className="metricTop">
                     <span>Stress</span>
-                    <strong>5/10</strong>
+                    <strong>{checkInsLoading ? "..." : averageStress ? `${averageStress}/10` : "-/10"}</strong>
                   </div>
                   <div className="progress">
-                    <div className="progressFill" style={{ width: "50%" }} />
+                    <div
+                      className="progressFill"
+                      style={{ width: averageStress ? `${averageStress * 10}%` : "0%" }}
+                    />
                   </div>
                 </div>
 
                 <div className="metric">
                   <div className="metricTop">
                     <span>Energie</span>
-                    <strong>7/10</strong>
+                    <strong>{checkInsLoading ? "..." : averageEnergy ? `${averageEnergy}/10` : "-/10"}</strong>
                   </div>
                   <div className="progress">
-                    <div className="progressFill" style={{ width: "70%" }} />
+                    <div
+                      className="progressFill"
+                      style={{ width: averageEnergy ? `${averageEnergy * 10}%` : "0%" }}
+                    />
                   </div>
                 </div>
               </div>
@@ -143,14 +198,32 @@ function DashboardPage() {
                 <h4>Check-ins vandaag</h4>
 
                 <div className="checkinsList">
-                  <div className="checkinsItem">
-                    <span>9:30</span>
-                    <span>Stress: 3&nbsp;&nbsp;|&nbsp;&nbsp;Energie: 7</span>
-                  </div>
-                  <div className="checkinsItem">
-                    <span>11:45</span>
-                    <span>Stress: 5&nbsp;&nbsp;|&nbsp;&nbsp;Energie: 7</span>
-                  </div>
+                  {checkInsLoading ? (
+                    <div className="checkinsItem">
+                      <span>...</span>
+                      <span>Check-ins laden</span>
+                    </div>
+                  ) : checkInsToday.length > 0 ? (
+                    checkInsToday.slice(0, 3).map((checkIn) => (
+                      <div className="checkinsItem" key={checkIn._id}>
+                        <span>
+                          {new Date(checkIn.createdAt).toLocaleTimeString("nl-BE", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                        <span>
+                          Stress: {checkIn.stressLevel}&nbsp;&nbsp;|&nbsp;&nbsp;Energie:{" "}
+                          {checkIn.energyLevel}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="checkinsItem">
+                      <span>—</span>
+                      <span>Nog geen check-ins vandaag</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </article>
@@ -249,7 +322,7 @@ function DashboardPage() {
             <p>Bekijk je voortgang en patronen</p>
           </Link>
 
-          <Link to="/pauze" className="card cardAction">
+          <Link to="/pause" className="card cardAction">
             <img src={koffieIcon} alt="Koffie" className="cardIcon" />
             <h3>Pauze suggesties</h3>
             <p>Ontdek effectieve pauzes</p>

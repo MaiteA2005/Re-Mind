@@ -37,7 +37,7 @@ const mainLinks = [
   },
   {
     to: "/pause",
-    label: "Pause",
+    label: "Pauze",
     icon: koffieBlack,
     activeIcon: koffieWhite,
   },
