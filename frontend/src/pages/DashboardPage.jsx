@@ -1,6 +1,9 @@
+import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import { Link } from "react-router-dom";
 import { formatDate, getGreeting } from "../utils/date";
+import { getMyPauseSessions } from "../services/pauseStatsService";
+import { useAuth } from "../context/AuthContext";
 import "./DashboardPage.css";
 
 // icons
@@ -14,17 +17,56 @@ import sterrenIcon from "../assets/icons_groen/stretchen_groen.svg";
 import pijlRechtsIcon from "../assets/icons_wit/pijl_rechts_wit.svg";
 import documentIcon from "../assets/icons_zwart/notitie_zwart.svg";
 
+function getTodaySessions(sessions) {
+  const today = new Date().toDateString();
+
+  return sessions.filter((session) => {
+    return new Date(session.completedAt).toDateString() === today;
+  });
+}
+
 function DashboardPage() {
-  const name = "John Doe"; // later dynamisch
+  const { user } = useAuth();
   const greeting = getGreeting();
+
+  const [pauseSessions, setPauseSessions] = useState([]);
+  const [pauseLoading, setPauseLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPauseSessions = async () => {
+      try {
+        const data = await getMyPauseSessions();
+        setPauseSessions(data);
+      } catch (error) {
+        console.error("Fout bij ophalen pauzedata:", error);
+      } finally {
+        setPauseLoading(false);
+      }
+    };
+
+    fetchPauseSessions();
+  }, []);
+
+  const pausesToday = useMemo(
+    () => getTodaySessions(pauseSessions),
+    [pauseSessions]
+  );
+
+  const pausesTodayCount = pausesToday.length;
+  const totalPauses = pauseSessions.length;
+  const lastPause = pauseSessions[0];
 
   return (
     <MainLayout
-      title={`${greeting}, ${name}`}
+      title={`${greeting}, ${user?.name || "gebruiker"}`}
       subtitle={formatDate()}
       variant="dashboard"
       action={
-        <button className="pageHeaderButton" type="button" aria-label="Rapport openen">
+        <button
+          className="pageHeaderButton"
+          type="button"
+          aria-label="Rapport openen"
+        >
           <img src={documentIcon} alt="" className="pageHeaderIcon" />
         </button>
       }
@@ -42,9 +84,9 @@ function DashboardPage() {
             </div>
           </div>
 
-          <button className="btn btnSecondary" type="button">
+          <Link to="/premium" className="btn btnSecondary">
             Meer info
-          </button>
+          </Link>
         </section>
 
         <section className="checkinCard">
@@ -55,14 +97,14 @@ function DashboardPage() {
 
             <div>
               <h3>Hoe voel je je nu?</h3>
-              <p>Laatste check-in: [Tijd]</p>
+              <p>Laatste check-in: nog niet beschikbaar</p>
             </div>
           </div>
 
-          <button className="btn btnPrimary" type="button">
+          <Link to="/check-in" className="btn btnPrimary">
             <span>Check-in</span>
             <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
-          </button>
+          </Link>
         </section>
 
         <section className="dashboardMain">
@@ -118,7 +160,13 @@ function DashboardPage() {
             <article className="card cardHighlight">
               <img src={sterrenIcon} alt="Sterren" className="cardIcon" aria-hidden="true" />
               <p className="cardMiniLabel">Vandaag</p>
-              <h3>Je nam al 2 momenten voor jezelf</h3>
+              <h3>
+                {pauseLoading
+                  ? "Pauzedata laden..."
+                  : `Je nam vandaag al ${pausesTodayCount} moment${
+                      pausesTodayCount === 1 ? "" : "en"
+                    } voor jezelf`}
+              </h3>
             </article>
 
             <article className="card cardPause">
@@ -130,10 +178,15 @@ function DashboardPage() {
               </div>
 
               <div className="cardBody">
-                <p>Je hebt al [... uur] gewerkt. Tijd voor een korte pauze?</p>
-                <button className="btn btnSecondary btnFull" type="button">
+                <p>
+                  {lastPause
+                    ? `Laatste pauze: ${lastPause.pauseTitle}`
+                    : "Je hebt nog geen pauze opgeslagen."}
+                </p>
+
+                <Link to="/pause" className="btn btnSecondary fullWidth">
                   Bekijk suggesties
-                </button>
+                </Link>
               </div>
             </article>
           </div>
