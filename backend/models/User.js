@@ -51,6 +51,21 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+
+    checkInReminders: {
+      type: Boolean,
+      default: true,
+    },
+
+    pauseSuggestionsEnabled: {
+      type: Boolean,
+      default: true,
+    },
+
+    notificationFrequency: {
+      type: String,
+      default: "Elke 2 uur",
+    },
   },
   { timestamps: true }
 );

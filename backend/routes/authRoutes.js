@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import protect from "../middleware/authMiddleware.js";
 
+import CheckIn from "../models/CheckIn.js";
+import PauseSession from "../models/PauseSession.js";
+
 const router = express.Router();
 
 const createToken = (id) => {
@@ -129,6 +132,128 @@ router.patch("/onboarding", protect, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Onboarding kon niet opgeslagen worden",
+      error: error.message,
+    });
+  }
+});
+
+router.patch("/settings", protect, async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      workSituation,
+      notificationsEnabled,
+      checkInReminders,
+      pauseSuggestionsEnabled,
+      notificationFrequency,
+    } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        name,
+        email,
+        workSituation,
+        notificationsEnabled,
+        checkInReminders,
+        pauseSuggestionsEnabled,
+        notificationFrequency,
+      },
+      { new: true }
+    ).select("-password");
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      message: "Instellingen konden niet opgeslagen worden",
+      error: error.message,
+    });
+  }
+});
+
+router.patch("/password", protect, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Huidig wachtwoord en nieuw wachtwoord zijn verplicht",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    const passwordMatches = await bcrypt.compare(currentPassword, user.password);
+
+    if (!passwordMatches) {
+      return res.status(400).json({
+        message: "Huidig wachtwoord is niet correct",
+      });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    res.status(200).json({
+      message: "Wachtwoord succesvol aangepast",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Wachtwoord kon niet aangepast worden",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/export", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    const checkIns = await CheckIn.find({ userId: req.user._id });
+    const pauseSessions = await PauseSession.find({ userId: req.user._id });
+
+    res.status(200).json({
+      user,
+      checkIns,
+      pauseSessions,
+      exportedAt: new Date(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Data exporteren mislukt",
+      error: error.message,
+    });
+  }
+});
+
+router.delete("/data", protect, async (req, res) => {
+  try {
+    await CheckIn.deleteMany({ userId: req.user._id });
+    await PauseSession.deleteMany({ userId: req.user._id });
+
+    res.status(200).json({
+      message: "Persoonlijke data verwijderd",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Data verwijderen mislukt",
+      error: error.message,
+    });
+  }
+});
+
+router.delete("/account", protect, async (req, res) => {
+  try {
+    await CheckIn.deleteMany({ userId: req.user._id });
+    await PauseSession.deleteMany({ userId: req.user._id });
+    await User.findByIdAndDelete(req.user._id);
+
+    res.status(200).json({
+      message: "Account verwijderd",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Account verwijderen mislukt",
       error: error.message,
     });
   }

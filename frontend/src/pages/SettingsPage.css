@@ -302,3 +302,25 @@
 .settingsDangerButton:hover {
   opacity: 0.9;
 }
+
+.settingsSuccess,
+.settingsError {
+  width: 100%;
+  max-width: 690px;
+  margin: -16px 0 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.settingsSuccess {
+  background: #e8f1e8;
+  color: #3e6b45;
+  border: 1px solid #b8d2ba;
+}
+
+.settingsError {
+  background: #f7dddd;
+  color: #8a2f2f;
+  border: 1px solid #e2aaaa;
+}
