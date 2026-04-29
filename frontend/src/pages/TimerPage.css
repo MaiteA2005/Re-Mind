@@ -1,0 +1,461 @@
+.timerPage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 32px 24px 40px;
+}
+
+/* Tabs */
+
+.timerTabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px;
+  background: #eee9d8;
+  border-radius: 10px;
+}
+
+.timerTab {
+  min-width: 150px;
+  min-height: 42px;
+  border: 1px solid #d8d0be;
+  background: #f4ecd9;
+  color: #25221f;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.timerTab:hover {
+  background: #e8e1cc;
+}
+
+.timerTabActive {
+  background: #78957f;
+  color: #fffdf8;
+  border-color: #78957f;
+}
+
+.timerTabIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* Cards */
+
+.timerSetupCard,
+.timerRunningCard,
+.timerControlsCard,
+.timerInfoCard {
+  width: 100%;
+  max-width: 860px;
+  background: #f1ead8;
+  border-radius: 12px;
+  border: 1px solid #e0d6c0;
+}
+
+/* Setup */
+
+.timerSetupCard {
+  padding: 32px;
+}
+
+.timerSetupCard h2,
+.timerRunningCard h2,
+.timerModal h2 {
+  margin: 0 0 10px;
+  color: #1f1d1b;
+  font-size: 1.9rem;
+  line-height: 1.15;
+}
+
+.timerSetupCard p {
+  margin: 0 0 28px;
+  color: #5f5d58;
+  line-height: 1.5;
+}
+
+.timerSetupCard h3 {
+  margin: 26px 0 16px;
+  color: #25221f;
+  font-size: 1.15rem;
+}
+
+/* Options */
+
+.timerOptionsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.timerReminderGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.timerOptionCard {
+  min-height: 90px;
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+  border-radius: 10px;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.timerOptionCard:hover {
+  transform: translateY(-1px);
+  border-color: #78957f;
+}
+
+.timerOptionCardActive {
+  border-color: #78957f;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.timerOptionIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* Input */
+
+.timerCustomField {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+  color: #25221f;
+  font-size: 0.95rem;
+}
+
+.timerCustomField input {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* Buttons */
+
+.timerPrimaryButton,
+.timerSecondaryButton,
+.timerDangerButton,
+.timerSuggestionLink {
+  min-height: 46px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.timerPrimaryButton {
+  width: 100%;
+  margin-top: 28px;
+  border: none;
+  background: #78957f;
+  color: #fffdf8;
+  padding: 14px 18px;
+  font-weight: 600;
+}
+
+.timerSecondaryButton {
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+  padding: 10px 18px;
+}
+
+.timerDangerButton {
+  border: none;
+  background: #d77b7b;
+  color: #fffdf8;
+  padding: 10px 18px;
+}
+
+.timerButtonIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  transition: filter 0.2s ease;
+}
+
+.timerPrimaryButton:hover {
+  background: #6f8b78;
+  transform: translateY(-1px);
+}
+
+.timerSecondaryButton:hover,
+.timerSuggestionLink:hover {
+  background: #78957f;
+  color: #fffdf8;
+  border-color: #78957f;
+  transform: translateY(-1px);
+}
+
+.timerDangerButton:hover {
+  background: #c96f6f;
+  transform: translateY(-1px);
+}
+
+/* Suggestion */
+
+.timerSuggestionBox {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #d8d0be;
+}
+
+.timerSuggestionBox p {
+  margin: 0 0 12px;
+}
+
+.timerSuggestionLink {
+  width: 100%;
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+}
+
+/* Running */
+
+.timerRunningCard {
+  max-width: 620px;
+  padding: 36px 42px;
+  text-align: center;
+}
+
+.timerRunningCard h2 {
+  color: #78957f;
+}
+
+.timerRunningCard p {
+  margin: 20px 0 8px;
+  color: #5f5d58;
+}
+
+.timerRunningCard strong {
+  display: block;
+  color: #25221f;
+  font-size: 1.5rem;
+}
+
+/* Progress */
+
+.timerProgressBar {
+  width: 100%;
+  height: 12px;
+  background: #fffdf8;
+  border: 1px solid #d8d0be;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 30px 0;
+}
+
+.timerProgressFill {
+  height: 100%;
+  background: #78957f;
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+/* Workday stats */
+
+.timerWorkdayStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  border-top: 1px solid #d8d0be;
+  padding-top: 26px;
+}
+
+.timerWorkdayStats div:first-child {
+  border-right: 1px solid #d8d0be;
+}
+
+.timerWorkdayStats span {
+  display: block;
+  color: #6a675f;
+  margin-bottom: 8px;
+}
+
+/* Controls */
+
+.timerControlsCard {
+  max-width: 620px;
+  padding: 22px;
+}
+
+.timerControlRow {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+}
+
+.timerControlRow button {
+  flex: 1;
+}
+
+.timerControlsCard > .timerDangerButton {
+  width: 100%;
+  margin-top: 14px;
+}
+
+/* Info */
+
+.timerInfoCard {
+  max-width: 620px;
+  background: #f8f8f3;
+  border-color: #aab8a7;
+  padding: 24px;
+}
+
+.timerInfoCard h3 {
+  margin: 0 0 16px;
+  color: #25221f;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timerInfoTitleIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.timerInfoCard ul {
+  margin: 0;
+  padding-left: 22px;
+  color: #4f4d48;
+  line-height: 1.7;
+  list-style: disc;
+}
+
+.timerInfoCard li {
+  padding-left: 2px;
+}
+
+/* Modal */
+
+.timerModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 29, 27, 0.55);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.timerModal {
+  width: 100%;
+  max-width: 420px;
+  background: #f1ead8;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 16px 42px rgba(31, 29, 27, 0.24);
+}
+
+.timerModal p {
+  color: #5f5d58;
+  line-height: 1.55;
+  margin: 0 0 24px;
+}
+
+.timerModalActions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 12px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .timerOptionsGrid,
+  .timerReminderGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timerSetupCard {
+    padding: 26px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .timerPage {
+    padding: 22px 16px 34px;
+  }
+
+  .timerTabs {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .timerTab {
+    width: 100%;
+  }
+
+  .timerOptionsGrid,
+  .timerReminderGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .timerControlRow {
+    flex-direction: column;
+  }
+
+  .timerModalActions {
+    grid-template-columns: 1fr;
+  }
+
+  .timerRunningCard {
+    padding: 28px 24px;
+  }
+
+  .timerWorkdayStats {
+    grid-template-columns: 1fr;
+  }
+
+  .timerWorkdayStats div:first-child {
+    border-right: none;
+    border-bottom: 1px solid #d8d0be;
+    padding-bottom: 18px;
+  }
+}
