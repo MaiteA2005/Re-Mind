@@ -14,7 +14,7 @@ import PauseSessionPage from "./pages/PauseSessionPage";
 import PauseCompletePage from "./pages/PauseCompletePage";
 
 import InsightsPage from "./pages/InsightsPage";
-import DagAfsluistingPage from "./pages/DagAfsluistingPage";
+import DagAfsluitingPage from "./pages/DagAfsluitingPage";
 import TimerPage from "./pages/TimerPage";
 import SettingsPage from "./pages/SettingsPage";
 import PremiumPage from "./pages/PremiumPage";
@@ -139,7 +139,7 @@ function App() {
           path="/dagafsluiting"
           element={
             <ProtectedRoute>
-              <DagAfsluistingPage />
+              <DagAfsluitingPage />
             </ProtectedRoute>
           }
         />

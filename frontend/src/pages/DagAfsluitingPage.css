@@ -1,0 +1,223 @@
+.dayClosingPage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 58px 20px 40px;
+}
+
+.dayClosingCard {
+  width: 100%;
+  max-width: 620px;
+  background: #f1ead8;
+  border-radius: 10px;
+  padding: 30px 34px;
+}
+
+.dayClosingIntroCard,
+.dayClosingEndCard {
+  text-align: center;
+}
+
+.dayClosingIconCircle {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #e3dec9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dayClosingIconCircle img {
+  width: 22px;
+  height: 22px;
+}
+
+.dayClosingStep {
+  display: block;
+  margin-bottom: 14px;
+  color: #78957f;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.dayClosingCard h2 {
+  margin: 0 0 12px;
+  color: #1f1d1b;
+  font-size: 1.7rem;
+  line-height: 1.2;
+}
+
+.dayClosingCard p {
+  margin: 0;
+  color: #5f5d58;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.dayClosingInfoBox {
+  margin-top: 28px;
+  text-align: left;
+  background: #fffdf8;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.dayClosingInfoBox h3,
+.dayClosingSummary h3 {
+  margin: 0 0 16px;
+  color: #25221f;
+  font-size: 1.1rem;
+}
+
+.dayClosingInfoBox ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dayClosingInfoBox li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #2f2d29;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.dayClosingInfoBox li img {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.dayClosingOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.dayClosingOption {
+  width: 100%;
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dayClosingOptionActive {
+  border-color: #78957f;
+  background: #dce6de;
+}
+
+.dayClosingCard textarea {
+  width: 100%;
+  min-height: 135px;
+  margin-top: 24px;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 14px;
+  color: #2f2d29;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.dayClosingHint {
+  display: block;
+  margin-top: 10px;
+  color: #6a675f;
+  font-size: 0.9rem;
+}
+
+.dayClosingActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.dayClosingPrimaryButton,
+.dayClosingSecondaryButton,
+.dayClosingGhostButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 7px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.dayClosingPrimaryButton {
+  min-width: 160px;
+  border: none;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.dayClosingSecondaryButton,
+.dayClosingGhostButton {
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+}
+
+.dayClosingPrimaryButton img,
+.dayClosingSecondaryButton img {
+  width: 15px;
+  height: 15px;
+}
+
+.dayClosingSummary {
+  margin-top: 28px;
+  text-align: left;
+  background: #fffdf8;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.dayClosingSummary div {
+  padding: 14px 0;
+  border-top: 1px solid #ded6c3;
+}
+
+.dayClosingSummary div:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.dayClosingSummary span {
+  display: block;
+  margin-bottom: 6px;
+  color: #25221f;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.dayClosingSummary p {
+  color: #5f5d58;
+}
+
+.dayClosingPrimaryButton:hover,
+.dayClosingSecondaryButton:hover,
+.dayClosingGhostButton:hover,
+.dayClosingOption:hover {
+  opacity: 0.9;
+}
