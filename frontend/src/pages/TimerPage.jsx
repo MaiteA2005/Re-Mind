@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import MainLayout from "../components/layout/MainLayout";
 import TimerTabs from "../components/timer/TimerTabs";
 import TimerSetupCard from "../components/timer/TimerSetupCard";
 import TimerRunningCard from "../components/timer/TimerRunningCard";
 import TimerInfoCard from "../components/timer/TimerInfoCard";
+
+import { createTimerSession } from "../services/timerSessionService";
 import "./TimerPage.css";
 
 function TimerPage() {
   const navigate = useNavigate();
+  const hasSavedRef = useRef(false);
 
   const [activeTimer, setActiveTimer] = useState("workday");
   const [isRunning, setIsRunning] = useState(false);
@@ -23,12 +27,34 @@ function TimerPage() {
   const [timeLeft, setTimeLeft] = useState(360 * 60);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [pauseTime, setPauseTime] = useState(0);
-
+  const [startedAt, setStartedAt] = useState(null);
+  
   const pageTitle = useMemo(() => {
     if (activeTimer === "workday") return "Timer - Werkdag";
     if (activeTimer === "focus") return "Timer - Focusblok";
     return "Timer - Pauze";
   }, [activeTimer]);
+
+  const saveCurrentTimerSession = async (completed = false) => {
+    if (hasSavedRef.current || !startedAt || totalSeconds <= 0) return;
+
+    hasSavedRef.current = true;
+
+    try {
+      await createTimerSession({
+        type: activeTimer,
+        durationMinutes: Math.round(totalSeconds / 60),
+        elapsedSeconds: elapsedTime,
+        pauseSeconds: pauseTime,
+        completed,
+        startedAt,
+        endedAt: new Date(),
+      });
+    } catch (error) {
+      console.error("Timer opslaan mislukt:", error);
+      hasSavedRef.current = false;
+    }
+  };
 
   useEffect(() => {
     if (!isRunning || isPaused || timeLeft <= 0) return;
@@ -50,9 +76,10 @@ function TimerPage() {
 
     return () => clearInterval(interval);
   }, [isRunning, isPaused]);
-
+  
   useEffect(() => {
     if (timeLeft === 0 && isRunning) {
+      saveCurrentTimerSession(true);
       setIsRunning(false);
       setIsPaused(false);
     }
@@ -66,6 +93,8 @@ function TimerPage() {
     setCustomDuration("");
     setElapsedTime(0);
     setPauseTime(0);
+    setStartedAt(null);
+    hasSavedRef.current = false;
 
     if (timerType === "workday") {
       setSelectedDuration(360);
@@ -105,6 +134,9 @@ function TimerPage() {
     setTimeLeft(seconds);
     setElapsedTime(0);
     setPauseTime(0);
+    setStartedAt(new Date());
+    hasSavedRef.current = false;
+
     setIsRunning(true);
     setIsPaused(false);
   };
@@ -117,15 +149,20 @@ function TimerPage() {
     setTimeLeft(totalSeconds);
     setElapsedTime(0);
     setPauseTime(0);
+    setStartedAt(new Date());
+    hasSavedRef.current = false;
     setIsPaused(false);
   };
 
-  const handleStop = () => {
+  const handleStop = async () => {
+    await saveCurrentTimerSession(false);
+
     setIsRunning(false);
     setIsPaused(false);
     setElapsedTime(0);
     setPauseTime(0);
     setTimeLeft(totalSeconds);
+    setStartedAt(null);
   };
 
   const handleTakeBreak = () => {
@@ -136,7 +173,9 @@ function TimerPage() {
     setShowEndModal(true);
   };
 
-  const confirmEndWorkday = () => {
+  const confirmEndWorkday = async () => {
+    await saveCurrentTimerSession(false);
+
     setShowEndModal(false);
     setIsRunning(false);
     setIsPaused(false);
