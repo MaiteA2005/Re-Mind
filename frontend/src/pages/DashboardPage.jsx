@@ -40,7 +40,7 @@ function DashboardPage() {
   const [todayFocus, setTodayFocus] = useState(null);
   const [focusLoading, setFocusLoading] = useState(true);
   const [isFocusPopupOpen, setIsFocusPopupOpen] = useState(false);
-  const hasFocus = !!todayFocus;
+  const hasFocus = todayFocus && !todayFocus.focusCompleted;;
 
   useEffect(() => {
     const fetchPauseSessions = async () => {
@@ -123,9 +123,10 @@ function DashboardPage() {
     if (!todayFocus?._id) return;
 
     try {
-      await completeTomorrowFocus(todayFocus._id);
-      setTodayFocus(null);
-      setIsFocusPopupOpen(false);
+      const updatedFocus = await completeTomorrowFocus(todayFocus._id);
+
+      setTodayFocus(updatedFocus);
+      setIsFocusPopupOpen(true);
     } catch (error) {
       console.error("Fout bij voltooien focus:", error);
     }
