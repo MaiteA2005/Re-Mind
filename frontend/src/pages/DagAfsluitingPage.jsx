@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createDayClosing } from "../services/dayClosingService";
 import MainLayout from "../components/layout/MainLayout";
 import "./DagAfsluitingPage.css";
 
@@ -12,22 +13,23 @@ import hartGroen from "../assets/icons_groen/hart_default_groen.svg";
 
 import pijlRechtsZwart from "../assets/icons_zwart/pijl_rechts_zwart.svg";
 import pijlLinksZwart from "../assets/icons_zwart/pijl_links_zwart.svg";
-
 import pijlRechtsWit from "../assets/icons_wit/pijl_rechts_wit.svg";
 
 function DagAfsluitingPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  
   const [reflection, setReflection] = useState({
     dayFeeling: "",
     highlight: "",
     challenge: "",
-    energyFeeling: "",
+    energyAfterWork: "",
     gratitude: "",
     tomorrowFocus: "",
   });
-
+  
   const reflectionBenefits = [
     {
       icon: breinGroen,
@@ -63,6 +65,7 @@ function DagAfsluitingPage() {
   ];
 
   const updateReflection = (key, value) => {
+    setError("");
     setReflection((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -72,6 +75,33 @@ function DagAfsluitingPage() {
 
   const previousStep = () => {
     setStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const finishDayClosing = async () => {
+    if (!reflection.dayFeeling) {
+      setError("Kies hoe je dag was.");
+      setStep(2);
+      return;
+    }
+
+    if (!reflection.energyAfterWork) {
+      setError("Kies hoe je je nu voelt.");
+      setStep(5);
+      return;
+    }
+
+    setSaving(true);
+    setError("");
+
+    try {
+      await createDayClosing(reflection);
+      setStep(8);
+    } catch (error) {
+      console.error(error);
+      setError(error.message || "Dagafsluiting opslaan mislukt");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -118,6 +148,8 @@ function DagAfsluitingPage() {
             <span className="dayClosingStep">Stap 2 van 7</span>
             <h2>Hoe was je dag over het algemeen?</h2>
             <p>Kies het gevoel dat het beste past</p>
+
+            {error && <p className="dayClosingError">{error}</p>}
 
             <div className="dayClosingOptions">
               {dayOptions.map((option) => (
@@ -196,7 +228,7 @@ function DagAfsluitingPage() {
             </div>
           </article>
         )}
-
+        
         {step === 4 && (
           <article className="dayClosingCard">
             <span className="dayClosingStep">Stap 4 van 7</span>
@@ -252,17 +284,19 @@ function DagAfsluitingPage() {
             <h2>Hoe voel je je nu?</h2>
             <p>Kies het gevoel dat het beste past</p>
 
+            {error && <p className="dayClosingError">{error}</p>}
+
             <div className="dayClosingOptions">
               {energyOptions.map((option) => (
                 <button
                   key={option}
                   type="button"
                   className={`dayClosingOption ${
-                    reflection.energyFeeling === option
+                    reflection.energyAfterWork === option
                       ? "dayClosingOptionActive"
                       : ""
                   }`}
-                  onClick={() => updateReflection("energyFeeling", option)}
+                  onClick={() => updateReflection("energyAfterWork", option)}
                 >
                   {option}
                 </button>
@@ -345,11 +379,14 @@ function DagAfsluitingPage() {
               Houd het simpel en haalbaar, 1 ding is genoeg
             </span>
 
+            {error && <p className="dayClosingError">{error}</p>}
+
             <div className="dayClosingActions">
               <button
                 type="button"
                 className="dayClosingSecondaryButton"
                 onClick={previousStep}
+                disabled={saving}
               >
                 <img src={pijlLinksZwart} alt="" />
                 Terug
@@ -358,9 +395,10 @@ function DagAfsluitingPage() {
               <button
                 type="button"
                 className="dayClosingPrimaryButton"
-                onClick={nextStep}
+                onClick={finishDayClosing}
+                disabled={saving}
               >
-                Afronden
+                {saving ? "Opslaan..." : "Afronden"}
                 <img src={pijlRechtsWit} alt="" />
               </button>
             </div>

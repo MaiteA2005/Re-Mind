@@ -528,3 +528,60 @@
     align-items: flex-start;
   }
 }
+
+/* focus popup */
+.focusPopupWrapper {
+  position: relative;
+}
+
+.focusPopup {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 360px;
+  z-index: 20;
+  background: #f1ead8;
+  border: 4px solid #a8b9a8;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(45, 43, 40, 0.18);
+}
+
+.focusPopup h3 {
+  margin: 0 0 18px;
+  color: #1f1d1b;
+  font-size: 1.5rem;
+}
+
+.focusPopup p {
+  min-height: 64px;
+  margin: 0 0 24px;
+  color: #4f4d48;
+  line-height: 1.5;
+}
+
+.focusPopupButton {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  background: #fffdf8;
+  color: #25221f;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.focusIconWrapper {
+  position: relative;
+}
+
+.focusBadge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  background: #769382;
+  border-radius: 50%;
+}

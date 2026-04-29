@@ -5,6 +5,7 @@ import { formatDate, getGreeting } from "../utils/date";
 import { getMyPauseSessions } from "../services/pauseStatsService";
 import { getMyCheckIns } from "../services/checkInService";
 import { useAuth } from "../context/AuthContext";
+import { getTomorrowFocus, completeTomorrowFocus, getMyDayClosings } from "../services/dayClosingService";
 import "./DashboardPage.css";
 
 // icons
@@ -18,11 +19,11 @@ import sterrenIcon from "../assets/icons_groen/stretchen_groen.svg";
 import pijlRechtsIcon from "../assets/icons_wit/pijl_rechts_wit.svg";
 import documentIcon from "../assets/icons_zwart/notitie_zwart.svg";
 
-function getTodaySessions(sessions) {
+function getTodayItems(items, dateKey = "createdAt") {
   const today = new Date().toDateString();
 
-  return sessions.filter((session) => {
-    return new Date(session.completedAt).toDateString() === today;
+  return items.filter((item) => {
+    return new Date(item[dateKey]).toDateString() === today;
   });
 }
 
@@ -32,6 +33,14 @@ function DashboardPage() {
 
   const [pauseSessions, setPauseSessions] = useState([]);
   const [pauseLoading, setPauseLoading] = useState(true);
+
+  const [checkIns, setCheckIns] = useState([]);
+  const [checkInsLoading, setCheckInsLoading] = useState(true);
+
+  const [todayFocus, setTodayFocus] = useState(null);
+  const [focusLoading, setFocusLoading] = useState(true);
+  const [isFocusPopupOpen, setIsFocusPopupOpen] = useState(false);
+  const hasFocus = !!todayFocus;
 
   useEffect(() => {
     const fetchPauseSessions = async () => {
@@ -48,9 +57,6 @@ function DashboardPage() {
     fetchPauseSessions();
   }, []);
 
-  const [checkIns, setCheckIns] = useState([]);
-  const [checkInsLoading, setCheckInsLoading] = useState(true);
-
   useEffect(() => {
     const fetchCheckIns = async () => {
       try {
@@ -66,19 +72,34 @@ function DashboardPage() {
     fetchCheckIns();
   }, []);
 
+  useEffect(() => {
+    const fetchTodayFocus = async () => {
+      try {
+        const data = await getTomorrowFocus();
+        setTodayFocus(data);
+      } catch (error) {
+        console.error("Fout bij ophalen focus:", error);
+      } finally {
+        setFocusLoading(false);
+      }
+    };
+
+    fetchTodayFocus();
+  }, []);
+
   const pausesToday = useMemo(
-    () => getTodaySessions(pauseSessions),
+    () => getTodayItems(pauseSessions, "completedAt"),
     [pauseSessions]
+  );
+
+  const checkInsToday = useMemo(
+    () => getTodayItems(checkIns, "createdAt"),
+    [checkIns]
   );
 
   const pausesTodayCount = pausesToday.length;
   const totalPauses = pauseSessions.length;
   const lastPause = pauseSessions[0];
-
-  const today = new Date().toDateString();
-  const checkInsToday = checkIns.filter((checkIn) => {
-    return new Date(checkIn.createdAt).toDateString() === today;
-  });
 
   const latestCheckIn = checkIns[0];
 
@@ -98,19 +119,61 @@ function DashboardPage() {
         ).toFixed(1)
       : null;
 
+  const handleCompleteFocus = async () => {
+    if (!todayFocus?._id) return;
+
+    try {
+      await completeTomorrowFocus(todayFocus._id);
+      setTodayFocus(null);
+      setIsFocusPopupOpen(false);
+    } catch (error) {
+      console.error("Fout bij voltooien focus:", error);
+    }
+  };
+
   return (
     <MainLayout
       title={`${greeting}, ${user?.name || "gebruiker"}`}
       subtitle={formatDate()}
       variant="dashboard"
       action={
-        <button
-          className="pageHeaderButton"
-          type="button"
-          aria-label="Rapport openen"
-        >
-          <img src={documentIcon} alt="" className="pageHeaderIcon" />
-        </button>
+        <div className="focusPopupWrapper">
+          <button
+            className="pageHeaderButton"
+            type="button"
+            aria-label="Focus voor vandaag openen"
+            onClick={() => setIsFocusPopupOpen((prev) => !prev)}
+          >
+            <img src={documentIcon} alt="" className="pageHeaderIcon" />
+          </button>
+          {hasFocus && <span className="focusBadge" />}
+
+          {isFocusPopupOpen && (
+            <div className="focusPopup">
+              <h3>Focus voor vandaag:</h3>
+
+              {focusLoading ? (
+                <p>Focus laden...</p>
+              ) : !todayFocus ? (
+                <p>Er is nog geen focus voor vandaag ingesteld.</p>
+              ) : todayFocus.focusCompleted ? (
+                <p>Je hebt je focus voor vandaag afgerond. Goed bezig.</p>
+              ) : (
+                <>
+                  <p>{todayFocus.tomorrowFocus}</p>
+
+                  <button
+                    type="button"
+                    className="focusPopupButton"
+                    onClick={handleCompleteFocus}
+                  >
+                    Markeer als voltooid
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       }
     >
       <div className="dashboard">
@@ -301,9 +364,9 @@ function DashboardPage() {
                 <p>
                   Zie je trends, patronen en krijg gepersonaliseerde aanbevelingen.
                 </p>
-                <button className="btn btnPrimary" type="button">
+                <Link to="/premium" className="btn btnPrimary">
                   Upgrade naar Premium
-                </button>
+                </Link>
               </div>
             </div>
           </article>
