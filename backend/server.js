@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import cors from "cors";
-import connectDB from "./config/db.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import pauseSuggestionRoutes from "./routes/pauseSuggestionRoutes.js";
 import pauseSessionRoutes from "./routes/pauseSessionRoutes.js";
@@ -10,7 +11,6 @@ import dayClosingRoutes from "./routes/dayClosingRoutes.js";
 import timerSessionRoutes from "./routes/timerSessionRoutes.js";
 
 dotenv.config();
-connectDB();
 
 const app = express();
 
@@ -30,6 +30,15 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server draait op poort ${PORT}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected");
+
+    app.listen(PORT, () => {
+      console.log(`Server draait op poort ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connectie mislukt:", error.message);
+  });
