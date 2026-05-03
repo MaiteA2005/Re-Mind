@@ -15,9 +15,15 @@
   text-decoration: none;
 }
 
-.btn img {
+.btnIcon {
   width: 16px;
   height: 16px;
+  object-fit: contain;
+}
+
+.btn span {
+  display: inline-flex;
+  align-items: center;
 }
 
 .btnPrimary {
@@ -43,4 +49,15 @@
 
 .btnFull {
   width: 100%;
+}
+
+.btnDanger {
+  border: 1px solid #d88989;
+  background: #d88989;
+  color: #ffffff;
+}
+
+.btnDanger:hover {
+  background: #c97777;
+  border-color: #c97777;
 }
