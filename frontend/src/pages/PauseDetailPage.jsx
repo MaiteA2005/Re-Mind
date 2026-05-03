@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import Button from "../components/base/Button";
+
+import PauseBackButton from "../components/pause/PauseBackButton";
+import PauseHeader from "../components/pause/PauseHeader";
+import PauseInstructionsCard from "../components/pause/PauseInstructionsCard";
+import PauseInfoCard from "../components/pause/PauseInfoCard";
+import PauseMethodCard from "../components/pause/PauseMethodCard";
+
+import PlayWhiteIcon from "../assets/icons_wit/play_wit.svg";
+
 import "./PausePage.css";
 
 function PauseDetailPage() {
@@ -39,9 +49,7 @@ function PauseDetailPage() {
     return (
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseDetailWrapper">
-          <Link to="/pause" className="pauseBackButton">
-            ← Terug naar pauzes
-          </Link>
+          <PauseBackButton />
         </section>
       </MainLayout>
     );
@@ -50,61 +58,43 @@ function PauseDetailPage() {
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseDetailWrapper">
-        <Link to="/pause" className="pauseBackButton">
-          ← Terug naar pauzes
-        </Link>
+        <PauseBackButton />
 
         <div className="pauseDetailContent">
-          <div className="pauseDetailHeader">
-            <div className="pauseDetailIconCircle">
-              <span>{pause.icon}</span>
-            </div>
-
-            <div className="pauseDetailHeaderText">
-              <h2>{pause.title}</h2>
-              <span>{pause.duration}</span>
-            </div>
-          </div>
+          <PauseHeader
+            title={pause.title}
+            duration={pause.duration}
+            icon={pause.icon}
+          />
 
           {pause.isCategory ? (
-            <div className="pauseInstructionsCard">
+            <section className="pauseInstructionsCard">
               <h3>Kies een ademhalingsoefening</h3>
 
               <div className="pauseMethodGrid">
                 {pause.methods?.map((method) => (
-                  <Link
-                    key={method.slug}
-                    to={`/pause/${method.slug}/session`}
-                    state={{ pauseItem: method }}
-                    className="pauseMethodCard"
-                  >
-                    <h4>{method.title}</h4>
-                    <p>{method.description}</p>
-                    <span>{method.duration}</span>
-                  </Link>
+                  <PauseMethodCard key={method.slug} method={method} />
                 ))}
               </div>
-            </div>
+            </section>
           ) : (
             <>
-              <div className="pauseInstructionsCard">
-                <h3>{pause.instructionTitle}</h3>
+              <PauseInstructionsCard
+                title={pause.instructionTitle}
+                instructions={pause.instructions}
+              />
 
-                <ol className="pauseInstructionsList">
-                  {pause.instructions?.map((step, index) => (
-                    <li key={index}>{step}</li>
-                  ))}
-                </ol>
-              </div>
+              <PauseInfoCard title={pause.infoTitle} text={pause.infoText} />
 
-              <div className="pauseInfoCard">
-                <h4>{pause.infoTitle}</h4>
-                <p>{pause.infoText}</p>
-              </div>
-
-              <Link to={`/pause/${pause.slug}/session`} className="pausePrimaryButton">
+              <Button
+                to={`/pause/${pause.slug}/session`}
+                state={{ pauseItem: pause }}
+                variant="primary"
+                iconLeft={PlayWhiteIcon}
+                full
+              >
                 Start pauze
-              </Link>
+              </Button>
             </>
           )}
         </div>

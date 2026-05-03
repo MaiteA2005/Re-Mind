@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import Button from "../components/base/Button";
+
+import PauseCompleteCard from "../components/pause/PauseCompleteCard";
 import "./PausePage.css";
 
 function PauseCompletePage() {
@@ -45,9 +48,9 @@ function PauseCompletePage() {
     return (
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseCompleteWrapper">
-          <Link to="/pause" className="pausePrimaryButton">
+          <Button to="/pause" variant="primary" full>
             Terug naar pauzes
-          </Link>
+          </Button>
         </section>
       </MainLayout>
     );
@@ -56,22 +59,10 @@ function PauseCompletePage() {
   return (
     <MainLayout title={pause.completeTitle} subtitle={pause.completeText}>
       <section className="pauseCompleteWrapper">
-        <div className="pauseCompleteContent">
-          <div className="pauseCompleteIcon">✓</div>
-
-          <h2>{pause.completeTitle}</h2>
-          <p>{pause.completeText}</p>
-
-          <div className="pauseCompleteButtons">
-            <Link to="/dashboard" className="pausePrimaryButton">
-              Verder werken
-            </Link>
-
-            <Link to="/pause" className="pauseOutlineButton pauseOutlineLink">
-              Nog een pauze
-            </Link>
-          </div>
-        </div>
+        <PauseCompleteCard
+          title={pause.completeTitle}
+          text={pause.completeText}
+        />
       </section>
     </MainLayout>
   );

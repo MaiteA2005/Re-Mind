@@ -1,7 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
+import Button from "../components/base/Button";
+
+import PauseBackButton from "../components/pause/PauseBackButton";
+import PauseHeader from "../components/pause/PauseHeader";
+import PauseTimer from "../components/pause/PauseTimer";
+import PauseProgressBar from "../components/pause/PauseProgressBar";
+import PauseSessionControls from "../components/pause/PauseSessionControls";
+
 import { savePauseSession } from "../services/pauseSessionService";
+import CompleteBlackIcon from "../assets/icons_zwart/name_one_win_zwart.svg";
 import "./PausePage.css";
 
 function getDurationSeconds(duration) {
@@ -26,14 +35,14 @@ function PauseSessionPage() {
   const { slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-
+  
   const statePauseItem = location.state?.pauseItem || null;
-
+  
   const [pause, setPause] = useState(statePauseItem);
   const [loading, setLoading] = useState(!statePauseItem);
   const [isPaused, setIsPaused] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
-
+  
   useEffect(() => {
     if (statePauseItem) return;
 
@@ -67,15 +76,13 @@ function PauseSessionPage() {
   }, [totalSeconds]);
 
   const completePause = async () => {
+    if (!pause) return;
+
     try {
       await savePauseSession(pause);
-
-      navigate(`/pause/${pause.slug}/complete`, {
-        state: { pauseItem: pause },
-      });
     } catch (error) {
       console.error("Fout bij opslaan pauze:", error);
-
+    } finally {
       navigate(`/pause/${pause.slug}/complete`, {
         state: { pauseItem: pause },
       });
@@ -89,7 +96,7 @@ function PauseSessionPage() {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          completePause(); // 🔥 hier wordt nu opgeslagen
+          completePause();
           return 0;
         }
 
@@ -112,9 +119,7 @@ function PauseSessionPage() {
     return (
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseSessionWrapper">
-          <Link to="/pause" className="pauseBackButton">
-            ← Terug naar pauzes
-          </Link>
+          <PauseBackButton />
         </section>
       </MainLayout>
     );
@@ -125,16 +130,10 @@ function PauseSessionPage() {
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseSessionWrapper">
-        <Link to="/pause" className="pauseBackButton">
-          ← Terug naar pauzes
-        </Link>
+        <PauseBackButton />
 
         <div className="pauseSessionContent">
-          <div className="pauseSessionIconCircle">
-            <span>{pause.icon}</span>
-          </div>
-
-          <h2>{pause.title}</h2>
+          <PauseHeader title={pause.title} icon={pause.icon} />
 
           <button
             type="button"
@@ -155,40 +154,21 @@ function PauseSessionPage() {
             </div>
           )}
 
-          <div className="pauseTimer">{formatTime(timeLeft)}</div>
+          <PauseTimer time={formatTime(timeLeft)} />
 
-          <div className="pauseProgressBar">
-            <div
-              className="pauseProgressFill"
-              style={{ width: `${progress}%` }}
-            />
+          <PauseProgressBar progress={progress} />
+
+          <PauseSessionControls
+            isRunning={!isPaused}
+            onPause={() => setIsPaused((prev) => !prev)}
+            onStop={() => navigate("/pause")}
+          />
+
+          <div className="pauseCompleteAction">
+            <Button variant="secondary" onClick={completePause} iconLeft={CompleteBlackIcon}>
+              Markeer als voltooid
+            </Button>
           </div>
-
-          <div className="pauseSessionButtons">
-            <button
-              type="button"
-              className="pauseSecondaryButton"
-              onClick={() => setIsPaused((prev) => !prev)}
-            >
-              {isPaused ? "Hervatten" : "Pauzeren"}
-            </button>
-
-            <button
-              type="button"
-              className="pauseStopButton"
-              onClick={() => navigate("/pause")}
-            >
-              Stop
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className="pauseOutlineButton"
-            onClick={completePause}
-          >
-            Markeer als voltooid
-          </button>
         </div>
       </section>
     </MainLayout>
