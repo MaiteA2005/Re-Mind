@@ -1,0 +1,35 @@
+.timerOptionCard {
+  min-height: 90px;
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+  border-radius: 10px;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.timerOptionCard:hover {
+  transform: translateY(-1px);
+  border-color: #78957f;
+}
+
+.timerOptionCardActive {
+  border-color: #78957f;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.timerOptionIcon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}

@@ -1,3 +1,5 @@
+import "./TimerTabs.css";
+
 import werkdagIconZwart from "../../assets/icons_zwart/werkdag_zwart.svg";
 import focusIconZwart from "../../assets/icons_zwart/werkdag_zwart.svg";
 import pauzeTimerIconZwart from "../../assets/icons_zwart/koffie_zwart.svg";

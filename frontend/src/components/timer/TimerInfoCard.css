@@ -1,0 +1,35 @@
+.timerInfoCard {
+  width: 100%;
+  max-width: 620px;
+  background: #f8f8f3;
+  border: 1px solid #aab8a7;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.timerInfoCard h3 {
+  margin: 0 0 16px;
+  color: #25221f;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timerInfoTitleIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.timerInfoCard ul {
+  margin: 0;
+  padding-left: 22px;
+  color: #4f4d48;
+  line-height: 1.7;
+  list-style: disc;
+}
+
+.timerInfoCard li {
+  padding-left: 2px;
+}

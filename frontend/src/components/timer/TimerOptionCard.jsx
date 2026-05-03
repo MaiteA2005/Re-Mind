@@ -1,3 +1,5 @@
+import "./TimerOptionCard.css";
+
 import klokZwart from "../../assets/icons_zwart/klok_zwart.svg";
 import koffieZwart from "../../assets/icons_zwart/koffie_zwart.svg";
 

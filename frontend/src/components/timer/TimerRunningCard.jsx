@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./TimerRunningCard.css";
 
 import pauzeIconZwart from "../../assets/icons_zwart/pauze_zwart.svg";
 import playIconZwart from "../../assets/icons_zwart/play_zwart.svg";

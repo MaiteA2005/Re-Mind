@@ -1,3 +1,5 @@
+import "./TimerInfoCard.css";
+
 import infoIcon from "../../assets/icons_groen/uitroepteken_groen.svg";
 
 function TimerInfoCard({ activeTimer }) {

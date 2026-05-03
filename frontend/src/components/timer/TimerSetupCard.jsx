@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./TimerSetupCard.css";
 import TimerOptionCard from "./TimerOptionCard";
 
 import playIconWit from "../../assets/icons_wit/play_wit.svg";

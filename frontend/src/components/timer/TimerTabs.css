@@ -1,0 +1,52 @@
+.timerTabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px;
+  background: #eee9d8;
+  border-radius: 10px;
+}
+
+.timerTab {
+  min-width: 150px;
+  min-height: 42px;
+  border: 1px solid #d8d0be;
+  background: #f4ecd9;
+  color: #25221f;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.timerTab:hover {
+  background: #e8e1cc;
+}
+
+.timerTabActive {
+  background: #78957f;
+  color: #fffdf8;
+  border-color: #78957f;
+}
+
+.timerTabIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .timerTabs {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .timerTab {
+    width: 100%;
+  }
+}
