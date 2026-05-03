@@ -1,0 +1,53 @@
+.pauseDetailHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.pauseDetailIconCircle,
+.pauseSessionIconCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: #f1efe7;
+  border: 1px solid #e1ddcf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pauseDetailIconCircle img,
+.pauseSessionIconCircle img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.pauseDetailIconCircle span,
+.pauseSessionIconCircle span {
+  font-size: 0.7rem;
+  color: #78907f;
+}
+
+.pauseDetailHeaderText h2 {
+  margin: 0 0 4px;
+  font-size: 2rem;
+  color: #232320;
+}
+
+.pauseDetailHeaderText span {
+  font-size: 0.95rem;
+  color: #7b8e7f;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .pauseDetailHeader {
+    align-items: flex-start;
+  }
+
+  .pauseDetailHeaderText h2 {
+    font-size: 1.55rem;
+  }
+}

@@ -1,0 +1,12 @@
+.pauseSessionButtons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (max-width: 640px) {
+  .pauseSessionButtons {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,19 @@
+.pauseInfoCard {
+  background: #f8f8f3;
+  border: 1px solid #9fb09f;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.pauseInfoCard h4 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  color: #232320;
+}
+
+.pauseInfoCard p {
+  margin: 0;
+  color: #55554e;
+  line-height: 1.55;
+}

@@ -1,0 +1,33 @@
+.pauseInstructionsCard {
+  background: #f3ecd8;
+  border: 1px solid #e3dac0;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 18px;
+}
+
+.pauseInstructionsCard h3 {
+  margin: 0 0 16px;
+  color: #78907f;
+  font-size: 1.8rem;
+}
+
+.pauseInstructionsList {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #3b3b35;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .pauseInstructionsCard {
+    padding: 18px;
+  }
+
+  .pauseInstructionsCard h3 {
+    font-size: 1.35rem;
+  }
+}

@@ -1,3 +1,7 @@
+import "./PauseTabs.css";
+import favoriteDefaultIcon from "../../assets/icons_groen/hart_default_groen.svg";
+import favoriteActiveIcon from "../../assets/icons_wit/hart_default_wit.svg";
+
 function PauseTabs({ activeTab, onTabChange }) {
   return (
     <div className="pauseTabs">
@@ -22,7 +26,8 @@ function PauseTabs({ activeTab, onTabChange }) {
         className={`pauseTabButton ${activeTab === "favorites" ? "active" : ""}`}
         onClick={() => onTabChange("favorites")}
       >
-        ♡ Favorieten
+        <img src={activeTab === "favorites" ? favoriteActiveIcon : favoriteDefaultIcon} alt="hart" />
+        Favorieten
       </button>
     </div>
   );

@@ -1,0 +1,15 @@
+.pauseProgressBar {
+  width: 100%;
+  max-width: 500px;
+  height: 10px;
+  background: #ece8df;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pauseProgressFill {
+  height: 100%;
+  background: #8ea08e;
+  border-radius: 999px;
+  transition: width 1s linear;
+}

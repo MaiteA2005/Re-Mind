@@ -1,30 +1,11 @@
-import posture from "../../assets/icons_groen/houding_check_groen.svg";
-import win from "../../assets/icons_groen/name_one_win_groen.svg";
-import hand from "../../assets/icons_groen/hand_stretch_groen.svg";
-import touch from "../../assets/icons_groen/hart_default_groen.svg";
-import water from "../../assets/icons_groen/koffie_groen.svg";
-import eye from "../../assets/icons_groen/oog_reset_groen.svg";   
-import breath from "../../assets/icons_groen/ademhaling_groen.svg";
-import walk from "../../assets/icons_groen/korte_wandeling_groen.svg";
-import stretch from "../../assets/icons_groen/stretchen_groen.svg";
+import { Link } from "react-router-dom";
+import "./PauseCard.css";
+import { pauseIconMap } from "../../utils/pauseIconMap";
 
 import HeartDefault from "../../assets/icons_groen/hart_default_groen.svg";
 import HeartClicked from "../../assets/icons_groen/hart_filled_groen.svg";
 import Clock from "../../assets/icons_groen/klok_groen.svg";
 
-import { Link } from "react-router-dom";
-
-const iconMap = {
-  posture,
-  win,
-  hand,
-  touch,
-  water,
-  eye,
-  breath,
-  walk,
-  stretch,
-};
 
 function PauseCard({
   title,
@@ -35,7 +16,7 @@ function PauseCard({
   onToggleFavorite,
   to,
 }) {
-  const iconSrc = iconMap[icon] || posture;
+  const iconSrc = pauseIconMap[icon] || posture;
 
   return (
     <Link to={to} className="pauseCardLink">
