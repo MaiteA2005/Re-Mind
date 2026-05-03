@@ -1,0 +1,44 @@
+.banner {
+  width: 100%;
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 20px 16px 16px;
+  border: 1px solid #769382;
+  border-radius: 10px;
+  background: rgba(118, 147, 130, 0.1);
+  box-sizing: border-box;
+}
+
+.bannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.bannerIcon {
+  width: 22px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.banner h3 {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27px;
+  color: #1a1a1a;
+}
+
+.banner p {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #414141;
+}

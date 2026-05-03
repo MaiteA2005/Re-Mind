@@ -1,16 +1,26 @@
-import premiumGroen from '../../assets/icons_groen/premium_groen.svg';
+import { Link } from "react-router-dom";
+import premiumIcon from "../../assets/icons_zwart/premium_zwart.svg";
+import "./UpgradeBanner.css";
 
 function UpgradeBanner() {
   return (
-    <div className="upgrade-banner">
-      <div>
-        <img src={premiumGroen} alt="Premium Icon" />
-        <h3>Upgrade voor volledige inzichten</h3>
-        <p>Ontgrendel maandelijkse trends, patroonherkenning en gepersonaliseerde aanbevelingen</p>
+    <section className="banner">
+      <div className="bannerLeft">
+        <img src={premiumIcon} alt="" className="bannerIcon" />
+
+        <div>
+          <h3>Ontgrendel je volledige potentieel</h3>
+          <p>
+            Krijg toegang tot wekelijkse rapporten, trending inzichten en
+            gepersonaliseerde aanbevelingen.
+          </p>
+        </div>
       </div>
 
-      <button>Meer info</button>
-    </div>
+      <Link to="/premium" className="btn btnSecondary">
+        Meer info
+      </Link>
+    </section>
   );
 }
 

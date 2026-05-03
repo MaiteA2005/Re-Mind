@@ -4,25 +4,12 @@
   gap: 1.4rem;
 }
 
-.upgrade-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.1rem 1.3rem;
-  background: #f5f7ef;
-  border: 1px solid #8aa691;
-  border-radius: 10px;
-}
-
-.upgrade-banner h3,
 .recommendation-card h3,
 .chart-card h3 {
   margin: 0 0 0.25rem;
   font-size: 1rem;
 }
 
-.upgrade-banner p,
 .stat-card p,
 .recommendation-item p,
 .locked-modal p {
@@ -31,7 +18,6 @@
   font-size: 0.82rem;
 }
 
-.upgrade-banner button,
 .locked-modal button {
   border: 0;
   border-radius: 8px;
