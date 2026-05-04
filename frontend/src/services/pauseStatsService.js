@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/pause-sessions";
+const API_URL = "https://re-mind-dnch.onrender.com/api/pause-sessions";
 
 export async function getMyPauseSessions() {
   const token = localStorage.getItem("token");

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/day-closings";
+const API_URL = "https://re-mind-dnch.onrender.com/api/day-closings";
 
 export async function createDayClosing(dayClosingData) {
   const token = localStorage.getItem("token");

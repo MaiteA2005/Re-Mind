@@ -22,7 +22,7 @@ function PauseDetailPage() {
     const fetchPause = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/pause-suggestions/${slug}`
+          `https://re-mind-dnch.onrender.com/api/pause-suggestions/${slug}`
         );
         const data = await response.json();
 

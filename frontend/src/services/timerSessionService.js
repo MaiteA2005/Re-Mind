@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/timer-sessions";
+const API_URL = "https://re-mind-dnch.onrender.com/api/timer-sessions";
 
 export async function createTimerSession(timerData) {
   const token = localStorage.getItem("token");

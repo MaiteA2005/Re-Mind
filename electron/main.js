@@ -11,7 +11,7 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:5173");
+  win.loadURL("https://re-mind-dnch.onrender.com");
 }
 
 app.whenReady().then(() => {

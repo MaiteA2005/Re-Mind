@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/check-ins";
+const API_URL = "https://re-mind-dnch.onrender.com/api/check-ins";
 
 export async function createCheckIn(checkInData) {
   const token = localStorage.getItem("token");

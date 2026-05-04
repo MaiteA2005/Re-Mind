@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://re-mind-dnch.onrender.com/api/auth";
 
 export async function getCurrentUser() {
   const token = localStorage.getItem("token");

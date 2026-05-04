@@ -13,7 +13,7 @@ function PausePage() {
   useEffect(() => {
     const fetchPauseSuggestions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/pause-suggestions");
+        const response = await fetch("https://re-mind-dnch.onrender.com/api/pause-suggestions");
         const data = await response.json();
 
         setPauseSuggestions(data);
