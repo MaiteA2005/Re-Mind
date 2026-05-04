@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import PauseTabs from "../components/pause/PauseTabs";
 import PauseCard from "../components/pause/PauseCard";
+import API_URL from "../services/api";
 import "./PausePage.css";
 
 function PausePage() {
@@ -13,7 +14,7 @@ function PausePage() {
   useEffect(() => {
     const fetchPauseSuggestions = async () => {
       try {
-        const response = await fetch("https://re-mind-dnch.onrender.com/api/pause-suggestions");
+        const response = await fetch(`${API_URL}/api/pause-suggestions`);
         const data = await response.json();
 
         setPauseSuggestions(data);

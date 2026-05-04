@@ -9,6 +9,7 @@ import PauseTimer from "../components/pause/PauseTimer";
 import PauseProgressBar from "../components/pause/PauseProgressBar";
 import PauseSessionControls from "../components/pause/PauseSessionControls";
 
+import API_URL from "../services/api";
 import { savePauseSession } from "../services/pauseSessionService";
 import CompleteBlackIcon from "../assets/icons_zwart/name_one_win_zwart.svg";
 import "./PausePage.css";
@@ -49,7 +50,7 @@ function PauseSessionPage() {
     const fetchPause = async () => {
       try {
         const response = await fetch(
-          `https://re-mind-dnch.onrender.com/api/pause-suggestions/${slug}`
+          `${API_URL}/api/pause-suggestions/${slug}`
         );
         const data = await response.json();
 

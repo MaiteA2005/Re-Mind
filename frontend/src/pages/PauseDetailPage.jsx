@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Button from "../components/base/Button";
+import API_URL from "../services/api";
 
 import PauseBackButton from "../components/pause/PauseBackButton";
 import PauseHeader from "../components/pause/PauseHeader";
@@ -22,7 +23,7 @@ function PauseDetailPage() {
     const fetchPause = async () => {
       try {
         const response = await fetch(
-          `https://re-mind-dnch.onrender.com/api/pause-suggestions/${slug}`
+          `${API_URL}/api/pause-suggestions/${slug}`
         );
         const data = await response.json();
 
