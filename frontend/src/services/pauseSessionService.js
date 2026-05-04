@@ -1,9 +1,11 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/pause-sessions";
+import API_URL from "./api";
+
+const PAUSE_SESSIONS_API_URL = `${API_URL}/api/pause-sessions`;
 
 export async function savePauseSession(pause) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(PAUSE_SESSIONS_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

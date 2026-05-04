@@ -1,9 +1,11 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/day-closings";
+import API_URL from "./api";
+
+const DAY_CLOSINGS_API_URL = `${API_URL}/api/day-closings`;
 
 export async function createDayClosing(dayClosingData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(DAY_CLOSINGS_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +26,7 @@ export async function createDayClosing(dayClosingData) {
 export async function getMyDayClosings() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${DAY_CLOSINGS_API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,7 +44,7 @@ export async function getMyDayClosings() {
 export async function getTomorrowFocus() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/tomorrow-focus`, {
+  const response = await fetch(`${DAY_CLOSINGS_API_URL}/tomorrow-focus`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -60,7 +62,7 @@ export async function getTomorrowFocus() {
 export async function completeTomorrowFocus(id) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/${id}/focus-complete`, {
+  const response = await fetch(`${DAY_CLOSINGS_API_URL}/${id}/focus-complete`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,

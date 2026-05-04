@@ -1,9 +1,11 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/check-ins";
+import API_URL from "./api";
+
+const CHECK_INS_API_URL = `${API_URL}/api/check-ins`;
 
 export async function createCheckIn(checkInData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(CHECK_INS_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +26,7 @@ export async function createCheckIn(checkInData) {
 export async function getMyCheckIns() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${CHECK_INS_API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

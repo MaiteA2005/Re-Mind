@@ -1,9 +1,11 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/timer-sessions";
+import API_URL from "./api";
+
+const TIMER_SESSIONS_API_URL = `${API_URL}/api/timer-sessions`;
 
 export async function createTimerSession(timerData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(TIMER_SESSIONS_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +26,7 @@ export async function createTimerSession(timerData) {
 export async function getMyTimerSessions() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${TIMER_SESSIONS_API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

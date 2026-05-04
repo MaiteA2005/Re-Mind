@@ -1,9 +1,11 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/auth";
+import API_URL from "./api";
+
+const AUTH_API_URL = `${API_URL}/api/auth`;
 
 export async function getCurrentUser() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${AUTH_API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,7 +23,7 @@ export async function getCurrentUser() {
 export async function updateSettings(settingsData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/settings`, {
+  const response = await fetch(`${AUTH_API_URL}/settings`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +46,7 @@ export async function updateSettings(settingsData) {
 export async function updatePassword(passwordData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/password`, {
+  const response = await fetch(`${AUTH_API_URL}/password`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -65,7 +67,7 @@ export async function updatePassword(passwordData) {
 export async function exportMyData() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/export`, {
+  const response = await fetch(`${AUTH_API_URL}/export`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -83,7 +85,7 @@ export async function exportMyData() {
 export async function deleteMyData() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/data`, {
+  const response = await fetch(`${AUTH_API_URL}/data`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -102,7 +104,7 @@ export async function deleteMyData() {
 export async function deleteMyAccount() {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/account`, {
+  const response = await fetch(`${AUTH_API_URL}/account`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,7 +1,9 @@
-const API_URL = "https://re-mind-dnch.onrender.com/api/auth";
+import API_URL from "./api";
+
+const AUTH_API_URL = `${API_URL}/api/auth`;
 
 export async function registerUser({ name, email, password }) {
-  const response = await fetch(`${API_URL}/register`, {
+  const response = await fetch(`${AUTH_API_URL}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +24,7 @@ export async function registerUser({ name, email, password }) {
 }
 
 export async function loginUser({ email, password }) {
-  const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch(`${AUTH_API_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +47,7 @@ export async function loginUser({ email, password }) {
 export async function saveOnboarding(onboardingData) {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_URL}/onboarding`, {
+  const response = await fetch(`${AUTH_API_URL}/onboarding`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
