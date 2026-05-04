@@ -1,17 +1,28 @@
 {
-  "name": "electron",
+  "name": "re-mind-electron",
   "version": "1.0.0",
-  "description": "",
+  "description": "Re-Mind desktop app",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "electron": "^41.1.1"
+  "devDependencies": {
+    "electron": "^41.1.1",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.remind.app",
+    "productName": "Re-Mind",
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   }
 }
