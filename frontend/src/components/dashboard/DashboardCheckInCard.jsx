@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from "../base/Button";
 import "./DashboardCheckInCard.css";
 
 import checkinIcon from "../../assets/icons_groen/check-in_groen.svg";
@@ -27,10 +27,9 @@ function DashboardCheckInCard({ latestCheckIn }) {
         </div>
       </div>
 
-      <Link to="/check-in" className="btn btnPrimary">
-        <span>Check-in</span>
-        <img src={pijlRechtsIcon} alt="" />
-      </Link>
+      <Button to="/check-in" variant="primary" iconRight={pijlRechtsIcon}>
+        Check-in
+      </Button>
     </section>
   );
 }

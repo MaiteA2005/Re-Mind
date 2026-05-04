@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from "../base/Button";
 import "./DashboardPauseSummary.css";
 
 import sterrenIcon from "../../assets/icons_groen/stretchen_groen.svg";
@@ -36,9 +36,9 @@ function DashboardPauseSummary({ pauseLoading, pausesTodayCount, lastPause }) {
               : "Je hebt nog geen pauze opgeslagen."}
           </p>
 
-          <Link to="/pause" className="btn btnSecondary btnFull">
+          <Button to="/pause" variant="secondary" full>
             Bekijk suggesties
-          </Link>
+          </Button>
         </div>
       </article>
     </>

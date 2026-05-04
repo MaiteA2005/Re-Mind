@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from "../base/Button";
 import premiumIcon from "../../assets/icons_zwart/premium_zwart.svg";
 import "./UpgradeBanner.css";
 
@@ -17,9 +17,9 @@ function UpgradeBanner() {
         </div>
       </div>
 
-      <Link to="/premium" className="btn btnSecondary">
+      <Button to="/premium" variant="secondary">
         Meer info
-      </Link>
+      </Button>
     </section>
   );
 }

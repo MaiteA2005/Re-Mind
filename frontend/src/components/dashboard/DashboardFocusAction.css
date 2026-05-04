@@ -51,18 +51,6 @@
   line-height: 1.5;
 }
 
-.focusPopupButton {
-  width: 100%;
-  min-height: 40px;
-  border: 1px solid #d8d0be;
-  border-radius: 8px;
-  background: #fffdf8;
-  color: #25221f;
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
 .focusBadge {
   position: absolute;
   top: 6px;

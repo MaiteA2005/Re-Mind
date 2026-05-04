@@ -1,6 +1,8 @@
 import { useState } from "react";
+import Button from "../base/Button";
 import "./DashboardFocusAction.css";
 
+import completeIcon from "../../assets/icons_zwart/name_one_win_zwart.svg";
 import documentIcon from "../../assets/icons_zwart/notitie_zwart.svg";
 
 function DashboardFocusAction({ todayFocus, focusLoading, onCompleteFocus }) {
@@ -34,13 +36,9 @@ function DashboardFocusAction({ todayFocus, focusLoading, onCompleteFocus }) {
             <>
               <p>{todayFocus.tomorrowFocus}</p>
 
-              <button
-                type="button"
-                className="focusPopupButton"
-                onClick={onCompleteFocus}
-              >
+              <Button variant="secondary" onClick={onCompleteFocus} iconLeft={completeIcon} full>
                 Markeer als voltooid
-              </button>
+              </Button>
             </>
           )}
         </div>

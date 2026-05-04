@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from "../base/Button";
 import "./DashboardMonthLocked.css";
 
 import inzichtenIcon from "../../assets/icons_groen/inzichten_groen.svg";
@@ -47,9 +47,9 @@ function DashboardMonthLocked() {
               Zie je trends, patronen en krijg gepersonaliseerde aanbevelingen.
             </p>
 
-            <Link to="/premium" className="btn btnPrimary">
+            <Button to="/premium" variant="primary">
               Upgrade naar Premium
-            </Link>
+            </Button>
           </div>
         </div>
       </article>
