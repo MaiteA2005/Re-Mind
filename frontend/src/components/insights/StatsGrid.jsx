@@ -1,3 +1,5 @@
+import "./StatsGrid.css";
+
 const stats = [
   { label: "Gem. Stress", value: "4.4" },
   { label: "Gem. Energie", value: "5.6" },

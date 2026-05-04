@@ -1,3 +1,4 @@
+import "./DayDetailLocked.css";
 import premiumGroen from '../../assets/icons_groen/premium_groen.svg';
 
 function DayDetailLocked() {
