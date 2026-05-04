@@ -21,44 +21,6 @@ ChartJS.register(
   Legend
 );
 
-const labels = ["09:00", "11:00", "13:00", "15:00", "17:00"];
-
-const lineData = {
-  labels,
-  datasets: [
-    {
-      label: "Stress",
-      data: [3, 4, 5, 6, 4],
-      borderColor: "#df7c7f",
-      backgroundColor: "#df7c7f",
-      tension: 0.35,
-    },
-    {
-      label: "Energie",
-      data: [4, 3, 6, 5, 5],
-      borderColor: "#78977f",
-      backgroundColor: "#78977f",
-      tension: 0.35,
-    },
-  ],
-};
-
-const barData = {
-  labels,
-  datasets: [
-    {
-      label: "Pauze genomen",
-      data: [3, 4, 5, 6, 4],
-      backgroundColor: "#78977f",
-    },
-    {
-      label: "Pauze gemist",
-      data: [3, 4, 5, 6, 4],
-      backgroundColor: "#df7c7f",
-    },
-  ],
-};
-
 const options = {
   responsive: true,
   maintainAspectRatio: false,
@@ -75,8 +37,8 @@ const options = {
   },
   scales: {
     y: {
-      min: 0,
-      max: 10,
+      beginAtZero: true,
+      suggestedMax: 10,
       ticks: {
         stepSize: 2,
       },
@@ -92,16 +54,29 @@ const options = {
   },
 };
 
-function ChartCard({ title, type }) {
+function ChartCard({ title, type = "line", data }) {
+  const hasData =
+    data &&
+    data.labels &&
+    data.labels.length > 0 &&
+    data.datasets &&
+    data.datasets.some((dataset) => dataset.data?.some((value) => value > 0));
+
   return (
     <article className="chart-card">
       <h3>{title}</h3>
 
       <div className="chart-wrapper">
-        {type === "line" ? (
-          <Line data={lineData} options={options} />
+        {hasData ? (
+          type === "line" ? (
+            <Line data={data} options={options} />
+          ) : (
+            <Bar data={data} options={options} />
+          )
         ) : (
-          <Bar data={barData} options={options} />
+          <div className="chart-empty">
+            Nog niet genoeg data om deze grafiek te tonen.
+          </div>
         )}
       </div>
     </article>

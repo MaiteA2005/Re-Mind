@@ -14,3 +14,12 @@
   height: 210px;
   margin-top: 1rem;
 }
+
+.chart-empty {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #5f6158;
+  font-size: 0.9rem;
+}
