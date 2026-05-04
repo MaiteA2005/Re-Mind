@@ -36,6 +36,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
+  margin-bottom: 24px;
 }
 
 .timerCustomField {
@@ -43,6 +44,7 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 24px;
+  margin-bottom: 24px;
   color: #25221f;
   font-size: 0.95rem;
 }
@@ -58,37 +60,6 @@
   font-size: 1rem;
 }
 
-.timerPrimaryButton,
-.timerSuggestionLink {
-  min-height: 46px;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.timerPrimaryButton {
-  width: 100%;
-  margin-top: 28px;
-  border: none;
-  background: #78957f;
-  color: #fffdf8;
-  padding: 14px 18px;
-  font-weight: 600;
-}
-
-.timerPrimaryButton:hover {
-  background: #6f8b78;
-  transform: translateY(-1px);
-}
-
 .timerSuggestionBox {
   margin-top: 24px;
   padding-top: 18px;
@@ -97,20 +68,6 @@
 
 .timerSuggestionBox p {
   margin: 0 0 12px;
-}
-
-.timerSuggestionLink {
-  width: 100%;
-  border: 1px solid #d8d0be;
-  background: #fffdf8;
-  color: #25221f;
-}
-
-.timerSuggestionLink:hover {
-  background: #78957f;
-  color: #fffdf8;
-  border-color: #78957f;
-  transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {

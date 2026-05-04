@@ -23,6 +23,7 @@ function TimerOptionCard({
   return (
     <button
       type="button"
+      aria-pressed={selected}
       className={`timerOptionCard ${selected ? "timerOptionCardActive" : ""}`}
       onClick={onClick}
     >

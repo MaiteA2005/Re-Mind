@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Button from "../base/Button";
 import "./TimerSetupCard.css";
 import TimerOptionCard from "./TimerOptionCard";
 
@@ -93,19 +93,21 @@ function TimerSetupCard({
         </>
       )}
 
-      <button type="button" className="timerPrimaryButton" onClick={onStart}>
-        <img src={playIconWit} alt="" className="timerButtonIcon" />
-        <span>
-            Start {isWorkday ? "werkdag" : isFocus ? "focusblok" : "pauze"}
-        </span>
-      </button>
+      <Button
+        variant="primary"
+        onClick={onStart}
+        iconLeft={playIconWit}
+        full
+        >
+          Start {isWorkday ? "werkdag" : isFocus ? "focusblok" : "pauze"}
+      </Button>
 
       {isBreak && (
         <div className="timerSuggestionBox">
           <p>Weet je niet wat je wilt doen tijdens je pauze?</p>
-          <Link to="/pause" className="timerSuggestionLink">
+          <Button variant="secondary" to="/pause" full>
             Bekijk pauzesuggesties
-          </Link>
+          </Button>
         </div>
       )}
     </article>

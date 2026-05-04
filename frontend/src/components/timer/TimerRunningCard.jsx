@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../base/Button";
 import "./TimerRunningCard.css";
 
 import pauzeIconZwart from "../../assets/icons_zwart/pauze_zwart.svg";
@@ -106,78 +107,67 @@ function TimerRunningCard({
         {activeTimer === "workday" ? (
           <>
             <div className="timerControlRow">
-              <button
-                type="button"
-                className="timerSecondaryButton"
+              <Button
+                variant="secondary"
                 onClick={onTakeBreak}
                 onMouseEnter={() => setBreakHover(true)}
                 onMouseLeave={() => setBreakHover(false)}
+                iconLeft={breakHover ? koffieIconWit : koffieIconZwart}
               >
-                <img
-                  src={breakHover ? koffieIconWit : koffieIconZwart}
-                  alt=""
-                  className="timerButtonIcon"
-                />
                 Pauze nemen
-              </button>
+              </Button>
 
-              <button
-                type="button"
-                className="timerSecondaryButton"
+              <Button
+                variant="secondary"
                 onClick={onPauseToggle}
                 onMouseEnter={() => setPauseHover(true)}
                 onMouseLeave={() => setPauseHover(false)}
+                iconLeft={pauseIcon}
               >
-                <img src={pauseIcon} alt="" className="timerButtonIcon" />
                 {isPaused ? "Hervat timer" : "Pauzeer timer"}
-              </button>
+              </Button>
             </div>
-
-            <button
-              type="button"
-              className="timerDangerButton"
-              onClick={onEndWorkday}
-            >
-              <img src={stopIconWit} alt="" className="timerButtonIcon" />
-              Werkdag beëindigen
-            </button>
+            <div className="workdayEndButton">
+              <Button
+                variant="danger"
+                onClick={onEndWorkday}
+                iconLeft={stopIconWit}
+                full
+              >
+                Werkdag beëindigen
+              </Button>
+            </div>
           </>
         ) : (
           <div className="timerControlRow">
-            <button
-              type="button"
-              className="timerSecondaryButton"
+            <Button
+              variant="secondary"
               onClick={onPauseToggle}
               onMouseEnter={() => setPauseHover(true)}
               onMouseLeave={() => setPauseHover(false)}
+              iconLeft={pauseIcon}
             >
-              <img src={pauseIcon} alt="" className="timerButtonIcon" />
               {isPaused ? "Hervat" : "Pauzeer"}
-            </button>
+            </Button>
 
-            <button
-              type="button"
-              className="timerSecondaryButton"
+            <Button
+              variant="secondary"
               onClick={onReset}
               onMouseEnter={() => setResetHover(true)}
               onMouseLeave={() => setResetHover(false)}
+              iconLeft={resetHover ? resetIconWit : resetIconZwart}
             >
-              <img
-                src={resetHover ? resetIconWit : resetIconZwart}
-                alt=""
-                className="timerButtonIcon"
-              />
               Opnieuw
-            </button>
+            </Button>
 
-            <button
-              type="button"
-              className="timerDangerButton"
+            <Button
+              variant="danger"
               onClick={onStop}
+              iconLeft={stopIconWit}
+              full
             >
-              <img src={stopIconWit} alt="" className="timerButtonIcon" />
               Stop
-            </button>
+            </Button>
           </div>
         )}
       </article>

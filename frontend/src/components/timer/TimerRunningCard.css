@@ -67,6 +67,8 @@
 
 .timerControlsCard {
   padding: 22px;
+  width: 100%;
+  margin-top: 14px;
 }
 
 .timerControlRow {
@@ -75,61 +77,12 @@
   width: 100%;
 }
 
-.timerControlRow button {
+.timerControlRow .btn {
   flex: 1;
 }
 
-.timerControlsCard > .timerDangerButton {
-  width: 100%;
+.workdayEndButton {
   margin-top: 14px;
-}
-
-.timerSecondaryButton,
-.timerDangerButton {
-  min-height: 46px;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.timerSecondaryButton {
-  border: 1px solid #d8d0be;
-  background: #fffdf8;
-  color: #25221f;
-  padding: 10px 18px;
-}
-
-.timerDangerButton {
-  border: none;
-  background: #d77b7b;
-  color: #fffdf8;
-  padding: 10px 18px;
-}
-
-.timerSecondaryButton:hover {
-  background: #78957f;
-  color: #fffdf8;
-  border-color: #78957f;
-  transform: translateY(-1px);
-}
-
-.timerDangerButton:hover {
-  background: #c96f6f;
-  transform: translateY(-1px);
-}
-
-.timerButtonIcon {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
 }
 
 @media (max-width: 640px) {

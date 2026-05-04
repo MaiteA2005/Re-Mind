@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/base/Button";
 
 import MainLayout from "../components/layout/MainLayout";
 import TimerTabs from "../components/timer/TimerTabs";
@@ -230,21 +231,19 @@ function TimerPage() {
               </p>
 
               <div className="timerModalActions">
-                <button
-                  type="button"
-                  className="timerSecondaryButton"
+                <Button
+                  variant="secondary"
                   onClick={() => setShowEndModal(false)}
                 >
                   Annuleren
-                </button>
+                </Button>
 
-                <button
-                  type="button"
-                  className="timerPrimaryButton"
+                <Button
+                  variant="primary"
                   onClick={confirmEndWorkday}
                 >
                   Ja, beëindig werkdag
-                </button>
+                </Button>
               </div>
             </div>
           </div>
