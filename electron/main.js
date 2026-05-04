@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require("electron");
-const path = require("path");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -11,7 +10,13 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:5173");
+  const isDev = !app.isPackaged;
+
+  if (isDev) {
+    win.loadURL("http://localhost:5173");
+  } else {
+    win.loadURL("https://re-mind-one.vercel.app/");
+  }
 }
 
 app.whenReady().then(() => {
