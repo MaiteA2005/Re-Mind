@@ -1,35 +1,25 @@
-import "./PauseTabs.css";
-import favoriteDefaultIcon from "../../assets/icons_groen/hart_default_groen.svg";
-import favoriteActiveIcon from "../../assets/icons_wit/hart_default_wit.svg";
+import FilterTabs from "../base/FilterTabs";
+import heartIcon from "../../assets/icons_groen/hart_default_groen.svg";
+import heartFilledIcon from "../../assets/icons_wit/hart_filled_wit.svg";
 
 function PauseTabs({ activeTab, onTabChange }) {
+  const tabs = [
+    { value: "short", label: "Korte pauzes" },
+    { value: "long", label: "Lange pauzes" },
+    {
+      value: "favorites",
+      label: "Favorieten",
+      icon: heartIcon,
+      activeIcon: heartFilledIcon,
+    },
+  ];
+
   return (
-    <div className="pauseTabs">
-      <button
-        type="button"
-        className={`pauseTabButton ${activeTab === "short" ? "active" : ""}`}
-        onClick={() => onTabChange("short")}
-      >
-        Korte pauzes
-      </button>
-
-      <button
-        type="button"
-        className={`pauseTabButton ${activeTab === "long" ? "active" : ""}`}
-        onClick={() => onTabChange("long")}
-      >
-        Lange pauzes
-      </button>
-
-      <button
-        type="button"
-        className={`pauseTabButton ${activeTab === "favorites" ? "active" : ""}`}
-        onClick={() => onTabChange("favorites")}
-      >
-        <img src={activeTab === "favorites" ? favoriteActiveIcon : favoriteDefaultIcon} alt="hart" />
-        Favorieten
-      </button>
-    </div>
+    <FilterTabs
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={onTabChange}
+    />
   );
 }
 

@@ -1,65 +1,40 @@
-import "./TimerTabs.css";
+import FilterTabs from "../base/FilterTabs";
 
-import werkdagIconZwart from "../../assets/icons_zwart/werkdag_zwart.svg";
-import focusIconZwart from "../../assets/icons_zwart/werkdag_zwart.svg";
-import pauzeTimerIconZwart from "../../assets/icons_zwart/koffie_zwart.svg";
-
-import werkdagIconWit from "../../assets/icons_wit/werkdag_wit.svg";
-import focusIconWit from "../../assets/icons_wit/werkdag_wit.svg";
-import pauzeTimerIconWit from "../../assets/icons_wit/koffie_wit.svg";
+import workdayBlack from "../../assets/icons_zwart/werkdag_zwart.svg";
+import workdayWhite from "../../assets/icons_wit/werkdag_wit.svg";
+import focusBlack from "../../assets/icons_zwart/werkdag_zwart.svg";
+import focusWhite from "../../assets/icons_wit/werkdag_wit.svg";
+import breakBlack from "../../assets/icons_zwart/koffie_zwart.svg";
+import breakWhite from "../../assets/icons_wit/koffie_wit.svg";
 
 function TimerTabs({ activeTimer, onChange }) {
   const tabs = [
-    { 
-      id: "workday", 
-      label: "Werkdag", 
-      icon: {
-        default: werkdagIconZwart,
-        active: werkdagIconWit,
-      } 
+    {
+      value: "workday",
+      label: "Werkdag",
+      icon: workdayBlack,
+      activeIcon: workdayWhite,
     },
-    { 
-      id: "focus", 
-      label: "Focusblok", 
-      icon: {
-          default: focusIconZwart,
-          active: focusIconWit,
-      } 
+    {
+      value: "focus",
+      label: "Focusblok",
+      icon: focusBlack,
+      activeIcon: focusWhite,
     },
-    { 
-        id: "break", 
-        label: "Pauze", 
-        icon: {
-            default: pauzeTimerIconZwart,
-            active: pauzeTimerIconWit,
-      } 
+    {
+      value: "break",
+      label: "Pauze",
+      icon: breakBlack,
+      activeIcon: breakWhite,
     },
   ];
 
   return (
-    <div className="timerTabs">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          type="button"
-          className={`timerTab ${
-            activeTimer === tab.id ? "timerTabActive" : ""
-        }`}
-          onClick={() => onChange(tab.id)}
-        >
-          <img
-            src={
-                activeTimer === tab.id
-                ? tab.icon.active
-                : tab.icon.default
-            }
-            alt="Timer Tab Icon"
-            className="timerTabIcon"
-          />
-          <span>{tab.label}</span>
-        </button>
-      ))}
-    </div>
+    <FilterTabs
+      tabs={tabs}
+      activeTab={activeTimer}
+      onTabChange={onChange}
+    />
   );
 }
 
