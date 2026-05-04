@@ -1,5 +1,5 @@
 import FilterTabs from "../base/FilterTabs";
-import heartIcon from "../../assets/icons_groen/hart_default_groen.svg";
+import heartIcon from "../../assets/icons_zwart/hart_default_zwart.svg";
 import heartFilledIcon from "../../assets/icons_wit/hart_filled_wit.svg";
 
 function PauseTabs({ activeTab, onTabChange }) {
