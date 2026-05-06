@@ -1,0 +1,29 @@
+.settingsCard,
+.settingsPremiumWrapper {
+  width: 100%;
+  max-width: 690px;
+  background: #f1ead8;
+  border-radius: 8px;
+  padding: 26px 28px;
+}
+
+.settingsPremiumWrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 615px;
+}
+
+.settingsPanel h2,
+.settingsCenterPanel h2 {
+  margin: 0 0 24px;
+  color: #1f1d1b;
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.settingsIntro {
+  margin: -14px 0 24px;
+  color: #5f5d58;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}

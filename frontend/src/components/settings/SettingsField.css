@@ -1,0 +1,31 @@
+.settingsField {
+  margin-bottom: 18px;
+}
+
+.settingsField label {
+  display: block;
+  margin: 0 0 7px;
+  color: #25221f;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.settingsField input,
+.settingsField select {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #d8d0be;
+  border-radius: 7px;
+  background: #fffdf8;
+  padding: 0 12px;
+  color: #2f2d29;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.settingsField span {
+  display: block;
+  margin-top: 6px;
+  color: #6a675f;
+  font-size: 0.85rem;
+}

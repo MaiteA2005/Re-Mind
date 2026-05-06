@@ -1,0 +1,30 @@
+.settingsToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.settingsToggleRow h3 {
+  display: block;
+  margin: 0 0 7px;
+  color: #25221f;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.settingsToggleRow p {
+  margin: 0;
+  color: #5f5d58;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.settingsToggleRow input {
+  width: 34px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: #78957f;
+}

@@ -1,0 +1,39 @@
+.settingsCenterPanel {
+  min-height: 235px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 10px;
+}
+
+.settingsCenterPanel h2 {
+  margin: 0 0 24px;
+  color: #1f1d1b;
+  font-size: 1.55rem;
+  line-height: 1.15;
+}
+
+.settingsCenterPanel p {
+  margin: 0 0 18px;
+  color: #5f5d58;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.settingsIconCircle {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: #e8e1cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settingsIconCircle img {
+  width: 21px;
+  height: 21px;
+}
