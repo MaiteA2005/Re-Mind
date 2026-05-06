@@ -10,7 +10,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    icon: path.join(__dirname, "icon.ico"),
+    icon: path.join(__dirname, "favicon.ico"),
   });
 
   const isDev = !app.isPackaged;

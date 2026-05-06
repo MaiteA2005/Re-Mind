@@ -24,6 +24,12 @@
     "win": {
       "target": "nsis",
       "icon": "favicon.ico"
+    },
+    "nsis": {
+      "artifactName": "Re-Mind-Setup-${version}.${ext}"
     }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
   }
 }
