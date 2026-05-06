@@ -13,6 +13,8 @@ function createWindow() {
     icon: path.join(__dirname, "favicon.ico"),
   });
 
+  Menu.setApplicationMenu(null);
+
   const isDev = !app.isPackaged;
 
   if (isDev) {
