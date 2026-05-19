@@ -7,6 +7,7 @@ import Button from "../components/base/Button";
 //zwart
 import premium_zwart from "../assets/icons_zwart/premium_zwart.svg";
 import bedrijfslicentie from "../assets/icons_zwart/team_zwart.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 
 //groen
 import premium_groen from "../assets/icons_groen/premium_groen.svg";
@@ -17,11 +18,12 @@ import kalender from "../assets/icons_groen/agenda_groen.svg";
 import trend from "../assets/icons_groen/trend_groen.svg";
 import spark from "../assets/icons_groen/stretchen_groen.svg";
 import instellingen from "../assets/icons_groen/instellingen_groen.svg";
-
 import bedrijf from "../assets/icons_groen/bedrijf_groen.svg";
 import mail from "../assets/icons_groen/mail_groen.svg";
+
+//Wit
 import dropdown from "../assets/icons_wit/arrow down_wit.svg";
-import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
+import pijlLinksWit from "../assets/icons_wit/pijl_links_wit.svg";
 import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
 
 const freeFeatures = [
@@ -98,9 +100,16 @@ function PremiumPage() {
     return (
       <MainLayout title="Bedrijfslicentie" subtitle="Geef je team toegang tot Re:Mind en verbeter het welzijn op de werkvloer">
         <section className="business-page" aria-label="Bedrijfslicentie aanvraag">
-          <Button variant="secondary" onClick={() => setView("plans")} iconLeft={pijlLinks}>
-            Terug naar plannen
-          </Button>
+          <div className="business-topbar">
+            <Button
+              type="button"
+              variant="secondary"
+              iconLeft={pijlLinks}
+              onClick={() => setView("plans")}
+            >
+              Terug naar plannen
+            </Button>
+          </div>
           <div className="business-benefits">
             <div className="business-benefit-card">
               <div className="benefit-circle" >
@@ -193,7 +202,7 @@ function PremiumPage() {
                 <p><strong>Email:</strong> {form.email}</p>
               </div>
 
-              <Button className="success-button" onClick={() => setView("plans")} iconLeft={pijlLinks}>
+              <Button className="success-button" to={'/dashboard'} iconLeft={pijlLinksWit}>
                 Terug naar dashboard
               </Button>
             </section>

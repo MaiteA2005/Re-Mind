@@ -171,6 +171,11 @@
 }
 
 /* business page */
+.business-topbar {
+  margin-bottom: -46px;
+  margin-left: -30px;
+}
+
 .business-actions {
   display: grid;
   gap: 0.55rem;
@@ -179,10 +184,11 @@
 
 .business-benefits {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0 auto 2rem;
-  max-width: 650px;
+  margin: 0 auto 2.5rem;
+  max-width: 860px;
+  width: 100%;
 }
 
 .business-benefit-card,
@@ -234,7 +240,7 @@
   display: grid;
   gap: 1rem;
   margin: 0 auto 1.6rem;
-  max-width: 650px;
+  max-width: 860px;
   padding: 1.6rem;
 }
 
@@ -280,7 +286,7 @@
 
 .after-request-card {
   margin: 0 auto;
-  max-width: 650px;
+  max-width: 860px;
   text-align: left;
 }
 
