@@ -7,11 +7,14 @@
 }
 
 .settingsPage .filterTabs {
+  width: 100%;
+  max-width: 800px;
   margin-bottom: 32px;
 }
 
 .settingsPanel {
   width: 100%;
+  max-width: 800px;
 }
 
 .settingsPanel h2 {
@@ -101,7 +104,7 @@
 .settingsError,
 .settingsSuccess {
   width: 100%;
-  max-width: 960px;
+  max-width: 800px;
   padding: 18px 20px;
   border-radius: 16px;
   margin-bottom: 24px;

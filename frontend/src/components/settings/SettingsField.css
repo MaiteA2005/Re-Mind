@@ -29,3 +29,16 @@
   color: #6a675f;
   font-size: 0.85rem;
 }
+
+.settingsField select.customSelect {
+  appearance: none;
+  background-image: url("../../assets/icons_zwart/arrow_down_zwart.svg");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+}
+
+.settingsField select.customSelect:focus {
+  outline: none;
+  border-color: #8aa08d;
+}

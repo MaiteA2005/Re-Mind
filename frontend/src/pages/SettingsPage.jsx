@@ -26,7 +26,7 @@ import {
 
 import premium_groen from "../assets/icons_groen/premium_groen.svg";
 import premium_wit from "../assets/icons_wit/premium_wit.svg";
-import arrowDownBlack from "../assets/icons_zwart/arrow_down_zwart.svg";
+import dropdownArrow from "../assets/icons_zwart/arrow_down_zwart.svg";
 
 import "./SettingsPage.css";
 

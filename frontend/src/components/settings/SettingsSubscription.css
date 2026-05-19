@@ -1,3 +1,4 @@
+/* gratis plan */
 .settingsCenterPanel {
   min-height: 235px;
   display: flex;
@@ -36,4 +37,125 @@
 .settingsIconCircle img {
   width: 21px;
   height: 21px;
+}
+
+/* subscription panel */
+.settingsSubscriptionTitle{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settingsSubscriptionTitle img {
+  width: 24px;
+  height: 24px;
+}
+
+.subscriptionCard {
+  width: 100%;
+  background: rgba(118, 147, 130, 0.1);
+  border: 1px solid #769382;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.subscriptionCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #769382;
+}
+
+.subscriptionCardHeader h3 {
+  margin: 0 0 4px;
+  color: #1a1a1a;
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27px;
+}
+
+.subscriptionCardHeader p {
+  margin: 0;
+  color: #414141;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.subscriptionCardHeader img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.subscriptionRows {
+  display: grid;
+  gap: 8px;
+}
+
+.subscriptionRows div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.subscriptionRows span {
+  color: #1a1a1a;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.subscriptionRows strong {
+  color: #1a1a1a;
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: right;
+}
+
+.subscriptionRows div:first-child strong {
+  color: #769382;
+}
+
+.subscriptionCancelButton {
+  width: 100%;
+  margin-top: 18px;
+  min-height: 42px;
+  border: 1px solid #d8d0be;
+  border-radius: 8px;
+  background: #fffdf8;
+  cursor: pointer;
+}
+
+.subscriptionModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 29, 27, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+
+.subscriptionModal {
+  width: min(420px, calc(100% - 32px));
+  background: #f4eed9;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.subscriptionModalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 18px;
 }

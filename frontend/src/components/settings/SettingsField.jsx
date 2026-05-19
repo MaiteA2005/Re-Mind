@@ -15,7 +15,13 @@ function SettingsField({
       <label htmlFor={name}>{label}</label>
 
       {options ? (
-        <select id={name} name={name} value={value} onChange={onChange}>
+        <select 
+          className="customSelect"
+          id={name} 
+          name={name} 
+          value={value} 
+          onChange={onChange}
+        >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
