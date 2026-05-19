@@ -18,3 +18,7 @@ Opstarten
 ## Electron
 - cd electron
 - npm start
+
+### Electron Build
+- cd electon
+- npm run dist
