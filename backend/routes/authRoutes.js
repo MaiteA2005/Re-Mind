@@ -9,12 +9,14 @@ import PauseSession from "../models/PauseSession.js";
 
 const router = express.Router();
 
+// Functie om JWT token te creëren
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
 
+// Endpoint voor gebruikersregistratie
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -59,6 +61,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Endpoint voor gebruikerslogin
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -103,10 +106,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Endpoint om huidige gebruikersgegevens op te halen
 router.get("/me", protect, async (req, res) => {
   res.status(200).json(req.user);
 });
 
+// Endpoint voor het updaten van onboarding gegevens
 router.patch("/onboarding", protect, async (req, res) => {
   try {
     const {
@@ -137,6 +142,30 @@ router.patch("/onboarding", protect, async (req, res) => {
   }
 });
 
+// Endpoint voor het updaten van abonnement en facturering
+router.patch("/subscription", protect, async (req, res) => {
+  try {
+    const { subscriptionPlan, billingCycle } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        subscriptionPlan,
+        billingCycle,
+      },
+      { new: true }
+    ).select("-password");
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      message: "Abonnement kon niet aangepast worden",
+      error: error.message,
+    });
+  }
+});
+
+// Endpoint voor het updaten van gebruikersinstellingen
 router.patch("/settings", protect, async (req, res) => {
   try {
     const {
@@ -172,6 +201,7 @@ router.patch("/settings", protect, async (req, res) => {
   }
 });
 
+// Endpoint voor het updaten van het wachtwoord
 router.patch("/password", protect, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -206,6 +236,7 @@ router.patch("/password", protect, async (req, res) => {
   }
 });
 
+// Endpoint voor het exporteren van persoonlijke data
 router.get("/export", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
@@ -226,6 +257,7 @@ router.get("/export", protect, async (req, res) => {
   }
 });
 
+// Endpoint voor het verwijderen van persoonlijke data
 router.delete("/data", protect, async (req, res) => {
   try {
     await CheckIn.deleteMany({ userId: req.user._id });
@@ -242,6 +274,7 @@ router.delete("/data", protect, async (req, res) => {
   }
 });
 
+// Endpoint voor het verwijderen van het account en alle data
 router.delete("/account", protect, async (req, res) => {
   try {
     await CheckIn.deleteMany({ userId: req.user._id });

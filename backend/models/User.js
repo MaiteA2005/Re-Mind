@@ -66,6 +66,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "Elke 2 uur",
     },
+
+    subscriptionPlan: {
+      type: String,
+      enum: ["free", "premium", "business"],
+      default: "free",
+    },
+
+    billingCycle: {
+      type: String,
+      enum: ["monthly", "yearly"],
+      default: "monthly",
+    },
   },
   { timestamps: true }
 );
