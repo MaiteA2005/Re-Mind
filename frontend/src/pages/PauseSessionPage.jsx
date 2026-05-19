@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Button from "../components/base/Button";
 
-import PauseBackButton from "../components/pause/PauseBackButton";
 import PauseHeader from "../components/pause/PauseHeader";
 import PauseTimer from "../components/pause/PauseTimer";
 import PauseProgressBar from "../components/pause/PauseProgressBar";
@@ -12,6 +11,7 @@ import PauseSessionControls from "../components/pause/PauseSessionControls";
 import API_URL from "../services/api";
 import { savePauseSession } from "../services/pauseSessionService";
 import CompleteBlackIcon from "../assets/icons_zwart/name_one_win_zwart.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 import "./PausePage.css";
 
 function getDurationSeconds(duration) {
@@ -107,7 +107,7 @@ function PauseSessionPage() {
 
     return () => clearInterval(interval);
   }, [pause, isPaused, timeLeft]);
-
+  
   if (loading) {
     return (
       <MainLayout title="Pauze laden" subtitle="Even geduld">
@@ -120,7 +120,11 @@ function PauseSessionPage() {
     return (
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseSessionWrapper">
-          <PauseBackButton />
+          <div className="pauseBackButton">
+            <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+              Terug naar pauzes
+            </Button>
+          </div>
         </section>
       </MainLayout>
     );
@@ -131,8 +135,11 @@ function PauseSessionPage() {
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseSessionWrapper">
-        <PauseBackButton />
-
+        <div className="pauseBackButton">
+          <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+            Terug naar pauzes
+          </Button>
+        </div>
         <div className="pauseSessionContent">
           <PauseHeader title={pause.title} icon={pause.icon} />
 

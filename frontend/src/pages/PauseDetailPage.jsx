@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Button from "../components/base/Button";
 import API_URL from "../services/api";
 
-import PauseBackButton from "../components/pause/PauseBackButton";
 import PauseHeader from "../components/pause/PauseHeader";
 import PauseInstructionsCard from "../components/pause/PauseInstructionsCard";
 import PauseInfoCard from "../components/pause/PauseInfoCard";
 import PauseMethodCard from "../components/pause/PauseMethodCard";
 
 import PlayWhiteIcon from "../assets/icons_wit/play_wit.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 
 import "./PausePage.css";
 
 function PauseDetailPage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [pause, setPause] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -50,7 +51,12 @@ function PauseDetailPage() {
     return (
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseDetailWrapper">
-          <PauseBackButton />
+          
+          <div className="pauseBackButton">
+            <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+              Terug naar pauzes
+            </Button>     
+          </div>   
         </section>
       </MainLayout>
     );
@@ -59,8 +65,11 @@ function PauseDetailPage() {
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseDetailWrapper">
-        <PauseBackButton />
-
+        <div className="pauseBackButton">
+          <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+            Terug naar pauzes
+          </Button>
+        </div>
         <div className="pauseDetailContent">
           <PauseHeader
             title={pause.title}

@@ -82,6 +82,11 @@
   width: 100%;
 }
 
+.pauseBackButton {
+  width: fit-content;
+  align-self: flex-start;
+}
+
 @media (max-width: 900px) {
   .pauseGrid {
     grid-template-columns: 1fr;
