@@ -374,6 +374,16 @@
   padding-inline: 1.5rem;
 }
 
+/* error message */
+.premium-error {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #f7dddd;
+  color: #8a2f2f;
+  border: 1px solid #e2aaaa;
+}
+
 @media (max-width: 980px) {
   .pricing-grid,
   .business-benefits {
