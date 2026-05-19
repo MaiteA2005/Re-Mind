@@ -1,29 +1,51 @@
 import { useMemo, useState } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import "./PremiumPage.css";
+import Button from "../components/base/Button";
+
+//icons
+//zwart
+import premium_zwart from "../assets/icons_zwart/premium_zwart.svg";
+import bedrijfslicentie from "../assets/icons_zwart/team_zwart.svg";
+
+//groen
+import premium_groen from "../assets/icons_groen/premium_groen.svg";
+import bedrijfslicentie_groen from "../assets/icons_groen/team_groen.svg";
+import check from "../assets/icons_groen/check_groen.svg";
+import grafiek from "../assets/icons_groen/inzichten_groen.svg";
+import kalender from "../assets/icons_groen/agenda_groen.svg";
+import trend from "../assets/icons_groen/trend_groen.svg";
+import spark from "../assets/icons_groen/stretchen_groen.svg";
+import instellingen from "../assets/icons_groen/instellingen_groen.svg";
+
+import bedrijf from "../assets/icons_groen/bedrijf_groen.svg";
+import mail from "../assets/icons_groen/mail_groen.svg";
+import dropdown from "../assets/icons_wit/arrow down_wit.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
+import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
 
 const freeFeatures = [
-  "Dagelijkse check-ins",
-  "Basis pauzesuggesties",
-  "Focus timer",
-  "Dagelijkse inzichten",
-  "Dagafsluiting reflectie",
+  { icon: check, text: "Dagelijkse check-ins" },
+  { icon: check, text: "Basis pauzesuggesties" },
+  { icon: check, text: "Focus timer" },
+  { icon: check, text: "Dagelijkse inzichten" },
+  { icon: check, text: "Dagafsluiting reflectie" },
 ];
 
 const premiumFeatures = [
-  "Wekelijkse & maandelijkse rapporten",
-  "Vergelijk je voortgang over tijd",
-  "Zie trends in je energie en focus",
-  "Aanbevelingen op maat van jouw ritme",
-  "Uitgebreide personalisatie opties",
+  { icon: grafiek, text: "Wekelijkse & maandelijkse rapporten" },
+  { icon: kalender, text: "Vergelijk je voortgang over tijd" },
+  { icon: trend, text: "Zie trends in je energie en focus" },
+  { icon: spark, text: "Aanbevelingen op maat van jouw ritme" },
+  { icon: instellingen, text: "Uitgebreide personalisatie opties" },
 ];
 
 const businessFeatures = [
-  "Overzichtelijke dashboards voor je team",
-  "Inzicht in teamwelzijn en werkdruk",
-  "Alle Premium features per medewerker",
-  "Bedrijfsbrede personalisatie",
-  "Centrale beheer & instellingen",
+  { icon: grafiek, text: "Overzichtelijke dashboards voor je team" },
+  { icon: trend, text: "Inzicht in teamwelzijn en werkdruk" },
+  { icon: premium_groen, text: "Alle Premium features per medewerker" },
+  { icon: spark, text: "Bedrijfsbrede personalisatie" },
+  { icon: instellingen, text: "Centrale beheer & instellingen" },
 ];
 
 const teamSizes = ["1-10 werknemers", "11-25 werknemers", "26-50 werknemers", "51-100 werknemers", "100+ werknemers"];
@@ -32,11 +54,9 @@ function FeatureList({ features, variant = "check" }) {
   return (
     <ul className="premium-feature-list">
       {features.map((feature) => (
-        <li key={feature}>
-          <span className={`premium-feature-icon premium-feature-icon--${variant}`} aria-hidden="true">
-            {variant === "check" ? "✓" : "✦"}
-          </span>
-          {feature}
+        <li key={feature.text}>
+          <img src={feature.icon} alt="feature icon" className={`feature-icon feature-icon--${variant}`} />
+          {feature.text}
         </li>
       ))}
     </ul>
@@ -78,19 +98,28 @@ function PremiumPage() {
     return (
       <MainLayout title="Bedrijfslicentie" subtitle="Geef je team toegang tot Re:Mind en verbeter het welzijn op de werkvloer">
         <section className="business-page" aria-label="Bedrijfslicentie aanvraag">
+          <Button variant="secondary" onClick={() => setView("plans")} iconLeft={pijlLinks}>
+            Terug naar plannen
+          </Button>
           <div className="business-benefits">
             <div className="business-benefit-card">
-              <span className="benefit-circle" aria-hidden="true">☷</span>
+              <div className="benefit-circle" >
+                <img src={bedrijfslicentie_groen} alt="Bedrijf" className="benefit-img" />
+              </div>
               <h3>Team dashboard</h3>
               <p>Inzicht in teamwelzijn zonder individuele controle</p>
             </div>
             <div className="business-benefit-card">
-              <span className="benefit-circle" aria-hidden="true">▣</span>
+              <div className="benefit-circle" >
+                <img src={bedrijf} alt="Bedrijf" className="benefit-img" />
+              </div>
               <h3>Premium voor iedereen</h3>
               <p>Alle teamleden krijgen toegang tot Premium features</p>
             </div>
             <div className="business-benefit-card">
-              <span className="benefit-circle" aria-hidden="true">✉</span>
+              <div className="benefit-circle" >
+                <img src={mail} alt="Email" className="benefit-img" />
+              </div>
               <h3>Persoonlijke support</h3>
               <p>Dedicated ondersteuning voor je organisatie</p>
             </div>
@@ -136,7 +165,10 @@ function PremiumPage() {
               <textarea name="message" value={form.message} onChange={updateField} placeholder="Vertel ons meer over je behoeften..." rows="5" />
             </label>
 
-            <button className="primary-button" type="submit">Aanvraag versturen →</button>
+            <Button variant="primary" type="submit">
+              Aanvraag versturen 
+              <img src={pijlRechts} alt="Pijl rechts" className="button-icon" />
+            </Button>
           </form>
 
           <aside className="after-request-card">
@@ -151,7 +183,7 @@ function PremiumPage() {
         {showSuccess && (
           <div className="modal-backdrop" role="presentation">
             <section className="success-modal" role="dialog" aria-modal="true" aria-labelledby="success-title">
-              <div className="success-icon" aria-hidden="true">✓</div>
+              <div className="success-icon"><img src={check} alt="check"/></div>
               <h2 id="success-title">Bedankt voor je aanvraag!</h2>
               <p>We hebben je aanvraag voor een bedrijfslicentie ontvangen. Ons team neemt binnen 24 uur contact met je op om de volgende stappen te bespreken.</p>
 
@@ -161,7 +193,9 @@ function PremiumPage() {
                 <p><strong>Email:</strong> {form.email}</p>
               </div>
 
-              <button className="primary-button success-button" type="button" onClick={() => setView("plans")}>Terug naar dashboard</button>
+              <Button className="success-button" onClick={() => setView("plans")} iconLeft={pijlLinks}>
+                Terug naar dashboard
+              </Button>
             </section>
           </div>
         )}
@@ -185,27 +219,44 @@ function PremiumPage() {
             <p className="price"><strong>€0,00</strong><span>/maand</span></p>
             <p className="card-copy">Perfect om te beginnen met werkbalans</p>
             <FeatureList features={freeFeatures} />
-            <button className="secondary-button" type="button">Huidige plan</button>
+            
+            <div className="pricing-card-action">
+              <Button variant="secondary" onClick={() => setView("plans")}>
+                Huidige plan
+              </Button>
+            </div>
           </PricingCard>
 
           <PricingCard highlighted>
             <div className="popular-badge">Meest gekozen</div>
-            <h2><span aria-hidden="true">♕</span> Premium</h2>
+            <h2 className="card-title">
+              <img src={premium_zwart} alt="Premium" className="card-title-icon" />
+              Premium
+            </h2>
             <p className="price"><strong>{premiumPrice}</strong><span>{priceSuffix}</span></p>
             <p className="card-copy">Meer inzicht in je werkdag:</p>
             <FeatureList features={premiumFeatures} variant="spark" />
             <p className="guarantee">14 dagen geld-terug-garantie</p>
-            <button className="primary-button" type="button">Upgrade naar Premium</button>
+            <Button variant="primary" onClick={() => setView("business")}>
+              Upgrade naar Premium
+            </Button>
           </PricingCard>
 
           <PricingCard>
-            <h2><span aria-hidden="true">♙</span> Bedrijfslicentie</h2>
+            <h2 className="card-title">
+              <img src={bedrijfslicentie} alt="Bedrijfslicentie" className="card-title-icon" />
+              Bedrijfslicentie
+            </h2>
             <p className="price"><strong>{businessPrice}</strong><span>{priceSuffix}/werknemer</span></p>
             <p className="card-copy">Voor teams en organisaties die gezonder en efficiënter willen werken</p>
             <FeatureList features={businessFeatures} variant="spark" />
             <div className="business-actions">
-              <button className="secondary-button" type="button">Contacteer ons</button>
-              <button className="primary-button" type="button" onClick={() => setView("business")}>Aanvragen</button>
+              <Button variant="secondary" onClick={() => setView("business")}>
+                Contacteer ons
+              </Button>
+              <Button variant="primary" onClick={() => setView("business")}>
+                Aanvragen
+              </Button>
             </div>
           </PricingCard>
         </div>
