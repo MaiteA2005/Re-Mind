@@ -10,6 +10,7 @@ import checkInRoutes from "./routes/checkInRoutes.js";
 import dayClosingRoutes from "./routes/dayClosingRoutes.js";
 import timerSessionRoutes from "./routes/timerSessionRoutes.js";
 import businessRequestRoutes from "./routes/businessRequestRoutes.js";
+import pauseReminderRoutes from "./routes/pauseReminderRoutes.js";
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ app.use("/api/check-ins", checkInRoutes);
 app.use("/api/day-closings", dayClosingRoutes);
 app.use("/api/timer-sessions", timerSessionRoutes);
 app.use("/api/business-requests", businessRequestRoutes);
-
+app.use("/api/pause-reminders", pauseReminderRoutes);
 app.get("/", (req, res) => {
   res.send("API werkt");
 });
