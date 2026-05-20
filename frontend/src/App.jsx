@@ -1,6 +1,6 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import { TimerProvider } from "./context/TimerContext";
+import { TimerProvider, useTimer } from "./context/TimerContext";
 
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
@@ -20,6 +20,8 @@ import TimerPage from "./pages/TimerPage";
 import SettingsPage from "./pages/SettingsPage";
 import PremiumPage from "./pages/PremiumPage";
 
+import PauseReminderPopup from "./components/timer/PauseReminderPopup";
+
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
 
@@ -38,6 +40,25 @@ function PublicRoute({ children }) {
   }
 
   return children;
+}
+
+function GlobalTimerPopups() {
+  const {
+    pauseReminderPopup,
+    takeReminderBreak,
+    snoozeReminder,
+    dismissReminder,
+  } = useTimer();
+
+  if (!pauseReminderPopup) return null;
+
+  return (
+    <PauseReminderPopup
+      onTakeBreak={takeReminderBreak}
+      onSnooze={snoozeReminder}
+      onDismiss={dismissReminder}
+    />
+  );
 }
 
 function App() {
@@ -173,6 +194,7 @@ function App() {
           }
         />
       </Routes>
+      <GlobalTimerPopups />
       </TimerProvider>
     </HashRouter>
   );

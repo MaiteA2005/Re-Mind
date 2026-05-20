@@ -1,0 +1,79 @@
+.pauseReminderOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(31, 29, 27, 0.48);
+}
+
+.pauseReminderPopup {
+  width: min(420px, 100%);
+  background: #f1ead8;
+  border: 1px solid #d8d0be;
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 18px 48px rgba(31, 29, 27, 0.24);
+}
+
+.pauseReminderIcon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 999px;
+  background: #e7ece4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pauseReminderIcon img {
+  width: 26px;
+  height: 26px;
+}
+
+.pauseReminderPopup h2 {
+  margin: 0 0 12px;
+  color: #1f1d1b;
+  font-size: 1.55rem;
+}
+
+.pauseReminderPopup p {
+  margin: 0 0 24px;
+  color: #5f5d58;
+  line-height: 1.55;
+}
+
+.pauseReminderActions {
+  display: grid;
+  gap: 10px;
+}
+
+.pauseReminderActions button {
+  min-height: 42px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.pauseReminderPrimary {
+  border: 1px solid #78957f;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.pauseReminderSecondary {
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+}
+
+.pauseReminderGhost {
+  border: none;
+  background: transparent;
+  color: #5f5d58;
+}

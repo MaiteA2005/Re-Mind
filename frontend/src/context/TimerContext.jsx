@@ -1,33 +1,265 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createTimerSession } from "../services/timerSessionService";
+import { createPauseReminder } from "../services/pauseReminderService";
 
 const TimerContext = createContext(null);
+const TIMER_STORAGE_KEY = "remind_timer_state";
 
-export function TimerProvider({ children }) {
-  const hasSavedRef = useRef(false);
-
-  const [activeTimer, setActiveTimer] = useState("workday");
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const [selectedDuration, setSelectedDuration] = useState(360);
-  const [selectedReminder, setSelectedReminder] = useState(60);
-  const [customDuration, setCustomDuration] = useState("");
-
-  const [totalSeconds, setTotalSeconds] = useState(360 * 60);
-  const [timeLeft, setTimeLeft] = useState(360 * 60);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [pauseTime, setPauseTime] = useState(0);
-  const [startedAt, setStartedAt] = useState(null);
-
-  const [activeTimerView, setActiveTimerView] = useState("workday");
-
-  const [sidebarBreakTimer, setSidebarBreakTimer] = useState({
+const defaultTimerState = {
+  activeTimer: "workday",
+  activeTimerView: "workday",
+  isRunning: false,
+  isPaused: false,
+  selectedDuration: 360,
+  selectedReminder: 60,
+  customDuration: "",
+  totalSeconds: 360 * 60,
+  timeLeft: 360 * 60,
+  elapsedTime: 0,
+  pauseTime: 0,
+  startedAt: null,
+  lastUpdatedAt: Date.now(),
+  sidebarBreakTimer: {
     isRunning: false,
     isPaused: false,
     timeLeft: 0,
     totalSeconds: 0,
-  });
+  },
+};
+
+function loadStoredTimerState() {
+  const stored = localStorage.getItem(TIMER_STORAGE_KEY);
+
+  if (!stored) return defaultTimerState;
+
+  try {
+    const parsed = JSON.parse(stored);
+    const now = Date.now();
+    const lastUpdatedAt = parsed.lastUpdatedAt || now;
+    const delta = Math.max(0, Math.floor((now - lastUpdatedAt) / 1000));
+
+    const restored = {
+      ...defaultTimerState,
+      ...parsed,
+      sidebarBreakTimer: {
+        ...defaultTimerState.sidebarBreakTimer,
+        ...(parsed.sidebarBreakTimer || {}),
+      },
+      lastUpdatedAt: now,
+    };
+
+    if (delta <= 0) return restored;
+
+    if (restored.isRunning) {
+      if (restored.isPaused) {
+        restored.pauseTime += delta;
+      } else {
+        const consumedSeconds = Math.min(delta, restored.timeLeft);
+
+        restored.elapsedTime += consumedSeconds;
+        restored.timeLeft = Math.max(restored.timeLeft - consumedSeconds, 0);
+
+        if (restored.timeLeft === 0) {
+          restored.isRunning = false;
+          restored.isPaused = false;
+        }
+      }
+    }
+
+    if (
+      restored.sidebarBreakTimer.isRunning &&
+      !restored.sidebarBreakTimer.isPaused
+    ) {
+      const breakConsumedSeconds = Math.min(
+        delta,
+        restored.sidebarBreakTimer.timeLeft
+      );
+
+      restored.sidebarBreakTimer.timeLeft = Math.max(
+        restored.sidebarBreakTimer.timeLeft - breakConsumedSeconds,
+        0
+      );
+
+      if (restored.isRunning && restored.activeTimer === "workday") {
+        restored.pauseTime += breakConsumedSeconds;
+      }
+
+      if (restored.sidebarBreakTimer.timeLeft === 0) {
+        restored.sidebarBreakTimer.isRunning = false;
+        restored.sidebarBreakTimer.isPaused = false;
+      }
+    }
+
+    return restored;
+  } catch {
+    return defaultTimerState;
+  }
+}
+
+export function TimerProvider({ children }) {
+  const initialState = loadStoredTimerState();
+  const hasSavedRef = useRef(false);
+  const lastTickRef = useRef(Date.now());
+
+  const [activeTimer, setActiveTimer] = useState(initialState.activeTimer);
+  const [activeTimerView, setActiveTimerView] = useState(
+    initialState.activeTimerView
+  );
+  const [isRunning, setIsRunning] = useState(initialState.isRunning);
+  const [isPaused, setIsPaused] = useState(initialState.isPaused);
+
+  const [selectedDuration, setSelectedDuration] = useState(
+    initialState.selectedDuration
+  );
+  const [selectedReminder, setSelectedReminder] = useState(
+    initialState.selectedReminder
+  );
+  const [customDuration, setCustomDuration] = useState(
+    initialState.customDuration
+  );
+
+  const [totalSeconds, setTotalSeconds] = useState(initialState.totalSeconds);
+  const [timeLeft, setTimeLeft] = useState(initialState.timeLeft);
+  const [elapsedTime, setElapsedTime] = useState(initialState.elapsedTime);
+  const [pauseTime, setPauseTime] = useState(initialState.pauseTime);
+  const [startedAt, setStartedAt] = useState(initialState.startedAt);
+
+  const [sidebarBreakTimer, setSidebarBreakTimer] = useState(
+    initialState.sidebarBreakTimer
+  );
+
+  const [pauseReminderPopup, setPauseReminderPopup] = useState(false);
+  const [lastReminderAt, setLastReminderAt] = useState(0);
+
+  useEffect(() => {
+    localStorage.setItem(
+      TIMER_STORAGE_KEY,
+      JSON.stringify({
+        activeTimer,
+        activeTimerView,
+        isRunning,
+        isPaused,
+        selectedDuration,
+        selectedReminder,
+        customDuration,
+        totalSeconds,
+        timeLeft,
+        elapsedTime,
+        pauseTime,
+        startedAt,
+        sidebarBreakTimer,
+        lastUpdatedAt: Date.now(),
+      })
+    );
+  }, [
+    activeTimer,
+    activeTimerView,
+    isRunning,
+    isPaused,
+    selectedDuration,
+    selectedReminder,
+    customDuration,
+    totalSeconds,
+    timeLeft,
+    elapsedTime,
+    pauseTime,
+    startedAt,
+    sidebarBreakTimer,
+  ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const delta = Math.floor((now - lastTickRef.current) / 1000);
+
+      if (delta <= 0) return;
+
+      lastTickRef.current = now;
+
+      if (isRunning) {
+        if (isPaused) {
+          setPauseTime((prev) => prev + delta);
+        } else {
+          setTimeLeft((prev) => {
+            const consumedSeconds = Math.min(delta, prev);
+            return Math.max(prev - consumedSeconds, 0);
+          });
+
+          setElapsedTime((prev) => {
+            const consumedSeconds = Math.min(delta, timeLeft);
+            return prev + consumedSeconds;
+          });
+        }
+      }
+
+      if (sidebarBreakTimer.isRunning && !sidebarBreakTimer.isPaused) {
+        const breakConsumedSeconds = Math.min(
+          delta,
+          sidebarBreakTimer.timeLeft
+        );
+
+        setSidebarBreakTimer((current) => {
+          const nextTimeLeft = Math.max(
+            current.timeLeft - breakConsumedSeconds,
+            0
+          );
+
+          return {
+            ...current,
+            timeLeft: nextTimeLeft,
+            isRunning: nextTimeLeft > 0,
+            isPaused: nextTimeLeft > 0 ? current.isPaused : false,
+          };
+        });
+
+        if (isRunning && activeTimer === "workday") {
+          setPauseTime((prev) => prev + breakConsumedSeconds);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [
+    isRunning,
+    isPaused,
+    timeLeft,
+    activeTimer,
+    sidebarBreakTimer.isRunning,
+    sidebarBreakTimer.isPaused,
+    sidebarBreakTimer.timeLeft,
+  ]);
+
+  useEffect(() => {
+    if (timeLeft === 0 && isRunning) {
+      saveCurrentTimerSession(true);
+      setIsRunning(false);
+      setIsPaused(false);
+    }
+  }, [timeLeft, isRunning]);
+
+  useEffect(() => {
+    if (!isRunning || isPaused || activeTimer !== "workday") return;
+    if (!selectedReminder) return;
+
+    const reminderSeconds = selectedReminder * 60;
+
+    const shouldShowReminder =
+      elapsedTime > 0 &&
+      elapsedTime % reminderSeconds === 0 &&
+      elapsedTime !== lastReminderAt;
+
+    if (shouldShowReminder) {
+      setPauseReminderPopup(true);
+      setLastReminderAt(elapsedTime);
+    }
+  }, [
+    elapsedTime,
+    isRunning,
+    isPaused,
+    activeTimer,
+    selectedReminder,
+    lastReminderAt,
+  ]);
 
   const saveCurrentTimerSession = async (completed = false) => {
     if (hasSavedRef.current || !startedAt || totalSeconds <= 0) return;
@@ -50,62 +282,9 @@ export function TimerProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    if (!isRunning || isPaused || timeLeft <= 0) return;
-
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => Math.max(prev - 1, 0));
-      setElapsedTime((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isRunning, isPaused, timeLeft]);
-
-  useEffect(() => {
-    if (!isRunning || !isPaused) return;
-
-    const interval = setInterval(() => {
-      setPauseTime((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isRunning, isPaused]);
-
-  useEffect(() => {
-    if (timeLeft === 0 && isRunning) {
-      saveCurrentTimerSession(true);
-      setIsRunning(false);
-      setIsPaused(false);
-    }
-  }, [timeLeft, isRunning]);
-
-  useEffect(() => {
-    if (!sidebarBreakTimer.isRunning || sidebarBreakTimer.isPaused) return;
-
-    const interval = setInterval(() => {
-      setSidebarBreakTimer((current) => {
-        const nextTimeLeft = Math.max(current.timeLeft - 1, 0);
-
-        if (nextTimeLeft === 0) {
-          return {
-            ...current,
-            isRunning: false,
-            timeLeft: 0,
-          };
-        }
-
-        return {
-          ...current,
-          timeLeft: nextTimeLeft,
-        };
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [sidebarBreakTimer.isRunning, sidebarBreakTimer.isPaused]);
-
   const changeTimerType = (timerType) => {
     setActiveTimer(timerType);
+    setActiveTimerView(timerType);
     setIsRunning(false);
     setIsPaused(false);
     setCustomDuration("");
@@ -153,6 +332,9 @@ export function TimerProvider({ children }) {
     setElapsedTime(0);
     setPauseTime(0);
     setStartedAt(new Date());
+    setActiveTimerView(activeTimer);
+
+    lastTickRef.current = Date.now();
     hasSavedRef.current = false;
 
     setIsRunning(true);
@@ -160,6 +342,7 @@ export function TimerProvider({ children }) {
   };
 
   const pauseToggle = () => {
+    lastTickRef.current = Date.now();
     setIsPaused((prev) => !prev);
   };
 
@@ -168,7 +351,11 @@ export function TimerProvider({ children }) {
     setElapsedTime(0);
     setPauseTime(0);
     setStartedAt(new Date());
+    setActiveTimerView(activeTimer);
+
+    lastTickRef.current = Date.now();
     hasSavedRef.current = false;
+
     setIsPaused(false);
   };
 
@@ -181,6 +368,8 @@ export function TimerProvider({ children }) {
     setPauseTime(0);
     setTimeLeft(totalSeconds);
     setStartedAt(null);
+
+    hasSavedRef.current = false;
   };
 
   const startBreakFromWorkday = () => {
@@ -192,9 +381,12 @@ export function TimerProvider({ children }) {
     });
 
     setActiveTimerView("break");
+    lastTickRef.current = Date.now();
   };
 
   const toggleSidebarBreakTimer = () => {
+    lastTickRef.current = Date.now();
+
     setSidebarBreakTimer((current) => ({
       ...current,
       isPaused: !current.isPaused,
@@ -208,6 +400,8 @@ export function TimerProvider({ children }) {
       timeLeft: 0,
       totalSeconds: 0,
     });
+
+    setActiveTimerView(activeTimer);
   };
 
   const endWorkdayTimer = async () => {
@@ -228,12 +422,47 @@ export function TimerProvider({ children }) {
       timeLeft: 0,
       totalSeconds: 0,
     });
+
+    hasSavedRef.current = false;
+    localStorage.removeItem(TIMER_STORAGE_KEY);
+  };
+
+  const logPauseReminder = async (action) => {
+    try {
+      await createPauseReminder({
+        action,
+        reminderInterval: selectedReminder,
+        workdayElapsedSeconds: elapsedTime,
+      });
+    } catch (error) {
+      console.error("Pauzeherinnering opslaan mislukt:", error);
+    }
+  };
+
+  const takeReminderBreak = async () => {
+    await logPauseReminder("taken");
+
+    setPauseReminderPopup(false);
+    startBreakFromWorkday();
+  };
+
+  const snoozeReminder = async () => {
+    await logPauseReminder("snoozed");
+
+    setPauseReminderPopup(false);
+    setLastReminderAt(elapsedTime - selectedReminder * 60 + 5 * 60);
+  };
+
+  const dismissReminder = async () => {
+    await logPauseReminder("missed");
+    setPauseReminderPopup(false);
   };
 
   return (
     <TimerContext.Provider
       value={{
         activeTimer,
+        activeTimerView,
         isRunning,
         isPaused,
         selectedDuration,
@@ -244,10 +473,11 @@ export function TimerProvider({ children }) {
         elapsedTime,
         pauseTime,
         sidebarBreakTimer,
-        activeTimerView,
+        pauseReminderPopup,
 
         setSelectedReminder,
         setCustomDuration,
+        setActiveTimerView,
         changeTimerType,
         selectDuration,
         startTimer,
@@ -257,9 +487,11 @@ export function TimerProvider({ children }) {
         startBreakFromWorkday,
         toggleSidebarBreakTimer,
         stopSidebarBreakTimer,
-        saveCurrentTimerSession,
-        setActiveTimerView,
         endWorkdayTimer,
+        saveCurrentTimerSession,
+        takeReminderBreak,
+        snoozeReminder,
+        dismissReminder,
       }}
     >
       {children}
