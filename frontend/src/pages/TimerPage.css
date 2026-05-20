@@ -1,5 +1,6 @@
 .timerPage {
   width: 100%;
+  min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,22 +8,33 @@
   padding: 32px 24px 40px;
 }
 
+.timerRunningLayout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Modal */
+
 .timerModalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(31, 29, 27, 0.55);
   z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  background: rgba(31, 29, 27, 0.55);
 }
 
 .timerModal {
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
   background: #f1ead8;
-  border-radius: 12px;
+  border: 1px solid #d8d0be;
+  border-radius: 14px;
   padding: 28px;
   box-shadow: 0 16px 42px rgba(31, 29, 27, 0.24);
 }
@@ -35,9 +47,9 @@
 }
 
 .timerModal p {
+  margin: 0 0 24px;
   color: #5f5d58;
   line-height: 1.55;
-  margin: 0 0 24px;
 }
 
 .timerModalActions {
@@ -46,8 +58,42 @@
   gap: 12px;
 }
 
+.timerModalButton {
+  min-height: 44px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.timerModalButton:hover {
+  transform: translateY(-1px);
+}
+
+.timerModalButtonSecondary {
+  border: 1px solid #d8d0be;
+  background: #fffdf8;
+  color: #25221f;
+}
+
+.timerModalButtonSecondary:hover {
+  border-color: #78957f;
+}
+
+.timerModalButtonPrimary {
+  border: 1px solid #78957f;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.timerModalButtonPrimary:hover {
+  background: #6f8b78;
+}
+
 @media (max-width: 640px) {
   .timerPage {
+    min-height: auto;
     padding: 22px 16px 34px;
   }
 

@@ -1,5 +1,6 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import { TimerProvider } from "./context/TimerContext";
 
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
@@ -42,8 +43,9 @@ function PublicRoute({ children }) {
 function App() {
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/welcome" replace />} />
+      <TimerProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to="/welcome" replace />} />
 
         <Route 
           path="/welcome"
@@ -171,6 +173,7 @@ function App() {
           }
         />
       </Routes>
+      </TimerProvider>
     </HashRouter>
   );
 }
