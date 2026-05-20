@@ -91,11 +91,12 @@ function PricingCard({ children, highlighted = false }) {
 }
 
 function PremiumPage() {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
 
   const [billing, setBilling] = useState("monthly");
   const [view, setView] = useState("plans");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [successType, setSuccessType] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -108,6 +109,13 @@ function PremiumPage() {
     phone: "",
     message: "",
   });
+
+  const currentPlan = user?.subscriptionPlan || "free";
+  const currentBilling = user?.billingCycle || "monthly";
+
+  const isPremiumUser = currentPlan === "premium";
+  const isCurrentPremiumBilling =
+    isPremiumUser && currentBilling === billing;
 
   const premiumPrice = useMemo(
     () => (billing === "monthly" ? "€2,99" : "€33,00"),
@@ -127,6 +135,8 @@ function PremiumPage() {
   }
 
   async function handlePremiumUpgrade() {
+    if (isCurrentPremiumBilling) return;
+
     setSaving(true);
     setError("");
 
@@ -141,6 +151,27 @@ function PremiumPage() {
       setShowSuccess(true);
     } catch (error) {
       setError(error.message || "Upgrade naar Premium mislukt");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDowngradeToFree() {
+    setSaving(true);
+    setError("");
+
+    try {
+      const updatedUser = await updateSubscription({
+        subscriptionPlan: "free",
+        billingCycle: "monthly",
+      });
+
+      login(updatedUser);
+      setShowCancelModal(false);
+      setSuccessType("free");
+      setShowSuccess(true);
+    } catch (error) {
+      setError(error.message || "Terugzetten naar gratis plan mislukt");
     } finally {
       setSaving(false);
     }
@@ -168,10 +199,7 @@ function PremiumPage() {
         title="Bedrijfslicentie"
         subtitle="Geef je team toegang tot Re:Mind en verbeter het welzijn op de werkvloer"
       >
-        <section
-          className="business-page"
-          aria-label="Bedrijfslicentie aanvraag"
-        >
+        <section className="business-page" aria-label="Bedrijfslicentie aanvraag">
           <div className="business-topbar">
             <Button
               type="button"
@@ -189,11 +217,7 @@ function PremiumPage() {
           <div className="business-benefits">
             <div className="business-benefit-card">
               <div className="benefit-circle">
-                <img
-                  src={bedrijfslicentie_groen}
-                  alt=""
-                  className="benefit-img"
-                />
+                <img src={bedrijfslicentie_groen} alt="" className="benefit-img" />
               </div>
               <h3>Team dashboard</h3>
               <p>Inzicht in teamwelzijn zonder individuele controle</p>
@@ -257,7 +281,7 @@ function PremiumPage() {
               </label>
 
               <label>
-                Telefoonnummer (optioneel)
+                Telefoonnummer
                 <input
                   name="phone"
                   value={form.phone}
@@ -287,7 +311,7 @@ function PremiumPage() {
             </label>
 
             <label>
-              Bericht (optioneel)
+              Bericht
               <textarea
                 name="message"
                 value={form.message}
@@ -308,29 +332,22 @@ function PremiumPage() {
             <p>
               Ons team beoordeelt je aanvraag en neemt binnen 24 uur contact op
               om een gepersonaliseerde offerte te maken en de implementatie te
-              bespreken. Je kunt ook een gratis demo aanvragen om Re:Mind in
-              actie te zien.
+              bespreken.
             </p>
           </aside>
         </section>
 
-        {showSuccess && (
+        {showSuccess && successType === "business" && (
           <div className="modal-backdrop" role="presentation">
-            <section
-              className="success-modal"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="success-title"
-            >
+            <section className="success-modal" role="dialog" aria-modal="true">
               <div className="success-icon">
                 <img src={check} alt="" />
               </div>
 
-              <h2 id="success-title">Bedankt voor je aanvraag!</h2>
+              <h2>Bedankt voor je aanvraag!</h2>
               <p>
                 We hebben je aanvraag voor een bedrijfslicentie ontvangen. Ons
-                team neemt binnen 24 uur contact met je op om de volgende
-                stappen te bespreken.
+                team neemt binnen 24 uur contact met je op.
               </p>
 
               <div className="success-summary">
@@ -345,11 +362,7 @@ function PremiumPage() {
                 </p>
               </div>
 
-              <Button
-                className="success-button"
-                to="/dashboard"
-                iconLeft={pijlLinksWit}
-              >
+              <Button className="success-button" to="/dashboard" iconLeft={pijlLinksWit}>
                 Terug naar dashboard
               </Button>
             </section>
@@ -385,15 +398,30 @@ function PremiumPage() {
         <div className="pricing-grid">
           <PricingCard>
             <h2>Gratis</h2>
+
             <p className="price">
               <strong>€0,00</strong>
               <span>/maand</span>
             </p>
+
             <p className="card-copy">Perfect om te beginnen met werkbalans</p>
+
             <FeatureList features={freeFeatures} />
 
             <div className="pricing-card-action">
-              <Button variant="secondary">Huidige plan</Button>
+              {isPremiumUser ? (
+                <Button
+                  variant="primary"
+                  onClick={() => setShowCancelModal(true)}
+                  disabled={saving}
+                >
+                  Terug naar gratis plan
+                </Button>
+              ) : (
+                <Button variant="secondary" disabled>
+                  Huidig plan
+                </Button>
+              )}
             </div>
           </PricingCard>
 
@@ -401,11 +429,7 @@ function PremiumPage() {
             <div className="popular-badge">Meest gekozen</div>
 
             <h2 className="card-title">
-              <img
-                src={premium_zwart}
-                alt=""
-                className="card-title-icon"
-              />
+              <img src={premium_zwart} alt="" className="card-title-icon" />
               Premium
             </h2>
 
@@ -415,25 +439,31 @@ function PremiumPage() {
             </p>
 
             <p className="card-copy">Meer inzicht in je werkdag:</p>
+
             <FeatureList features={premiumFeatures} variant="spark" />
+
             <p className="guarantee">14 dagen geld-terug-garantie</p>
 
             <Button
-              variant="primary"
+              variant={isCurrentPremiumBilling ? "secondary" : "primary"}
               onClick={handlePremiumUpgrade}
-              disabled={saving}
+              disabled={saving || isCurrentPremiumBilling}
             >
-              {saving ? "Bezig..." : "Upgrade naar Premium"}
+              {isCurrentPremiumBilling
+                ? "Huidig plan"
+                : isPremiumUser
+                ? billing === "monthly"
+                  ? "Wissel naar maandplan"
+                  : "Wissel naar jaarplan"
+                : saving
+                ? "Bezig..."
+                : "Upgrade naar Premium"}
             </Button>
           </PricingCard>
 
           <PricingCard>
             <h2 className="card-title">
-              <img
-                src={bedrijfslicentie}
-                alt=""
-                className="card-title-icon"
-              />
+              <img src={bedrijfslicentie} alt="" className="card-title-icon" />
               Bedrijfslicentie
             </h2>
 
@@ -443,8 +473,7 @@ function PremiumPage() {
             </p>
 
             <p className="card-copy">
-              Voor teams en organisaties die gezonder en efficiënter willen
-              werken
+              Voor teams en organisaties die gezonder en efficiënter willen werken
             </p>
 
             <FeatureList features={businessFeatures} variant="spark" />
@@ -462,19 +491,53 @@ function PremiumPage() {
         </div>
       </section>
 
+      {showCancelModal && (
+        <div className="modal-backdrop" role="presentation">
+          <section className="success-modal" role="dialog" aria-modal="true">
+            <h2>Terug naar gratis plan?</h2>
+            <p>
+              Je verliest toegang tot Premium features, maar je data blijft
+              bewaard.
+            </p>
+
+            <div className="success-summary">
+              <p>
+                <strong>Huidig plan:</strong> Premium
+              </p>
+              <p>
+                <strong>Nieuw plan:</strong> Gratis
+              </p>
+            </div>
+
+            <div className="business-actions">
+              <Button
+                variant="secondary"
+                onClick={() => setShowCancelModal(false)}
+                disabled={saving}
+              >
+                Behouden
+              </Button>
+
+              <Button
+                variant="danger"
+                onClick={handleDowngradeToFree}
+                disabled={saving}
+              >
+                {saving ? "Aanpassen..." : "Ja, terug naar gratis"}
+              </Button>
+            </div>
+          </section>
+        </div>
+      )}
+
       {showSuccess && successType === "premium" && (
         <div className="modal-backdrop" role="presentation">
-          <section
-            className="success-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="premium-success-title"
-          >
+          <section className="success-modal" role="dialog" aria-modal="true">
             <div className="success-icon">
               <img src={check} alt="" />
             </div>
 
-            <h2 id="premium-success-title">Premium geactiveerd!</h2>
+            <h2>Premium geactiveerd!</h2>
             <p>
               Je Premium abonnement is opgeslagen. Je krijgt nu toegang tot extra
               inzichten en personalisatie.
@@ -490,11 +553,26 @@ function PremiumPage() {
               </p>
             </div>
 
-            <Button
-              className="success-button"
-              to="/dashboard"
-              iconLeft={pijlLinksWit}
-            >
+            <Button variant="primary" to="/dashboard" iconLeft={pijlLinksWit}>
+              Terug naar dashboard
+            </Button>
+          </section>
+        </div>
+      )}
+
+      {showSuccess && successType === "free" && (
+        <div className="modal-backdrop" role="presentation">
+          <section className="success-modal" role="dialog" aria-modal="true">
+            <div className="success-icon">
+              <img src={check} alt="" />
+            </div>
+
+            <h2>Je gebruikt nu het gratis plan</h2>
+            <p>
+              Je abonnement is aangepast naar Gratis. Je data blijft bewaard.
+            </p>
+
+            <Button variant="primary" to="/dashboard" iconLeft={pijlLinksWit}>
               Terug naar dashboard
             </Button>
           </section>
