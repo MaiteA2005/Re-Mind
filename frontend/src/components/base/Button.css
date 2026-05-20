@@ -61,3 +61,13 @@
   background: #c97777;
   border-color: #c97777;
 }
+
+.btnText {
+  border: none;
+  background: transparent;
+  color: #2f3a34;
+}
+
+.btnText:hover {
+  color: #1f1d1b;
+}

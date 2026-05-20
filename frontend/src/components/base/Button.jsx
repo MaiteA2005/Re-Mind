@@ -16,6 +16,7 @@ function Button({
     ${variant === "primary" ? "btnPrimary" : ""}
     ${variant === "secondary" ? "btnSecondary" : ""}
     ${variant === "danger" ? "btnDanger" : ""}
+    ${variant === "text" ? "btnText" : ""}
     ${full ? "btnFull" : ""}
   `;
 

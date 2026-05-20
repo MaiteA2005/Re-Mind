@@ -130,7 +130,7 @@ export function TimerProvider({ children }) {
 
   const [pauseReminderPopup, setPauseReminderPopup] = useState(false);
   const [lastReminderAt, setLastReminderAt] = useState(0);
-
+  
   useEffect(() => {
     localStorage.setItem(
       TIMER_STORAGE_KEY,
@@ -166,7 +166,7 @@ export function TimerProvider({ children }) {
     startedAt,
     sidebarBreakTimer,
   ]);
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
@@ -251,6 +251,11 @@ export function TimerProvider({ children }) {
     if (shouldShowReminder) {
       setPauseReminderPopup(true);
       setLastReminderAt(elapsedTime);
+
+      window.electronAPI?.showBreakNotification?.({
+        title: "Re:Mind",
+        body: "Je werkt al even gefocust. Tijd voor een korte pauze",
+      });
     }
   }, [
     elapsedTime,

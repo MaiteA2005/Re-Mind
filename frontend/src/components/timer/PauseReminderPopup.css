@@ -60,18 +60,6 @@
   cursor: pointer;
 }
 
-.pauseReminderPrimary {
-  border: 1px solid #78957f;
-  background: #78957f;
-  color: #fffdf8;
-}
-
-.pauseReminderSecondary {
-  border: 1px solid #d8d0be;
-  background: #fffdf8;
-  color: #25221f;
-}
-
 .pauseReminderGhost {
   border: none;
   background: transparent;

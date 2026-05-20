@@ -1,7 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import "./PauseReminderPopup.css";
 import koffieGroen from "../../assets/icons_groen/koffie_groen.svg";
+import Button from "../base/Button";
 
 function PauseReminderPopup({ onTakeBreak, onSnooze, onDismiss }) {
+  const navigate = useNavigate();
+
+  const handleTakeBreak = () => {
+    onTakeBreak();       // popup sluiten
+    navigate("/pause");  // daarna navigeren
+  };
+
   return (
     <div className="pauseReminderOverlay">
       <article className="pauseReminderPopup">
@@ -17,29 +26,29 @@ function PauseReminderPopup({ onTakeBreak, onSnooze, onDismiss }) {
         </p>
 
         <div className="pauseReminderActions">
-          <button
-            type="button"
-            className="pauseReminderPrimary"
-            onClick={onTakeBreak}
+          <Button
+            variant="primary"
+            full
+            onClick={handleTakeBreak}
           >
             Pauze nemen
-          </button>
+          </Button>
 
-          <button
-            type="button"
-            className="pauseReminderSecondary"
+          <Button
+            variant="secondary"
+            full
             onClick={onSnooze}
           >
             Later herinneren
-          </button>
+          </Button>
 
-          <button
-            type="button"
-            className="pauseReminderGhost"
+          <Button
+            variant="text"
+            full
             onClick={onDismiss}
           >
             Overslaan
-          </button>
+          </Button>
         </div>
       </article>
     </div>

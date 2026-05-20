@@ -1,4 +1,5 @@
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { TimerProvider, useTimer } from "./context/TimerContext";
 
@@ -61,10 +62,23 @@ function GlobalTimerPopups() {
   );
 }
 
+function ElectronNavigationListener() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.electronAPI?.onOpenTimer?.(() => {
+      navigate("/timer");
+    });
+  }, [navigate]);
+
+  return null;
+}
+
 function App() {
   return (
     <HashRouter>
       <TimerProvider>
+      <ElectronNavigationListener />
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
 

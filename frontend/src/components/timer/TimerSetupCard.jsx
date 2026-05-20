@@ -36,7 +36,7 @@ function TimerSetupCard({
     ? [15, 25, 45, 60]
     : [3, 5, 10, 15];
 
-  const reminderOptions = [60, 75, 90];
+  const reminderOptions = [2, 60, 75, 90];
 
   const maxCustom = isFocus ? 180 : 60;
 
