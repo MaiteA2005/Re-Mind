@@ -8,6 +8,7 @@ import { getMyCheckIns } from "../services/checkInService";
 import { getMyPauseSessions } from "../services/pauseStatsService";
 import { getMyTimerSessions } from "../services/timerSessionService";
 import { getMyDayClosings } from "../services/dayClosingService";
+import { getMyPauseReminders } from "../services/pauseReminderService";
 
 import InsightFilters from "../components/insights/InsightFilters";
 import StatsGrid from "../components/insights/StatsGrid";
@@ -41,14 +42,12 @@ function filterByPeriod(items, activeFilter, dateKey = "createdAt") {
     if (activeFilter === "week") {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(now.getDate() - 7);
-
       return itemDate >= sevenDaysAgo;
     }
 
     if (activeFilter === "month") {
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(now.getDate() - 30);
-
       return itemDate >= thirtyDaysAgo;
     }
 
@@ -61,6 +60,11 @@ function formatTimeLabel(date) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function formatHourLabel(date) {
+  const hour = new Date(date).getHours().toString().padStart(2, "0");
+  return `${hour}:00`;
 }
 
 function getTimerMinutes(timerSessions, type) {
@@ -78,24 +82,32 @@ function InsightsPage() {
   const [pauseSessions, setPauseSessions] = useState([]);
   const [timerSessions, setTimerSessions] = useState([]);
   const [dayClosings, setDayClosings] = useState([]);
+  const [pauseReminders, setPauseReminders] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        const [checkInData, pauseData, timerData, dayClosingData] =
-          await Promise.all([
-            getMyCheckIns(),
-            getMyPauseSessions(),
-            getMyTimerSessions(),
-            getMyDayClosings(),
-          ]);
+        const [
+          checkInData,
+          pauseData,
+          timerData,
+          dayClosingData,
+          pauseReminderData,
+        ] = await Promise.all([
+          getMyCheckIns(),
+          getMyPauseSessions(),
+          getMyTimerSessions(),
+          getMyDayClosings(),
+          getMyPauseReminders(),
+        ]);
 
         setCheckIns(checkInData);
         setPauseSessions(pauseData);
         setTimerSessions(timerData);
         setDayClosings(dayClosingData);
+        setPauseReminders(pauseReminderData);
       } catch (error) {
         console.error("Insights ophalen mislukt:", error);
       } finally {
@@ -126,6 +138,11 @@ function InsightsPage() {
     [dayClosings, activeFilter]
   );
 
+  const filteredPauseReminders = useMemo(
+    () => filterByPeriod(pauseReminders, activeFilter),
+    [pauseReminders, activeFilter]
+  );
+
   const stats = useMemo(() => {
     const averageStress = getAverage(filteredCheckIns, "stressLevel");
     const averageEnergy = getAverage(filteredCheckIns, "energyLevel");
@@ -133,6 +150,17 @@ function InsightsPage() {
     const pausesToday = pauseSessions.filter((session) =>
       isToday(session.completedAt)
     );
+
+    const remindersTaken = filteredPauseReminders.filter(
+      (reminder) => reminder.action === "taken"
+    ).length;
+
+    const remindersMissed = filteredPauseReminders.filter(
+      (reminder) =>
+        reminder.action === "missed" ||
+        reminder.action === "skipped" ||
+        reminder.action === "ignored"
+    ).length;
 
     return [
       {
@@ -146,29 +174,32 @@ function InsightsPage() {
         helper: "Op basis van je check-ins",
       },
       {
-        label: "Check-ins",
-        value: filteredCheckIns.length,
-        helper: `${checkIns.filter((item) => isToday(item.createdAt)).length} vandaag`,
-      },
-      {
         label: "Pauzes genomen",
-        value: filteredPauseSessions.length,
+        value: remindersTaken || filteredPauseSessions.length,
         helper: `${pausesToday.length} vandaag`,
       },
+      {
+        label: "Pauzes gemist",
+        value: remindersMissed,
+        helper: "Op basis van reminders",
+      },
     ];
-  }, [filteredCheckIns, filteredPauseSessions, checkIns, pauseSessions]);
+  }, [
+    filteredCheckIns,
+    filteredPauseSessions,
+    filteredPauseReminders,
+    pauseSessions,
+  ]);
 
   const stressEnergyChartData = useMemo(() => {
     const sortedCheckIns = [...filteredCheckIns].sort(
       (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
     );
 
-    const labels = sortedCheckIns.map((checkIn) =>
-      formatTimeLabel(checkIn.createdAt)
-    );
-
     return {
-      labels,
+      labels: sortedCheckIns.map((checkIn) =>
+        formatTimeLabel(checkIn.createdAt)
+      ),
       datasets: [
         {
           label: "Stress",
@@ -188,22 +219,50 @@ function InsightsPage() {
     };
   }, [filteredCheckIns]);
 
-  const timerChartData = useMemo(() => {
-    const focusMinutes = getTimerMinutes(filteredTimerSessions, "focus");
-    const breakMinutes = getTimerMinutes(filteredTimerSessions, "break");
-    const workdayMinutes = getTimerMinutes(filteredTimerSessions, "workday");
+  const pauseBehaviorChartData = useMemo(() => {
+    const grouped = {};
+
+    filteredPauseReminders.forEach((reminder) => {
+      const label = formatHourLabel(reminder.createdAt);
+
+      if (!grouped[label]) {
+        grouped[label] = {
+          taken: 0,
+          missed: 0,
+        };
+      }
+
+      if (reminder.action === "taken") {
+        grouped[label].taken += 1;
+      }
+
+      if (
+        reminder.action === "missed" ||
+        reminder.action === "skipped" ||
+        reminder.action === "ignored"
+      ) {
+        grouped[label].missed += 1;
+      }
+    });
+
+    const labels = Object.keys(grouped).sort();
 
     return {
-      labels: ["Focus", "Pauze", "Werkdag"],
+      labels,
       datasets: [
         {
-          label: "Minuten",
-          data: [focusMinutes, breakMinutes, workdayMinutes],
-          backgroundColor: ["#78977f", "#c7d8ca", "#dfc978"],
+          label: "Pauze genomen",
+          data: labels.map((label) => grouped[label].taken),
+          backgroundColor: "#78977f",
+        },
+        {
+          label: "Pauze gemist",
+          data: labels.map((label) => grouped[label].missed),
+          backgroundColor: "#df7c7f",
         },
       ],
     };
-  }, [filteredTimerSessions]);
+  }, [filteredPauseReminders]);
 
   const recommendation = useMemo(() => {
     const averageStress =
@@ -211,9 +270,16 @@ function InsightsPage() {
         ? Number(getAverage(filteredCheckIns, "stressLevel"))
         : null;
 
-    const breakTimers = filteredTimerSessions.filter(
-      (timer) => timer.type === "break"
-    );
+    const takenReminders = filteredPauseReminders.filter(
+      (reminder) => reminder.action === "taken"
+    ).length;
+
+    const missedReminders = filteredPauseReminders.filter(
+      (reminder) =>
+        reminder.action === "missed" ||
+        reminder.action === "skipped" ||
+        reminder.action === "ignored"
+    ).length;
 
     if (averageStress && averageStress >= 7) {
       return {
@@ -223,20 +289,28 @@ function InsightsPage() {
       };
     }
 
-    if (breakTimers.length === 0) {
+    if (missedReminders > takenReminders) {
       return {
         type: "pause",
-        title: "Neem bewust een korte pauze",
-        text: "Je hebt in deze periode nog geen pauzetimer gebruikt.",
+        title: "Probeer één reminder bewust op te volgen",
+        text: "Je slaat vaker pauzes over dan je ze neemt. Begin klein met één korte pauze.",
+      };
+    }
+
+    if (takenReminders > 0) {
+      return {
+        type: "balance",
+        title: "Je reageert goed op je pauzemomenten",
+        text: "Je neemt bewust pauzes wanneer Re:Mind je eraan herinnert.",
       };
     }
 
     return {
-      type: "balance",
-      title: "Je bouwt al bewuste rustmomenten in",
-      text: "Blijf luisteren naar je energie en neem pauzes wanneer je merkt dat je focus zakt.",
+      type: "pause",
+      title: "Neem bewust een korte pauze",
+      text: "Je hebt in deze periode nog geen pauzereminders opgevolgd.",
     };
-  }, [filteredCheckIns, filteredTimerSessions]);
+  }, [filteredCheckIns, filteredPauseReminders]);
 
   const latestDayClosing = filteredDayClosings[0] || dayClosings[0] || null;
 
@@ -266,9 +340,9 @@ function InsightsPage() {
               />
 
               <ChartCard
-                title="Timergebruik"
+                title="Pauzegedrag"
                 type="bar"
-                data={timerChartData}
+                data={pauseBehaviorChartData}
               />
             </div>
 

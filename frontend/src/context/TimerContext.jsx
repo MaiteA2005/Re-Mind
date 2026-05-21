@@ -52,7 +52,7 @@ function loadStoredTimerState() {
 
     if (restored.isRunning) {
       if (restored.isPaused) {
-        restored.pauseTime += delta;
+        setPauseTime((prev) => prev + delta);
       } else {
         const consumedSeconds = Math.min(delta, restored.timeLeft);
 
@@ -105,6 +105,7 @@ export function TimerProvider({ children }) {
   const [activeTimerView, setActiveTimerView] = useState(
     initialState.activeTimerView
   );
+
   const [isRunning, setIsRunning] = useState(initialState.isRunning);
   const [isPaused, setIsPaused] = useState(initialState.isPaused);
 
@@ -130,7 +131,8 @@ export function TimerProvider({ children }) {
 
   const [pauseReminderPopup, setPauseReminderPopup] = useState(false);
   const [lastReminderAt, setLastReminderAt] = useState(0);
-  
+  const [snoozeUntilElapsed, setSnoozeUntilElapsed] = useState(null);
+
   useEffect(() => {
     localStorage.setItem(
       TIMER_STORAGE_KEY,
@@ -166,7 +168,7 @@ export function TimerProvider({ children }) {
     startedAt,
     sidebarBreakTimer,
   ]);
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
@@ -243,14 +245,18 @@ export function TimerProvider({ children }) {
 
     const reminderSeconds = selectedReminder * 60;
 
-    const shouldShowReminder =
+    const shouldShowRegularReminder =
       elapsedTime > 0 &&
       elapsedTime % reminderSeconds === 0 &&
       elapsedTime !== lastReminderAt;
 
-    if (shouldShowReminder) {
+    const shouldShowSnoozedReminder =
+      snoozeUntilElapsed !== null && elapsedTime >= snoozeUntilElapsed;
+
+    if (shouldShowRegularReminder || shouldShowSnoozedReminder) {
       setPauseReminderPopup(true);
       setLastReminderAt(elapsedTime);
+      setSnoozeUntilElapsed(null);
 
       window.electronAPI?.showBreakNotification?.({
         title: "Re:Mind",
@@ -264,6 +270,7 @@ export function TimerProvider({ children }) {
     activeTimer,
     selectedReminder,
     lastReminderAt,
+    snoozeUntilElapsed,
   ]);
 
   const saveCurrentTimerSession = async (completed = false) => {
@@ -420,6 +427,8 @@ export function TimerProvider({ children }) {
     setStartedAt(null);
     setActiveTimer("workday");
     setActiveTimerView("workday");
+    setSnoozeUntilElapsed(null);
+    setPauseReminderPopup(false);
 
     setSidebarBreakTimer({
       isRunning: false,
@@ -448,6 +457,7 @@ export function TimerProvider({ children }) {
     await logPauseReminder("taken");
 
     setPauseReminderPopup(false);
+    setSnoozeUntilElapsed(null);
     startBreakFromWorkday();
   };
 
@@ -455,12 +465,14 @@ export function TimerProvider({ children }) {
     await logPauseReminder("snoozed");
 
     setPauseReminderPopup(false);
-    setLastReminderAt(elapsedTime - selectedReminder * 60 + 5 * 60);
+    setSnoozeUntilElapsed(elapsedTime + 5 * 60);
   };
 
   const dismissReminder = async () => {
     await logPauseReminder("missed");
+
     setPauseReminderPopup(false);
+    setSnoozeUntilElapsed(null);
   };
 
   return (
