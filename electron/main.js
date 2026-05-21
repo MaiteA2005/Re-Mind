@@ -3,24 +3,35 @@ const path = require("path");
 
 Menu.setApplicationMenu(null);
 
-// Belangrijk voor Windows notificaties
-app.setAppUserModelId("com.remind.app");
+const isDev = !app.isPackaged;
+
+// In dev gebruikt Windows anders soms de standaard Electron app
+app.setName("Re-Mind");
+app.setAppUserModelId(isDev ? process.execPath : "com.remind.app");
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+}
 
 let mainWindow;
+
+function getIconPath() {
+  return path.join(__dirname, "favicon.ico");
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    icon: getIconPath(),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
     },
-    icon: path.join(__dirname, "favicon.ico"),
   });
-
-  const isDev = !app.isPackaged;
 
   if (isDev) {
     mainWindow.loadURL("http://localhost:5173");
@@ -29,33 +40,40 @@ function createWindow() {
   }
 }
 
-ipcMain.on("show-break-notification", (_, data) => {
-  console.log("Electron notificatie ontvangen:", data);
-
-  if (!Notification.isSupported()) {
-    console.log("Notifications worden niet ondersteund.");
+function focusMainWindow() {
+  if (!mainWindow) {
+    createWindow();
     return;
   }
+
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+
+  mainWindow.show();
+  mainWindow.focus();
+
+  mainWindow.webContents.send("open-timer-page");
+}
+
+ipcMain.on("show-break-notification", (_, data) => {
+  if (!Notification.isSupported()) return;
 
   const notification = new Notification({
     title: data?.title || "Re:Mind",
     body: data?.body || "Tijd voor een korte pauze.",
-    icon: path.join(__dirname, "favicon.ico"),
+    icon: getIconPath(),
   });
 
   notification.on("click", () => {
-    if (!mainWindow) return;
-
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
-    }
-
-    mainWindow.show();
-    mainWindow.focus();
-    mainWindow.webContents.send("open-timer-page");
+    focusMainWindow();
   });
 
   notification.show();
+});
+
+app.on("second-instance", () => {
+  focusMainWindow();
 });
 
 app.whenReady().then(() => {
@@ -64,6 +82,8 @@ app.whenReady().then(() => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
+    } else {
+      focusMainWindow();
     }
   });
 });

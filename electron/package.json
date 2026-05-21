@@ -22,6 +22,12 @@
     "files": [
       "**/*"
     ],
+    "extraResources": [
+      {
+        "from": "favicon.ico",
+        "to": "favicon.ico"
+      }
+    ],
     "win": {
       "target": "nsis",
       "icon": "favicon.ico"
