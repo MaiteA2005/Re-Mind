@@ -19,10 +19,10 @@ let mainWindow;
 
 function getIconPath() {
   if (app.isPackaged) {
-    return path.join(process.resourcesPath, "favicon.ico");
+    return path.join(process.resourcesPath, "icon.ico");
   }
 
-  return path.join(__dirname, "favicon.ico");
+  return path.join(__dirname, "build", "icon.ico");
 }
 
 function createWindow() {

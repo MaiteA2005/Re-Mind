@@ -24,13 +24,13 @@
     ],
     "extraResources": [
       {
-        "from": "favicon.ico",
-        "to": "favicon.ico"
+        "from": "build/icon.ico",
+        "to": "icon.ico"
       }
     ],
     "win": {
       "target": "nsis",
-      "icon": "favicon.ico"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
