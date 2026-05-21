@@ -1,6 +1,6 @@
 {
   "name": "re-mind-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Re-Mind desktop app",
   "main": "main.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "electron-builder": "^26.8.1"
   },
   "build": {
-    "appId": "com.remind.app",
+    "appId": "be.remind.desktop",
     "productName": "Re-Mind",
     "artifactName": "Re-Mind-Setup-${version}.${ext}",
     "files": [
