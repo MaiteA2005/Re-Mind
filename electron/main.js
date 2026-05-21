@@ -18,6 +18,10 @@ if (!gotTheLock) {
 let mainWindow;
 
 function getIconPath() {
+  if (app.isPackaged) {
+    return path.join(process.resourcesPath, "favicon.ico");
+  }
+
   return path.join(__dirname, "favicon.ico");
 }
 
