@@ -1,14 +1,13 @@
-const { app, BrowserWindow, Menu, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, Notification, dialog,} = require("electron");
 const path = require("path");
+const { autoUpdater } = require("electron-updater");
 
 Menu.setApplicationMenu(null);
 
 const isDev = !app.isPackaged;
 
 app.setName("Re-Mind");
-app.setAppUserModelId(
-  isDev ? process.execPath : "be.remind.desktop"
-);
+app.setAppUserModelId(isDev ? process.execPath : "be.remind.desktop");
 
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -61,6 +60,12 @@ function focusMainWindow() {
   mainWindow.webContents.send("open-timer-page");
 }
 
+function checkForUpdates() {
+  if (isDev) return;
+
+  autoUpdater.checkForUpdatesAndNotify();
+}
+
 ipcMain.on("show-break-notification", (_, data) => {
   if (!Notification.isSupported()) return;
 
@@ -77,12 +82,31 @@ ipcMain.on("show-break-notification", (_, data) => {
   notification.show();
 });
 
+autoUpdater.on("update-downloaded", () => {
+  dialog
+    .showMessageBox({
+      type: "info",
+      title: "Update beschikbaar",
+      message: "Een nieuwe versie van Re:Mind is gedownload.",
+      detail: "De app wordt opnieuw opgestart om de update te installeren.",
+      buttons: ["Nu updaten"],
+    })
+    .then(() => {
+      autoUpdater.quitAndInstall();
+    });
+});
+
+autoUpdater.on("error", (error) => {
+  console.error("Auto-update error:", error);
+});
+
 app.on("second-instance", () => {
   focusMainWindow();
 });
 
 app.whenReady().then(() => {
   createWindow();
+  checkForUpdates();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
