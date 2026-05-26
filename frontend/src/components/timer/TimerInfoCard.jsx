@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./TimerInfoCard.css";
 
 import infoIcon from "../../assets/icons_groen/uitroepteken_groen.svg";
@@ -28,7 +29,13 @@ function TimerInfoCard({ activeTimer }) {
         "Stap weg van je scherm",
         "Beweeg, stretch of loop een rondje",
         "Drink water, thee of koffie",
-        "Bekijk onze pauzesuggesties om je focus en energie te verbeteren",
+        <li>
+          Bekijk{" "}
+            <Link to="/pause" className="timerInfoLink">
+              onze pauzesuggesties
+            </Link>{" "}
+          om je focus en energie te verbeteren
+        </li>,
       ],
     },
   };

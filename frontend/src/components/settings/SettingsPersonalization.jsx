@@ -53,16 +53,6 @@ function SettingsPersonalization() {
         Je favoriete focusblok lengte
       </span>
 
-      <SettingsField
-        label="Thema"
-        name="theme"
-        value="calm"
-        onChange={() => {}}
-        options={[
-          { value: "calm", label: "Rustig" },
-        ]}
-      />
-
       <Button variant="primary" disabled full>
         Personalisatie opslaan
       </Button>

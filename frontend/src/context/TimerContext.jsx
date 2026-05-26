@@ -52,7 +52,7 @@ function loadStoredTimerState() {
 
     if (restored.isRunning) {
       if (restored.isPaused) {
-        setPauseTime((prev) => prev + delta);
+        restored.pauseTime += delta;
       } else {
         const consumedSeconds = Math.min(delta, restored.timeLeft);
 
@@ -330,13 +330,19 @@ export function TimerProvider({ children }) {
     setCustomDuration("");
   };
 
+  const prepareBreakTimer = () => {
+    setActiveTimerView("break");
+    setSelectedDuration(5);
+    setCustomDuration("");
+  };
+
   const startTimer = () => {
     const durationInMinutes = customDuration
       ? Number(customDuration)
       : selectedDuration;
 
     if (!durationInMinutes || durationInMinutes <= 0) return;
-
+    
     const seconds = durationInMinutes * 60;
 
     setTotalSeconds(seconds);
@@ -351,6 +357,20 @@ export function TimerProvider({ children }) {
 
     setIsRunning(true);
     setIsPaused(false);
+  };
+
+  const startSidebarBreakTimer = (durationMinutes = selectedDuration) => {
+    const minutes = Number(durationMinutes) || 5;
+
+    setSidebarBreakTimer({
+      isRunning: true,
+      isPaused: false,
+      totalSeconds: minutes * 60,
+      timeLeft: minutes * 60,
+    });
+
+    setActiveTimerView("break");
+    lastTickRef.current = Date.now();
   };
 
   const pauseToggle = () => {
@@ -384,16 +404,8 @@ export function TimerProvider({ children }) {
     hasSavedRef.current = false;
   };
 
-  const startBreakFromWorkday = () => {
-    setSidebarBreakTimer({
-      isRunning: true,
-      isPaused: false,
-      totalSeconds: 5 * 60,
-      timeLeft: 5 * 60,
-    });
-
-    setActiveTimerView("break");
-    lastTickRef.current = Date.now();
+  const startBreakFromWorkday = (durationMinutes = 5) => {
+    startSidebarBreakTimer(durationMinutes);
   };
 
   const toggleSidebarBreakTimer = () => {
@@ -458,7 +470,7 @@ export function TimerProvider({ children }) {
 
     setPauseReminderPopup(false);
     setSnoozeUntilElapsed(null);
-    startBreakFromWorkday();
+    prepareBreakTimer();
   };
 
   const snoozeReminder = async () => {
@@ -497,7 +509,9 @@ export function TimerProvider({ children }) {
         setActiveTimerView,
         changeTimerType,
         selectDuration,
+        prepareBreakTimer,
         startTimer,
+        startSidebarBreakTimer,
         pauseToggle,
         resetTimer,
         stopTimer,

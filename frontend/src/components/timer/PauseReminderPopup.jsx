@@ -6,9 +6,9 @@ import Button from "../base/Button";
 function PauseReminderPopup({ onTakeBreak, onSnooze, onDismiss }) {
   const navigate = useNavigate();
 
-  const handleTakeBreak = () => {
-    onTakeBreak();       // popup sluiten
-    navigate("/pause");  // daarna navigeren
+  const handleTakeBreak = async () => {
+    await onTakeBreak();
+    navigate("/timer");
   };
 
   return (
@@ -21,32 +21,20 @@ function PauseReminderPopup({ onTakeBreak, onSnooze, onDismiss }) {
         <h2>Tijd voor een korte pauze</h2>
 
         <p>
-          Je bent al even bezig. Een korte pauze kan helpen om je focus en
-          energie te behouden.
+          Je bent al even bezig. Kies zelf hoe lang je pauze wil nemen in de
+          pauzetimer.
         </p>
 
         <div className="pauseReminderActions">
-          <Button
-            variant="primary"
-            full
-            onClick={handleTakeBreak}
-          >
+          <Button variant="primary" full onClick={handleTakeBreak}>
             Pauze nemen
           </Button>
 
-          <Button
-            variant="secondary"
-            full
-            onClick={onSnooze}
-          >
+          <Button variant="secondary" full onClick={onSnooze}>
             Later herinneren
           </Button>
 
-          <Button
-            variant="text"
-            full
-            onClick={onDismiss}
-          >
+          <Button variant="text" full onClick={onDismiss}>
             Overslaan
           </Button>
         </div>

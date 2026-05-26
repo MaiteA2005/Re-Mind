@@ -33,3 +33,15 @@
 .timerInfoCard li {
   padding-left: 2px;
 }
+
+.timerInfoLink {
+  color: #78957f;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.timerInfoLink:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}

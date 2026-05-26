@@ -34,6 +34,7 @@ function TimerPage() {
     changeTimerType,
     selectDuration,
     startTimer,
+    startSidebarBreakTimer,
     pauseToggle,
     resetTimer,
     stopTimer,
@@ -46,7 +47,16 @@ function TimerPage() {
   const isViewingSidebarBreak =
     activeTimerView === "break" && sidebarBreakTimer?.isRunning;
 
-  const shownTimer = isViewingSidebarBreak ? "break" : activeTimer;
+  const isChoosingBreakFromWorkday =
+    activeTimerView === "break" &&
+    isRunning &&
+    activeTimer === "workday" &&
+    !sidebarBreakTimer?.isRunning;
+
+  const shownTimer =
+    isViewingSidebarBreak || isChoosingBreakFromWorkday
+      ? "break"
+      : activeTimer;
 
   const pageTitle = useMemo(() => {
     if (shownTimer === "workday") return "Timer - Werkdag";
@@ -54,7 +64,8 @@ function TimerPage() {
     return "Timer - Pauze";
   }, [shownTimer]);
 
-  const isTimerRunningOnPage = isViewingSidebarBreak || isRunning;
+  const isTimerRunningOnPage =
+    isViewingSidebarBreak || (isRunning && !isChoosingBreakFromWorkday);
 
   async function handleStop() {
     if (isViewingSidebarBreak) {
@@ -82,11 +93,22 @@ function TimerPage() {
   return (
     <MainLayout title={pageTitle} subtitle="Werk gefocust en neem op tijd pauzes">
       <section className="timerPage">
-        {!isTimerRunningOnPage && (
+        {!isTimerRunningOnPage && !isChoosingBreakFromWorkday && (
           <TimerTabs activeTimer={activeTimer} onChange={changeTimerType} />
         )}
 
-        {!isTimerRunningOnPage ? (
+        {isChoosingBreakFromWorkday ? (
+          <TimerSetupCard
+            activeTimer="break"
+            selectedDuration={selectedDuration}
+            selectedReminder={selectedReminder}
+            customDuration={customDuration}
+            onDurationSelect={selectDuration}
+            onReminderSelect={setSelectedReminder}
+            onCustomDurationChange={setCustomDuration}
+            onStart={() => startSidebarBreakTimer()}
+          />
+        ) : !isTimerRunningOnPage ? (
           <TimerSetupCard
             activeTimer={activeTimer}
             selectedDuration={selectedDuration}
