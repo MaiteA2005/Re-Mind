@@ -22,3 +22,7 @@ Opstarten
 ### Electron Build
 - cd electon
 - npm run dist
+
+### Electron publishen
+- cd electron
+- npm run release
