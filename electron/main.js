@@ -5,7 +5,6 @@ Menu.setApplicationMenu(null);
 
 const isDev = !app.isPackaged;
 
-// In dev gebruikt Windows anders soms de standaard Electron app
 app.setName("Re-Mind");
 app.setAppUserModelId(
   isDev ? process.execPath : "be.remind.desktop"
