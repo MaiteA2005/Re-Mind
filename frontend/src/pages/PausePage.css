@@ -7,17 +7,17 @@
 .pauseGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 18px;
   align-items: start;
 }
 
 .pauseDetailWrapper,
 .pauseSessionWrapper,
 .pauseCompleteWrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
 }
 
 .pauseDetailContent,
@@ -29,46 +29,13 @@
 }
 
 .pauseSessionContent {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 22px;
   padding-top: 12px;
 }
 
-.pauseStatusText {
-  margin: 0;
-  color: #6f756c;
-  font-size: 0.95rem;
-}
-
-.pauseDropdownButton {
-  width: 100%;
-  max-width: 500px;
-  padding: 14px 16px;
-  border: 1px solid #e0d9c8;
-  border-radius: 10px;
-  background: #f3ecd8;
-  color: #78907f;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.pauseDropdownContent {
-  width: 100%;
-  max-width: 500px;
-  background: #fbfaf6;
-  border: 1px solid #e5dfd2;
-  border-radius: 12px;
-  padding: 16px;
-}
-
 .pauseCompleteWrapper {
   min-height: 70vh;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -85,6 +52,120 @@
 .pauseBackButton {
   width: fit-content;
   align-self: flex-start;
+}
+
+.pauseStatusText {
+  margin: 0;
+  color: #6f756c;
+  font-size: 0.95rem;
+}
+
+.pauseDropdownButton {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 16px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid #e0d9c8;
+  border-radius: 10px;
+  background: #f3ecd8;
+  color: #78907f;
+
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pauseDropdownContent {
+  width: 100%;
+  max-width: 500px;
+
+  padding: 16px;
+
+  background: #fbfaf6;
+  border: 1px solid #e5dfd2;
+  border-radius: 12px;
+}
+
+.pauseCardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.pauseCard {
+  min-height: 150px;
+  padding: 22px;
+  border-radius: 18px;
+}
+
+.pauseCardTop {
+  gap: 18px;
+}
+
+.pauseCardTitleWrapper {
+  gap: 16px;
+}
+
+.pauseCardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+}
+
+.pauseCardIconImage {
+  width: 26px;
+  height: 26px;
+}
+
+.pauseCardText h3 {
+  font-size: 1.08rem;
+}
+
+.pauseCardText p {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.pauseCardMeta {
+  margin-top: 20px;
+}
+
+.pauseFavoriteButton {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: grid;
+  border-radius: 999px;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  margin-top: -12px;
+  margin-right: -12px;
+}
+
+.pauseFavoriteButton:hover {
+  background: #eef4ec;
+  border-color: #78957f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(31, 29, 27, 0.08);
+}
+
+.pauseFavoriteButton.active {
+  background: #e7efe6;
+  border-color: #78957f;
+}
+
+.pauseFavoriteIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 @media (max-width: 900px) {
