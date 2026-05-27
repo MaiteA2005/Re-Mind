@@ -19,8 +19,8 @@ function DagAfsluitingPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  
+  const [error, setError] = useState({ step: null, message: "" });
+
   const [reflection, setReflection] = useState({
     dayFeeling: "",
     highlight: "",
@@ -29,24 +29,12 @@ function DagAfsluitingPage() {
     gratitude: "",
     tomorrowFocus: "",
   });
-  
+
   const reflectionBenefits = [
-    {
-      icon: breinGroen,
-      text: "Verwerk je dag mentaal en creëer afsluiting",
-    },
-    {
-      icon: sterGroen,
-      text: "Herken positieve momenten en successen",
-    },
-    {
-      icon: trendGroen,
-      text: "Leer van uitdagingen voor morgen",
-    },
-    {
-      icon: hartGroen,
-      text: "Bevorder een positieve mindset voor de nacht",
-    },
+    { icon: breinGroen, text: "Verwerk je dag mentaal en creëer afsluiting" },
+    { icon: sterGroen, text: "Herken positieve momenten en successen" },
+    { icon: trendGroen, text: "Leer van uitdagingen voor morgen" },
+    { icon: hartGroen, text: "Bevorder een positieve mindset voor de nacht" },
   ];
 
   const dayOptions = [
@@ -65,40 +53,62 @@ function DagAfsluitingPage() {
   ];
 
   const updateReflection = (key, value) => {
-    setError("");
+    setError({ step: null, message: "" });
     setReflection((prev) => ({ ...prev, [key]: value }));
   };
 
   const nextStep = () => {
+    setError({ step: null, message: "" });
     setStep((prev) => Math.min(prev + 1, 8));
   };
 
   const previousStep = () => {
+    setError({ step: null, message: "" });
     setStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const progressWidth = `${((step - 1) / 6) * 100}%`;
+
+  const renderStepError = () => {
+    if (error.step !== step) return null;
+
+    return <h4 className="dayClosingError">{error.message}</h4>;
   };
 
   const finishDayClosing = async () => {
     if (!reflection.dayFeeling) {
-      setError("Kies hoe je dag was.");
+      setError({ step: 2, message: "Kies hoe je dag was." });
       setStep(2);
       return;
     }
 
     if (!reflection.energyAfterWork) {
-      setError("Kies hoe je je nu voelt.");
+      setError({ step: 5, message: "Kies hoe je je nu voelt." });
       setStep(5);
       return;
     }
 
+    if (!reflection.tomorrowFocus.trim()) {
+      setError({
+        step: 7,
+        message: "Vul in waar je morgen op wilt focussen.",
+      });
+      setStep(7);
+      return;
+    }
+
     setSaving(true);
-    setError("");
+    setError({ step: null, message: "" });
 
     try {
       await createDayClosing(reflection);
       setStep(8);
     } catch (error) {
       console.error(error);
-      setError(error.message || "Dagafsluiting opslaan mislukt");
+      setError({
+        step: 7,
+        message: error.message || "Dagafsluiting opslaan mislukt",
+      });
     } finally {
       setSaving(false);
     }
@@ -145,11 +155,19 @@ function DagAfsluitingPage() {
 
         {step === 2 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 2 van 7</span>
+
             <h2>Hoe was je dag over het algemeen?</h2>
             <p>Kies het gevoel dat het beste past</p>
 
-            {error && <p className="dayClosingError">{error}</p>}
+            {renderStepError()}
 
             <div className="dayClosingOptions">
               {dayOptions.map((option) => (
@@ -192,20 +210,30 @@ function DagAfsluitingPage() {
 
         {step === 3 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 3 van 7</span>
+
             <h2>Wat was een hoogtepunt van vandaag?</h2>
             <p>
               Ook kleine dingen tellen - een fijn gesprek, een voltooide taak,
               een mooie pauze
             </p>
 
-            <textarea
-              value={reflection.highlight}
-              onChange={(event) =>
-                updateReflection("highlight", event.target.value)
-              }
-              placeholder="bijv. 'Leuk gesprek met collega tijdens lunch' of 'Eindelijk dat project afgerond'"
-            />
+            <div className="dayClosingOptions">
+              <textarea
+                value={reflection.highlight}
+                onChange={(event) =>
+                  updateReflection("highlight", event.target.value)
+                }
+                placeholder="bijv. 'Leuk gesprek met collega tijdens lunch' of 'Eindelijk dat project afgerond'"
+              />
+            </div>
 
             <div className="dayClosingActions">
               <button
@@ -228,24 +256,34 @@ function DagAfsluitingPage() {
             </div>
           </article>
         )}
-        
+
         {step === 4 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 4 van 7</span>
+
             <h2>Was er iets uitdagends?</h2>
             <p>Het helpt om moeilijke momenten te benoemen en los te laten</p>
 
-            <textarea
-              value={reflection.challenge}
-              onChange={(event) =>
-                updateReflection("challenge", event.target.value)
-              }
-              placeholder="bijv. 'Moeilijke feedback ontvangen' of 'Te veel taken tegelijk'"
-            />
+            <div className="dayClosingOptions">
+              <textarea
+                value={reflection.challenge}
+                onChange={(event) =>
+                  updateReflection("challenge", event.target.value)
+                }
+                placeholder="bijv. 'Moeilijke feedback ontvangen' of 'Te veel taken tegelijk'"
+              />
 
-            <span className="dayClosingHint">
-              Dit is optioneel. Als er niets was, kun je dit overslaan.
-            </span>
+              <span className="dayClosingHint">
+                Dit is optioneel. Als er niets was, kun je dit overslaan.
+              </span>
+            </div>
 
             <div className="dayClosingActions">
               <button
@@ -280,11 +318,19 @@ function DagAfsluitingPage() {
 
         {step === 5 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 5 van 7</span>
+
             <h2>Hoe voel je je nu?</h2>
             <p>Kies het gevoel dat het beste past</p>
 
-            {error && <p className="dayClosingError">{error}</p>}
+            {renderStepError()}
 
             <div className="dayClosingOptions">
               {energyOptions.map((option) => (
@@ -327,17 +373,27 @@ function DagAfsluitingPage() {
 
         {step === 6 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 6 van 7</span>
+
             <h2>Waar ben je dankbaar voor vandaag?</h2>
             <p>Dankbaarheid bevordert een positieve mindset en beter slapen</p>
 
-            <textarea
-              value={reflection.gratitude}
-              onChange={(event) =>
-                updateReflection("gratitude", event.target.value)
-              }
-              placeholder="bijv. 'Fijne collega's om me heen' of 'Gezond en wel thuisgekomen'"
-            />
+            <div className="dayClosingOptions">
+              <textarea
+                value={reflection.gratitude}
+                onChange={(event) =>
+                  updateReflection("gratitude", event.target.value)
+                }
+                placeholder="bijv. 'Fijne collega's om me heen' of 'Gezond en wel thuisgekomen'"
+              />
+            </div>
 
             <div className="dayClosingActions">
               <button
@@ -363,23 +419,33 @@ function DagAfsluitingPage() {
 
         {step === 7 && (
           <article className="dayClosingCard">
+            <div className="dayClosingProgress">
+              <div
+                className="dayClosingProgressFill"
+                style={{ width: progressWidth }}
+              />
+            </div>
+
             <span className="dayClosingStep">Stap 7 van 7</span>
+
             <h2>Waar wil je morgen op focussen?</h2>
             <p>Eén heldere intentie voor morgen</p>
 
-            <textarea
-              value={reflection.tomorrowFocus}
-              onChange={(event) =>
-                updateReflection("tomorrowFocus", event.target.value)
-              }
-              placeholder="bijv. 'Rustig beginnen met één taak tegelijk' of 'Meer pauzes nemen'"
-            />
+            {renderStepError()}
 
-            <span className="dayClosingHint">
-              Houd het simpel en haalbaar, 1 ding is genoeg
-            </span>
+            <div className="dayClosingOptions">
+              <textarea
+                value={reflection.tomorrowFocus}
+                onChange={(event) =>
+                  updateReflection("tomorrowFocus", event.target.value)
+                }
+                placeholder="bijv. 'Rustig beginnen met één taak tegelijk' of 'Meer pauzes nemen'"
+              />
 
-            {error && <p className="dayClosingError">{error}</p>}
+              <span className="dayClosingHint">
+                Houd het simpel en haalbaar, 1 ding is genoeg
+              </span>
+            </div>
 
             <div className="dayClosingActions">
               <button
@@ -413,8 +479,7 @@ function DagAfsluitingPage() {
 
             <h2>Dag afgesloten</h2>
             <p>
-              Je reflectie is opgeslagen. Tijd om los te laten en te
-              ontspannen.
+              Je reflectie is opgeslagen. Tijd om los te laten en te ontspannen.
             </p>
 
             <div className="dayClosingSummary">

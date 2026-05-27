@@ -2,80 +2,112 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 58px 20px 40px;
+  padding: 78px 32px 40px;
 }
 
 .dayClosingCard {
   width: 100%;
-  max-width: 620px;
-  background: #f1ead8;
+  max-width: 760px;
   border-radius: 10px;
-  padding: 30px 34px;
-}
-
-.dayClosingIntroCard,
-.dayClosingEndCard {
+  padding: 32px 36px;
   text-align: center;
 }
 
+/* INTRO + EINDSCHERM */
+.dayClosingIntroCard,
+.dayClosingEndCard {
+  background: transparent;
+  border: none;
+  padding: 0;
+  max-width: 760px;
+}
+
 .dayClosingIconCircle {
-  width: 46px;
-  height: 46px;
-  margin: 0 auto 18px;
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 24px;
   border-radius: 50%;
-  background: #e3dec9;
+  background: #eef0e7;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .dayClosingIconCircle img {
-  width: 22px;
-  height: 22px;
+  width: 36px;
+  height: 36px;
+}
+
+/* PROGRESS */
+.dayClosingProgress {
+  width: 100%;
+  height: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dbe2dd;
+}
+
+.dayClosingProgressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: #78957f;
 }
 
 .dayClosingStep {
   display: block;
-  margin-bottom: 14px;
-  color: #78957f;
-  font-size: 0.95rem;
-  font-weight: 700;
+  margin-bottom: 28px;
+  color: #4f4d48;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
 }
 
+/* TITELS */
 .dayClosingCard h2 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: #1f1d1b;
-  font-size: 1.7rem;
+  font-family: "Lora", serif;
+  font-size: 2rem;
   line-height: 1.2;
 }
 
-.dayClosingCard p {
-  margin: 0;
-  color: #5f5d58;
-  font-size: 1rem;
-  line-height: 1.5;
+.dayClosingIntroCard h2,
+.dayClosingEndCard h2 {
+  font-size: 3rem;
 }
 
+.dayClosingCard p {
+  max-width: 620px;
+  margin: 0 auto;
+  color: #4f4d48;
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+/* INTRO INFO BOX */
 .dayClosingInfoBox {
-  margin-top: 28px;
+  margin: 42px auto 26px;
+  max-width: 700px;
   text-align: left;
-  background: #fffdf8;
+  background: #f1ead8;
   border: 1px solid #d8d0be;
   border-radius: 8px;
-  padding: 22px;
+  padding: 28px 30px;
 }
 
 .dayClosingInfoBox h3,
 .dayClosingSummary h3 {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   color: #25221f;
-  font-size: 1.1rem;
+  font-family: "Lora", serif;
+  font-size: 1.65rem;
 }
 
 .dayClosingInfoBox ul {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -83,24 +115,30 @@
 
 .dayClosingInfoBox li {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  color: #2f2d29;
-  font-size: 0.98rem;
-  line-height: 1.45;
+  align-items: center;
+  gap: 12px;
+  color: #4f4d48;
+  font-size: 1.2rem;
+  line-height: 1.4;
 }
 
 .dayClosingInfoBox li img {
-  width: 16px;
-  height: 16px;
-  margin-top: 2px;
+  width: 20px;
+  height: 20px;
 }
 
+/* OPTIES */
 .dayClosingOptions {
+  width: 100%;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 26px;
+  gap: 14px;
+  margin: 34px auto 0;
+  
+  background: #f1ead8;
+  padding: 30px 34px;
+  border-radius: 10px;
 }
 
 .dayClosingOption {
@@ -109,11 +147,16 @@
   background: #fffdf8;
   color: #25221f;
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 18px;
   font-family: inherit;
   font-size: 1rem;
   text-align: left;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dayClosingOption:hover {
+  background: #f8f5ee;
 }
 
 .dayClosingOptionActive {
@@ -121,14 +164,16 @@
   background: #dce6de;
 }
 
+/* INPUT */
 .dayClosingCard textarea {
   width: 100%;
-  min-height: 135px;
-  margin-top: 24px;
+  max-width: 700px;
+  min-height: 140px;
+  display: block;
   border: 1px solid #d8d0be;
   border-radius: 8px;
   background: #fffdf8;
-  padding: 14px;
+  padding: 16px;
   color: #2f2d29;
   font-family: inherit;
   font-size: 1rem;
@@ -136,39 +181,51 @@
 }
 
 .dayClosingHint {
+  width: 100%;
+  max-width: 700px;
   display: block;
-  margin-top: 10px;
-  color: #6a675f;
-  font-size: 0.9rem;
+  margin: 8px auto 0;
+  color: #4f4d48;
+  font-size: 1rem;
+  text-align: left;
 }
 
+/* BUTTONS */
 .dayClosingActions {
+  width: 100%;
+  max-width: 700px;
   display: flex;
   justify-content: space-between;
-  gap: 14px;
-  margin-top: 28px;
+  align-items: center;
+  gap: 18px;
+  margin: 34px auto 0;
 }
 
 .dayClosingPrimaryButton,
 .dayClosingSecondaryButton,
 .dayClosingGhostButton {
+  min-width: 150px;
+  min-height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 40px;
-  border-radius: 7px;
-  padding: 10px 20px;
+  gap: 9px;
+  border-radius: 8px;
+  padding: 10px 22px;
   font-family: inherit;
   font-size: 1rem;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .dayClosingPrimaryButton {
-  min-width: 160px;
   border: none;
   background: #78957f;
   color: #fffdf8;
+}
+
+.dayClosingPrimaryButton:hover {
+  background: #6f8976;
 }
 
 .dayClosingSecondaryButton,
@@ -178,23 +235,35 @@
   color: #25221f;
 }
 
+.dayClosingSecondaryButton:hover,
+.dayClosingGhostButton:hover {
+  background: #f8f5ee;
+}
+
 .dayClosingPrimaryButton img,
-.dayClosingSecondaryButton img {
+.dayClosingSecondaryButton img,
+.dayClosingGhostButton img {
   width: 15px;
   height: 15px;
 }
 
+.dayClosingActions .dayClosingGhostButton {
+  margin-left: auto;
+}
+
+/* SUMMARY */
 .dayClosingSummary {
-  margin-top: 28px;
+  margin: 34px auto 26px;
+  max-width: 700px;
   text-align: left;
-  background: #fffdf8;
+  background: #f1ead8;
   border: 1px solid #d8d0be;
   border-radius: 8px;
-  padding: 22px;
+  padding: 28px 30px;
 }
 
 .dayClosingSummary div {
-  padding: 14px 0;
+  padding: 16px 0;
   border-top: 1px solid #ded6c3;
 }
 
@@ -207,27 +276,36 @@
   display: block;
   margin-bottom: 6px;
   color: #25221f;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .dayClosingSummary p {
+  max-width: none;
+  margin: 0;
   color: #5f5d58;
+  font-size: 1rem;
 }
 
-.dayClosingPrimaryButton:hover,
-.dayClosingSecondaryButton:hover,
-.dayClosingGhostButton:hover,
-.dayClosingOption:hover {
-  opacity: 0.9;
-}
-
+/* ERROR */
 .dayClosingError {
-  margin: 16px 0 0;
-  padding: 12px 14px;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+
+  margin: 24px 0 0;
+  padding: 12px 26px;
+
   border-radius: 8px;
-  background: #f7dddd;
+  background: #f9e3e3;
+  border: 1px solid #d8a2a2;
   color: #8a2f2f;
-  border: 1px solid #e2aaaa;
-  font-size: 0.95rem;
+
+  text-align: left;
+}
+
+.dayClosingError h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: normal;
 }
