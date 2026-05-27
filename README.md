@@ -24,5 +24,6 @@ Opstarten
 - npm run dist
 
 ### Electron publishen
+- version aanpassen in package.json
 - cd electron
 - npm run release
