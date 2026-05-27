@@ -30,6 +30,40 @@ router.post("/", protect, async (req, res) => {
   }
 });
 
+router.patch("/:id", protect, async (req, res) => {
+  try {
+    const { action } = req.body;
+
+    if (!action) {
+      return res.status(400).json({
+        message: "Actie is verplicht",
+      });
+    }
+
+    const reminder = await PauseReminder.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        userId: req.user._id,
+      },
+      { action },
+      { new: true }
+    );
+
+    if (!reminder) {
+      return res.status(404).json({
+        message: "Pauzeherinnering niet gevonden",
+      });
+    }
+
+    res.status(200).json(reminder);
+  } catch (error) {
+    res.status(500).json({
+      message: "Pauzeherinnering kon niet aangepast worden",
+      error: error.message,
+    });
+  }
+});
+
 router.get("/me", protect, async (req, res) => {
   try {
     const reminders = await PauseReminder.find({

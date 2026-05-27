@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createTimerSession } from "../services/timerSessionService";
-import { createPauseReminder } from "../services/pauseReminderService";
+import {
+  createPauseReminder,
+  updatePauseReminder,
+} from "../services/pauseReminderService";
 
 const TimerContext = createContext(null);
 const TIMER_STORAGE_KEY = "remind_timer_state";
@@ -55,7 +58,6 @@ function loadStoredTimerState() {
         restored.pauseTime += delta;
       } else {
         const consumedSeconds = Math.min(delta, restored.timeLeft);
-
         restored.elapsedTime += consumedSeconds;
         restored.timeLeft = Math.max(restored.timeLeft - consumedSeconds, 0);
 
@@ -98,8 +100,14 @@ function loadStoredTimerState() {
 
 export function TimerProvider({ children }) {
   const initialState = loadStoredTimerState();
+
   const hasSavedRef = useRef(false);
   const lastTickRef = useRef(Date.now());
+
+  const activeReminderIdRef = useRef(null);
+  const activeReminderPromiseRef = useRef(null);
+  const reminderVisibleRef = useRef(false);
+  const ignoredCloseTimeoutRef = useRef(null);
 
   const [activeTimer, setActiveTimer] = useState(initialState.activeTimer);
   const [activeTimerView, setActiveTimerView] = useState(
@@ -132,6 +140,75 @@ export function TimerProvider({ children }) {
   const [pauseReminderPopup, setPauseReminderPopup] = useState(false);
   const [lastReminderAt, setLastReminderAt] = useState(0);
   const [snoozeUntilElapsed, setSnoozeUntilElapsed] = useState(null);
+  const [activeReminderId, setActiveReminderId] = useState(null);
+
+  const clearIgnoredCloseTimeout = () => {
+    if (ignoredCloseTimeoutRef.current) {
+      clearTimeout(ignoredCloseTimeoutRef.current);
+      ignoredCloseTimeoutRef.current = null;
+    }
+  };
+
+  const setCurrentReminderId = (id) => {
+    activeReminderIdRef.current = id;
+    setActiveReminderId(id);
+  };
+
+  const resetActiveReminder = () => {
+    activeReminderIdRef.current = null;
+    activeReminderPromiseRef.current = null;
+    reminderVisibleRef.current = false;
+    setActiveReminderId(null);
+  };
+
+  const createIgnoredReminder = async () => {
+    if (reminderVisibleRef.current || activeReminderPromiseRef.current) return;
+
+    reminderVisibleRef.current = true;
+
+    const reminderPromise = createPauseReminder({
+      action: "ignored",
+      reminderInterval: selectedReminder,
+      workdayElapsedSeconds: elapsedTime,
+    });
+
+    activeReminderPromiseRef.current = reminderPromise;
+
+    try {
+      const reminder = await reminderPromise;
+
+      if (activeReminderPromiseRef.current === reminderPromise) {
+        setCurrentReminderId(reminder._id);
+      }
+
+      return reminder;
+    } catch (error) {
+      console.error("Ignored reminder opslaan mislukt:", error);
+      resetActiveReminder();
+      return null;
+    }
+  };
+
+  const updateCurrentReminderAction = async (action) => {
+    clearIgnoredCloseTimeout();
+
+    let reminderId = activeReminderIdRef.current || activeReminderId;
+
+    try {
+      if (!reminderId && activeReminderPromiseRef.current) {
+        const reminder = await activeReminderPromiseRef.current;
+        reminderId = reminder?._id;
+      }
+
+      if (reminderId) {
+        await updatePauseReminder(reminderId, { action });
+      }
+    } catch (error) {
+      console.error("Pauzeherinnering aanpassen mislukt:", error);
+    } finally {
+      resetActiveReminder();
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem(
@@ -254,9 +331,20 @@ export function TimerProvider({ children }) {
       snoozeUntilElapsed !== null && elapsedTime >= snoozeUntilElapsed;
 
     if (shouldShowRegularReminder || shouldShowSnoozedReminder) {
+      if (reminderVisibleRef.current) return;
+
       setPauseReminderPopup(true);
       setLastReminderAt(elapsedTime);
       setSnoozeUntilElapsed(null);
+
+      createIgnoredReminder();
+
+      clearIgnoredCloseTimeout();
+
+      ignoredCloseTimeoutRef.current = setTimeout(() => {
+        setPauseReminderPopup(false);
+        resetActiveReminder();
+      }, 60 * 1000);
 
       window.electronAPI?.showBreakNotification?.({
         title: "Re:Mind",
@@ -272,6 +360,12 @@ export function TimerProvider({ children }) {
     lastReminderAt,
     snoozeUntilElapsed,
   ]);
+
+  useEffect(() => {
+    return () => {
+      clearIgnoredCloseTimeout();
+    };
+  }, []);
 
   const saveCurrentTimerSession = async (completed = false) => {
     if (hasSavedRef.current || !startedAt || totalSeconds <= 0) return;
@@ -295,6 +389,9 @@ export function TimerProvider({ children }) {
   };
 
   const changeTimerType = (timerType) => {
+    clearIgnoredCloseTimeout();
+    resetActiveReminder();
+
     setActiveTimer(timerType);
     setActiveTimerView(timerType);
     setIsRunning(false);
@@ -303,6 +400,8 @@ export function TimerProvider({ children }) {
     setElapsedTime(0);
     setPauseTime(0);
     setStartedAt(null);
+    setPauseReminderPopup(false);
+    setSnoozeUntilElapsed(null);
     hasSavedRef.current = false;
 
     if (timerType === "workday") {
@@ -342,7 +441,7 @@ export function TimerProvider({ children }) {
       : selectedDuration;
 
     if (!durationInMinutes || durationInMinutes <= 0) return;
-    
+
     const seconds = durationInMinutes * 60;
 
     setTotalSeconds(seconds);
@@ -379,11 +478,16 @@ export function TimerProvider({ children }) {
   };
 
   const resetTimer = () => {
+    clearIgnoredCloseTimeout();
+    resetActiveReminder();
+
     setTimeLeft(totalSeconds);
     setElapsedTime(0);
     setPauseTime(0);
     setStartedAt(new Date());
     setActiveTimerView(activeTimer);
+    setPauseReminderPopup(false);
+    setSnoozeUntilElapsed(null);
 
     lastTickRef.current = Date.now();
     hasSavedRef.current = false;
@@ -392,6 +496,9 @@ export function TimerProvider({ children }) {
   };
 
   const stopTimer = async () => {
+    clearIgnoredCloseTimeout();
+    resetActiveReminder();
+
     await saveCurrentTimerSession(false);
 
     setIsRunning(false);
@@ -400,6 +507,8 @@ export function TimerProvider({ children }) {
     setPauseTime(0);
     setTimeLeft(totalSeconds);
     setStartedAt(null);
+    setPauseReminderPopup(false);
+    setSnoozeUntilElapsed(null);
 
     hasSavedRef.current = false;
   };
@@ -429,6 +538,9 @@ export function TimerProvider({ children }) {
   };
 
   const endWorkdayTimer = async () => {
+    clearIgnoredCloseTimeout();
+    resetActiveReminder();
+
     await saveCurrentTimerSession(false);
 
     setIsRunning(false);
@@ -453,38 +565,26 @@ export function TimerProvider({ children }) {
     localStorage.removeItem(TIMER_STORAGE_KEY);
   };
 
-  const logPauseReminder = async (action) => {
-    try {
-      await createPauseReminder({
-        action,
-        reminderInterval: selectedReminder,
-        workdayElapsedSeconds: elapsedTime,
-      });
-    } catch (error) {
-      console.error("Pauzeherinnering opslaan mislukt:", error);
-    }
-  };
-
   const takeReminderBreak = async () => {
-    await logPauseReminder("taken");
-
     setPauseReminderPopup(false);
     setSnoozeUntilElapsed(null);
     prepareBreakTimer();
+
+    await updateCurrentReminderAction("taken");
   };
 
   const snoozeReminder = async () => {
-    await logPauseReminder("snoozed");
-
     setPauseReminderPopup(false);
     setSnoozeUntilElapsed(elapsedTime + 5 * 60);
+
+    await updateCurrentReminderAction("snoozed");
   };
 
   const dismissReminder = async () => {
-    await logPauseReminder("missed");
-
     setPauseReminderPopup(false);
     setSnoozeUntilElapsed(null);
+
+    await updateCurrentReminderAction("missed");
   };
 
   return (

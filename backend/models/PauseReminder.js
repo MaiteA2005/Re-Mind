@@ -10,7 +10,7 @@ const pauseReminderSchema = new mongoose.Schema(
 
     action: {
       type: String,
-      enum: ["taken", "snoozed", "missed"],
+      enum: ["taken", "snoozed", "missed", "ignored"],
       required: true,
     },
 

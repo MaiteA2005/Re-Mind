@@ -67,14 +67,6 @@ function formatHourLabel(date) {
   return `${hour}:00`;
 }
 
-function getTimerMinutes(timerSessions, type) {
-  const seconds = timerSessions
-    .filter((session) => session.type === type)
-    .reduce((total, session) => total + Number(session.elapsedSeconds || 0), 0);
-
-  return Math.round(seconds / 60);
-}
-
 function InsightsPage() {
   const [activeFilter, setActiveFilter] = useState("today");
 
@@ -128,11 +120,6 @@ function InsightsPage() {
     [pauseSessions, activeFilter]
   );
 
-  const filteredTimerSessions = useMemo(
-    () => filterByPeriod(timerSessions, activeFilter),
-    [timerSessions, activeFilter]
-  );
-
   const filteredDayClosings = useMemo(
     () => filterByPeriod(dayClosings, activeFilter),
     [dayClosings, activeFilter]
@@ -147,19 +134,21 @@ function InsightsPage() {
     const averageStress = getAverage(filteredCheckIns, "stressLevel");
     const averageEnergy = getAverage(filteredCheckIns, "energyLevel");
 
-    const pausesToday = pauseSessions.filter((session) =>
-      isToday(session.completedAt)
-    );
-
     const remindersTaken = filteredPauseReminders.filter(
       (reminder) => reminder.action === "taken"
     ).length;
 
     const remindersMissed = filteredPauseReminders.filter(
       (reminder) =>
-        reminder.action === "missed" ||
-        reminder.action === "skipped" ||
-        reminder.action === "ignored"
+        reminder.action === "missed" || reminder.action === "ignored"
+    ).length;
+
+    const remindersSnoozed = filteredPauseReminders.filter(
+      (reminder) => reminder.action === "snoozed"
+    ).length;
+
+    const pausesToday = pauseSessions.filter((session) =>
+      isToday(session.completedAt)
     ).length;
 
     return [
@@ -175,21 +164,16 @@ function InsightsPage() {
       },
       {
         label: "Pauzes genomen",
-        value: remindersTaken || filteredPauseSessions.length,
-        helper: `${pausesToday.length} vandaag`,
+        value: remindersTaken,
+        helper: `${pausesToday} vandaag`,
       },
       {
-        label: "Pauzes gemist",
-        value: remindersMissed,
-        helper: "Op basis van reminders",
+        label: "Later herinnerd",
+        value: remindersSnoozed,
+        helper: `${remindersMissed} gemist`,
       },
     ];
-  }, [
-    filteredCheckIns,
-    filteredPauseSessions,
-    filteredPauseReminders,
-    pauseSessions,
-  ]);
+  }, [filteredCheckIns, filteredPauseReminders, pauseSessions]);
 
   const stressEnergyChartData = useMemo(() => {
     const sortedCheckIns = [...filteredCheckIns].sort(
@@ -236,11 +220,7 @@ function InsightsPage() {
         grouped[label].taken += 1;
       }
 
-      if (
-        reminder.action === "missed" ||
-        reminder.action === "skipped" ||
-        reminder.action === "ignored"
-      ) {
+      if (reminder.action === "missed" || reminder.action === "ignored") {
         grouped[label].missed += 1;
       }
     });
@@ -276,9 +256,11 @@ function InsightsPage() {
 
     const missedReminders = filteredPauseReminders.filter(
       (reminder) =>
-        reminder.action === "missed" ||
-        reminder.action === "skipped" ||
-        reminder.action === "ignored"
+        reminder.action === "missed" || reminder.action === "ignored"
+    ).length;
+
+    const snoozedReminders = filteredPauseReminders.filter(
+      (reminder) => reminder.action === "snoozed"
     ).length;
 
     if (averageStress && averageStress >= 7) {
@@ -294,6 +276,14 @@ function InsightsPage() {
         type: "pause",
         title: "Probeer één reminder bewust op te volgen",
         text: "Je slaat vaker pauzes over dan je ze neemt. Begin klein met één korte pauze.",
+      };
+    }
+
+    if (snoozedReminders > takenReminders) {
+      return {
+        type: "pause",
+        title: "Stel je pauze niet te vaak uit",
+        text: "Je kiest vaak voor later herinneren. Probeer je volgende pauze bewust te nemen.",
       };
     }
 
