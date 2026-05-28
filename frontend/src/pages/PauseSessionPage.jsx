@@ -44,7 +44,7 @@ function PauseSessionPage() {
   const [loading, setLoading] = useState(!statePauseItem);
   const [isPaused, setIsPaused] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
-
+  
   useEffect(() => {
     if (statePauseItem) return;
 
@@ -134,8 +134,9 @@ function PauseSessionPage() {
   }
 
   const progress = ((totalSeconds - timeLeft) / totalSeconds) * 100;
-  const isBreathingExercise = Boolean(pause.breathingPattern);
-
+  const isBreathingExercise =
+    pause.type === "breathing" || Boolean(pause.breathingPattern);
+    
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseSessionWrapper">
