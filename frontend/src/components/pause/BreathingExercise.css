@@ -1,0 +1,224 @@
+.breathingExercise {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.breathingHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.breathingEyebrow {
+    margin: 0 0 4px;
+    color: #78957f;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.breathingHeader h2 {
+    margin: 0;
+    color: #1f1d1b;
+    font-size: 1.6rem;
+}
+
+.breathingContent {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 36px;
+    align-items: center;
+}
+
+.breathingMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.breathingOrbWrapper {
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.breathingOrb {
+    width: 230px;
+    height: 230px;
+    border-radius: 999px;
+    background: #78957f;
+    display: grid;
+    place-items: center;
+    transform: scale(0.82);
+    box-shadow: 0 22px 48px rgba(120, 149, 127, 0.22);
+    transition: transform var(--breathing-duration) ease-in-out,
+        background 0.3s ease;
+}
+
+.breathingOrbInner {
+    width: 72%;
+    height: 72%;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 253, 248, 0.28);
+    display: grid;
+    place-items: center;
+    align-content: center;
+    color: #fffdf8;
+    text-align: center;
+}
+
+.breathingOrbInner span {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.breathingOrbInner strong {
+    margin-top: 4px;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.breathingOrb.isRunning.breathingOrb-inhale,
+.breathingOrb.isRunning.breathingOrb-secondInhale {
+    transform: scale(1.12);
+}
+
+.breathingOrb.isRunning.breathingOrb-exhale {
+    transform: scale(0.78);
+}
+
+.breathingOrb.isRunning.breathingOrb-holdAfterInhale,
+.breathingOrb.isRunning.breathingOrb-holdAfterExhale {
+    transform: scale(1);
+}
+
+.breathingPhaseInfo {
+    text-align: center;
+}
+
+.breathingPhaseInfo h3 {
+    margin: 0 0 4px;
+    color: #1f1d1b;
+    font-size: 1.25rem;
+}
+
+.breathingPhaseInfo p {
+    margin: 0;
+    color: #5f5d58;
+}
+
+.breathingStats {
+    width: 100%;
+    max-width: 500px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.breathingStats div {
+    padding: 12px 10px;
+    background: #f1ead8;
+    border: 1px solid #e0d9c8;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.breathingStats span {
+    display: block;
+    margin-bottom: 4px;
+    color: #5f5d58;
+    font-size: 0.8rem;
+}
+
+.breathingStats strong {
+    color: #1f1d1b;
+    font-size: 1rem;
+}
+
+.breathingSide {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.breathingMethods,
+.breathingTip {
+    padding: 16px;
+    background: #f8f8f3;
+    border: 1px solid #d8d0be;
+    border-radius: 14px;
+}
+
+.breathingMethods h3,
+.breathingTip h3 {
+    margin: 0 0 12px;
+    color: #1f1d1b;
+    font-size: 1rem;
+}
+
+.breathingMethodList {
+    display: grid;
+    gap: 8px;
+}
+
+.breathingMethodOption {
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid #d8d0be;
+    border-radius: 999px;
+    background: #fffdf8;
+    color: #25221f;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.breathingMethodOption:hover {
+    border-color: #78957f;
+    background: #eef4ec;
+}
+
+.breathingMethodOption.active {
+    border-color: #78957f;
+    background: #78957f;
+    color: #fffdf8;
+}
+
+.breathingMethodsEmpty,
+.breathingTip p {
+    margin: 0;
+    color: #5f5d58;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+    .breathingContent {
+        grid-template-columns: 1fr;
+    }
+
+    .breathingSide {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .breathingHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .breathingStats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .breathingOrb {
+        width: 210px;
+        height: 210px;
+    }
+}

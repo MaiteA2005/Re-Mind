@@ -2,7 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import PauseTabs from "../components/pause/PauseTabs";
 import PauseCard from "../components/pause/PauseCard";
+
 import API_URL from "../services/api";
+import {
+  getFavoritePauses,
+  addFavoritePause,
+  removeFavoritePause,
+} from "../services/favoritePauseService";
+
 import "./PausePage.css";
 
 function PausePage() {
@@ -12,20 +19,25 @@ function PausePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPauseSuggestions = async () => {
+    const fetchPauseData = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/pause-suggestions`);
-        const data = await response.json();
+        const [pauseResponse, favoriteData] = await Promise.all([
+          fetch(`${API_URL}/api/pause-suggestions`),
+          getFavoritePauses(),
+        ]);
 
-        setPauseSuggestions(data);
+        const pauseData = await pauseResponse.json();
+
+        setPauseSuggestions(pauseData);
+        setFavorites(favoriteData.map((pause) => pause._id));
       } catch (error) {
-        console.error("Fout bij ophalen pauzes:", error);
+        console.error("Pauzes of favorieten ophalen mislukt:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPauseSuggestions();
+    fetchPauseData();
   }, []);
 
   const filteredSuggestions = useMemo(() => {
@@ -36,12 +48,20 @@ function PausePage() {
     return pauseSuggestions.filter((item) => item.type === activeTab);
   }, [activeTab, favorites, pauseSuggestions]);
 
-  const toggleFavorite = (id) => {
-    setFavorites((prev) =>
-      prev.includes(id)
-        ? prev.filter((favoriteId) => favoriteId !== id)
-        : [...prev, id]
-    );
+  const toggleFavorite = async (id) => {
+    const isFavorite = favorites.includes(id);
+
+    try {
+      if (isFavorite) {
+        await removeFavoritePause(id);
+        setFavorites((prev) => prev.filter((favoriteId) => favoriteId !== id));
+      } else {
+        await addFavoritePause(id);
+        setFavorites((prev) => [...prev, id]);
+      }
+    } catch (error) {
+      console.error("Favoriet aanpassen mislukt:", error);
+    }
   };
 
   return (
@@ -54,6 +74,11 @@ function PausePage() {
 
         {loading ? (
           <p className="pauseStatusText">Pauzes laden...</p>
+        ) : filteredSuggestions.length === 0 ? (
+          <div className="pauseEmptyState">
+            <h3>Geen pauzes gevonden</h3>
+            <p>Er zijn momenteel geen pauzes beschikbaar binnen deze categorie.</p>
+          </div>
         ) : (
           <div className="pauseGrid">
             {filteredSuggestions.map((suggestion) => (
@@ -65,7 +90,12 @@ function PausePage() {
                 icon={suggestion.icon}
                 isFavorite={favorites.includes(suggestion._id)}
                 onToggleFavorite={() => toggleFavorite(suggestion._id)}
-                to={`/pause/${suggestion.slug}`}
+                to={
+                  suggestion.isCategory &&
+                  suggestion.title?.toLowerCase().includes("ademhaling")
+                    ? "/pause/breathing"
+                    : `/pause/${suggestion.slug}`
+                }
               />
             ))}
           </div>

@@ -7,6 +7,7 @@ import PauseHeader from "../components/pause/PauseHeader";
 import PauseTimer from "../components/pause/PauseTimer";
 import PauseProgressBar from "../components/pause/PauseProgressBar";
 import PauseSessionControls from "../components/pause/PauseSessionControls";
+import BreathingExercise from "../components/pause/BreathingExercise";
 
 import API_URL from "../services/api";
 import { savePauseSession } from "../services/pauseSessionService";
@@ -36,22 +37,20 @@ function PauseSessionPage() {
   const { slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const statePauseItem = location.state?.pauseItem || null;
-  
+
   const [pause, setPause] = useState(statePauseItem);
   const [loading, setLoading] = useState(!statePauseItem);
   const [isPaused, setIsPaused] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
-  
+
   useEffect(() => {
     if (statePauseItem) return;
 
     const fetchPause = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/api/pause-suggestions/${slug}`
-        );
+        const response = await fetch(`${API_URL}/api/pause-suggestions/${slug}`);
         const data = await response.json();
 
         setPause(data);
@@ -91,7 +90,7 @@ function PauseSessionPage() {
   };
 
   useEffect(() => {
-    if (!pause || isPaused || timeLeft <= 0) return;
+    if (!pause || pause.breathingPattern || isPaused || timeLeft <= 0) return;
 
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
@@ -107,7 +106,7 @@ function PauseSessionPage() {
 
     return () => clearInterval(interval);
   }, [pause, isPaused, timeLeft]);
-  
+
   if (loading) {
     return (
       <MainLayout title="Pauze laden" subtitle="Even geduld">
@@ -121,7 +120,11 @@ function PauseSessionPage() {
       <MainLayout title="Pauze niet gevonden" subtitle="Deze pauze bestaat niet">
         <section className="pauseSessionWrapper">
           <div className="pauseBackButton">
-            <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+            <Button
+              variant="secondary"
+              onClick={() => navigate("/pause")}
+              iconLeft={pijlLinks}
+            >
               Terug naar pauzes
             </Button>
           </div>
@@ -131,53 +134,67 @@ function PauseSessionPage() {
   }
 
   const progress = ((totalSeconds - timeLeft) / totalSeconds) * 100;
+  const isBreathingExercise = Boolean(pause.breathingPattern);
 
   return (
     <MainLayout title={pause.title} subtitle={pause.description}>
       <section className="pauseSessionWrapper">
         <div className="pauseBackButton">
-          <Button variant="secondary" onClick={() => navigate("/pause")} iconLeft={pijlLinks}>
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/pause")}
+            iconLeft={pijlLinks}
+          >
             Terug naar pauzes
           </Button>
         </div>
-        <div className="pauseSessionContent">
-          <PauseHeader title={pause.title} icon={pause.icon} />
 
-          <button
-            type="button"
-            className="pauseDropdownButton"
-            onClick={() => setShowInstructions((prev) => !prev)}
-          >
-            <span>Instructies</span>
-            <span>{showInstructions ? "⌃" : "⌄"}</span>
-          </button>
+        {isBreathingExercise ? (
+          <BreathingExercise pause={pause} onComplete={completePause} />
+        ) : (
+          <div className="pauseSessionContent">
+            <PauseHeader title={pause.title} icon={pause.icon} />
 
-          {showInstructions && (
-            <div className="pauseDropdownContent">
-              <ol className="pauseInstructionsList">
-                {pause.instructions?.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
+            <button
+              type="button"
+              className="pauseDropdownButton"
+              onClick={() => setShowInstructions((prev) => !prev)}
+            >
+              <span>Instructies</span>
+              <span>{showInstructions ? "⌃" : "⌄"}</span>
+            </button>
+
+            {showInstructions && (
+              <div className="pauseDropdownContent">
+                <ol className="pauseInstructionsList">
+                  {pause.instructions?.map((step, index) => (
+                    <li key={index}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            <PauseTimer time={formatTime(timeLeft)} />
+
+            <PauseProgressBar progress={progress} />
+
+            <PauseSessionControls
+              isRunning={!isPaused}
+              onPause={() => setIsPaused((prev) => !prev)}
+              onStop={() => navigate("/pause")}
+            />
+
+            <div className="pauseCompleteAction">
+              <Button
+                variant="secondary"
+                onClick={completePause}
+                iconLeft={CompleteBlackIcon}
+              >
+                Markeer als voltooid
+              </Button>
             </div>
-          )}
-
-          <PauseTimer time={formatTime(timeLeft)} />
-
-          <PauseProgressBar progress={progress} />
-
-          <PauseSessionControls
-            isRunning={!isPaused}
-            onPause={() => setIsPaused((prev) => !prev)}
-            onStop={() => navigate("/pause")}
-          />
-
-          <div className="pauseCompleteAction">
-            <Button variant="secondary" onClick={completePause} iconLeft={CompleteBlackIcon}>
-              Markeer als voltooid
-            </Button>
           </div>
-        </div>
+        )}
       </section>
     </MainLayout>
   );

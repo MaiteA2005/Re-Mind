@@ -11,6 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CheckInPage from "./pages/CheckInPage";
 
 import PausePage from "./pages/PausePage";
+import BreathingOverviewPage from "./pages/BreathingOverviewPage";
 import PauseDetailPage from "./pages/PauseDetailPage";
 import PauseSessionPage from "./pages/PauseSessionPage";
 import PauseCompletePage from "./pages/PauseCompletePage";
@@ -132,6 +133,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PausePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pause/breathing"
+          element={
+            <ProtectedRoute>
+              <BreathingOverviewPage />
             </ProtectedRoute>
           }
         />

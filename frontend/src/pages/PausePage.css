@@ -173,3 +173,27 @@
     grid-template-columns: 1fr;
   }
 }
+
+.breathingOverviewTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pauseEmptyState {
+  padding: 28px;
+  background: #f6f1e4;
+  border: 1px solid #ebe2cf;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.pauseEmptyState h3 {
+  margin: 0 0 8px;
+}
+
+.pauseEmptyState p {
+  margin: 0;
+  color: #6f756c;
+}
