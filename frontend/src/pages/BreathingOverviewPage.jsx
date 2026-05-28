@@ -23,23 +23,27 @@ function BreathingOverviewPage() {
 
     useEffect(() => {
         const fetchBreathingExercises = async () => {
-        try {
-            const [pauseResponse, favoriteData] = await Promise.all([
-            fetch(`${API_URL}/api/pause-suggestions`),
-            getFavoritePauses(),
-            ]);
-
+            try {
+            const pauseResponse = await fetch(`${API_URL}/api/pause-suggestions`);
             const data = await pauseResponse.json();
 
-            const exercises = data.filter((item) => item.category === "breathing");
+            const exercises = Array.isArray(data)
+                ? data.filter((item) => item.category === "breathing")
+                : [];
 
             setBreathingExercises(exercises);
+            } catch (error) {
+            console.error("Ademhalingsoefeningen ophalen mislukt:", error);
+            }
+
+            try {
+            const favoriteData = await getFavoritePauses();
             setFavorites(favoriteData.map((pause) => pause._id));
-        } catch (error) {
-            console.error("Fout bij ophalen ademhalingsoefeningen:", error);
-        } finally {
+            } catch (error) {
+            console.error("Favorieten ophalen mislukt:", error);
+            } finally {
             setLoading(false);
-        }
+            }
         };
 
         fetchBreathingExercises();

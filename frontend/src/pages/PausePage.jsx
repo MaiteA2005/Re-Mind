@@ -21,17 +21,27 @@ function PausePage() {
   useEffect(() => {
     const fetchPauseData = async () => {
       try {
-        const [pauseResponse, favoriteData] = await Promise.all([
-          fetch(`${API_URL}/api/pause-suggestions`),
-          getFavoritePauses(),
-        ]);
+        const pauseResponse = await fetch(
+          `${API_URL}/api/pause-suggestions`
+        );
 
         const pauseData = await pauseResponse.json();
 
-        setPauseSuggestions(pauseData);
-        setFavorites(favoriteData.map((pause) => pause._id));
+        setPauseSuggestions(
+          Array.isArray(pauseData) ? pauseData : []
+        );
       } catch (error) {
-        console.error("Pauzes of favorieten ophalen mislukt:", error);
+        console.error("Pauzes ophalen mislukt:", error);
+      }
+
+      try {
+        const favoriteData = await getFavoritePauses();
+
+        setFavorites(
+          favoriteData.map((pause) => pause._id)
+        );
+      } catch (error) {
+        console.error("Favorieten ophalen mislukt:", error);
       } finally {
         setLoading(false);
       }
@@ -43,6 +53,12 @@ function PausePage() {
   const filteredSuggestions = useMemo(() => {
     if (activeTab === "favorites") {
       return pauseSuggestions.filter((item) => favorites.includes(item._id));
+    }
+
+    if (activeTab === "long") {
+      return pauseSuggestions.filter(
+        (item) => item.type === "long" && item.category !== "breathing"
+      );
     }
 
     return pauseSuggestions.filter((item) => item.type === activeTab);
