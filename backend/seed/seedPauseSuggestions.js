@@ -157,8 +157,7 @@ const pauseSuggestions = [
   {
     id: 701,
     slug: "box-breathing",
-    type: "long",
-    category: "breathing",
+    type: "breathing",
     title: "Box breathing",
     description: "Adem in een vast ritme om rust en focus te herstellen",
     duration: "2 min",
@@ -211,8 +210,7 @@ const pauseSuggestions = [
   {
     id: 702,
     slug: "coherent-breathing",
-    type: "long",
-    category: "breathing",
+    type: "breathing",
     title: "Coherent breathing",
     description: "Vertraag je ademhaling voor meer kalmte en balans",
     duration: "3 min",
@@ -258,8 +256,7 @@ const pauseSuggestions = [
   {
     id: 703,
     slug: "physiological-sigh",
-    type: "long",
-    category: "breathing",
+    type: "breathing",
     title: "Physiological sigh",
     description: "Laat spanning los met een diepe dubbele ademhaling",
     duration: "1 min",
@@ -290,8 +287,7 @@ const pauseSuggestions = [
   {
     id: 704,
     slug: "ratio-breathing",
-    type: "long",
-    category: "breathing",
+    type: "breathing",
     title: "1:2 ratio breathing",
     description: "Verleng je uitademing om je lichaam tot rust te brengen",
     duration: "2 min",
