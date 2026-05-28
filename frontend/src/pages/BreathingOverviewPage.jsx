@@ -28,7 +28,7 @@ function BreathingOverviewPage() {
             const data = await pauseResponse.json();
 
             const exercises = Array.isArray(data)
-                ? data.filter((item) => item.category === "breathing")
+                ? data.filter((item) => item.type === "breathing")
                 : [];
 
             setBreathingExercises(exercises);

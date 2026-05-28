@@ -54,13 +54,7 @@ function PausePage() {
     if (activeTab === "favorites") {
       return pauseSuggestions.filter((item) => favorites.includes(item._id));
     }
-
-    if (activeTab === "long") {
-      return pauseSuggestions.filter(
-        (item) => item.type === "long" && item.category !== "breathing"
-      );
-    }
-
+    
     return pauseSuggestions.filter((item) => item.type === activeTab);
   }, [activeTab, favorites, pauseSuggestions]);
 
