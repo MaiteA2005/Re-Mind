@@ -11,6 +11,7 @@ import dayClosingRoutes from "./routes/dayClosingRoutes.js";
 import timerSessionRoutes from "./routes/timerSessionRoutes.js";
 import businessRequestRoutes from "./routes/businessRequestRoutes.js";
 import pauseReminderRoutes from "./routes/pauseReminderRoutes.js";
+import favoritePauseRoutes from "./routes/favoritePauseRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/day-closings", dayClosingRoutes);
 app.use("/api/timer-sessions", timerSessionRoutes);
 app.use("/api/business-requests", businessRequestRoutes);
 app.use("/api/pause-reminders", pauseReminderRoutes);
+app.use("/api/favorite-pauses", favoritePauseRoutes);
 app.get("/", (req, res) => {
   res.send("API werkt");
 });

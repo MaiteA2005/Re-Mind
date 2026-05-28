@@ -78,6 +78,13 @@ const userSchema = new mongoose.Schema(
       enum: ["monthly", "yearly"],
       default: "monthly",
     },
+
+    favoritePauses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "PauseSuggestion",
+      },
+    ],
   },
   { timestamps: true }
 );
