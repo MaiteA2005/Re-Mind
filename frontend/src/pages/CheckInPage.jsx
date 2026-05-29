@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Button from "../components/base/Button";
 import MainLayout from "../components/layout/MainLayout";
 import { formatDateTime } from "../utils/date";
 import { createCheckIn } from "../services/checkInService";
@@ -8,6 +8,7 @@ import "./CheckInPage.css";
 import checkinIcon from "../assets/icons_groen/check-in_groen.svg";
 import infoIcon from "../assets/info_blauw.svg";
 import pijlRechtsIcon from "../assets/icons_wit/pijl_rechts_wit.svg";
+import pijlLinksIcon from "../assets/icons_zwart/pijl_links_zwart.svg";
 import energieIcon from "../assets/icons_groen/bliksem_groen.svg";
 import checkIcon from "../assets/icons_groen/check_groen.svg";
 import notitieIcon from "../assets/icons_groen/notitie_groen.svg";
@@ -47,6 +48,11 @@ function CheckInPage() {
   const goNext = () => setStep((prev) => Math.min(prev + 1, 5));
   const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
+  const handleSkip = () => {
+    setNote("");
+    finishCheckIn();
+  };
+
   const finishCheckIn = async () => {
     setLoading(true);
     setError("");
@@ -73,6 +79,15 @@ function CheckInPage() {
         <section className="checkInPanel">
           {step === 1 && (
             <div className="checkInStep checkInIntro">
+              <div className="checkInIconWrap">
+                <img
+                  src={checkinIcon}
+                  alt="Stress"
+                  aria-hidden="true"
+                  className="checkInTopIcon"
+                />
+              </div>
+
               <p className="checkInIntroText">
                 Neem even een moment om bij jezelf te checken. Dit duurt maar
                 30 seconden.
@@ -88,13 +103,9 @@ function CheckInPage() {
                 </ul>
               </div>
 
-              <button
-                type="button"
-                className="btn btnPrimary checkInStartButton"
-                onClick={goNext}
-              >
+              <Button onClick={goNext} variant="primary" iconRight={pijlRechtsIcon}>
                 Start check-in
-              </button>
+              </Button>
             </div>
           )}
 
@@ -143,22 +154,13 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions">
-                <button
-                  type="button"
-                  className="checkInTextButton"
-                  onClick={goBack}
-                >
-                  ← Terug
-                </button>
+                <Button variant="secondary" onClick={goBack} iconLeft={pijlLinksIcon}>
+                  Terug
+                </Button>
 
-                <button
-                  type="button"
-                  className="btn btnPrimary checkInNextButton"
-                  onClick={goNext}
-                >
+                <Button variant="primary" onClick={goNext} iconRight={pijlRechtsIcon}>
                   Volgende
-                  <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -207,22 +209,15 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions">
-                <button
-                  type="button"
-                  className="checkInTextButton"
-                  onClick={goBack}
-                >
-                  ← Terug
-                </button>
 
-                <button
-                  type="button"
-                  className="btn btnPrimary checkInNextButton"
-                  onClick={goNext}
-                >
+
+                <Button variant="secondary" onClick={goBack} iconLeft={pijlLinksIcon}>
+                  Terug
+                </Button>
+
+                <Button variant="primary" onClick={goNext} iconRight={pijlRechtsIcon}>
                   Volgende
-                  <img src={pijlRechtsIcon} alt="" aria-hidden="true" />
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -259,39 +254,19 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions">
-                <button
-                  type="button"
-                  className="checkInTextButton"
-                  onClick={goBack}
-                  disabled={loading}
-                >
-                  ← Terug
-                </button>
+                <Button variant="secondary" onClick={goBack} iconLeft={pijlLinksIcon}>
+                  Terug
+                </Button>
 
-                <div className="checkInActionGroup">
-                  <button
-                    type="button"
-                    className="btn btnSecondary"
-                    onClick={() => {
-                      setNote("");
-                      finishCheckIn();
-                    }}
-                    disabled={loading}
-                  >
-                    Overslaan
-                  </button>
+                <Button variant="secondary" onClick={handleSkip}>
+                  Overslaan
+                </Button>
 
-                  <button
-                    type="button"
-                    className="btn btnPrimary"
-                    onClick={finishCheckIn}
-                    disabled={loading}
-                  >
-                    {loading ? "Opslaan..." : "Afronden"}
-                  </button>
+                <Button variant="primary" onClick={finishCheckIn} >
+                  {loading ? "Opslaan..." : "Afronden"}
+                </Button>
                 </div>
               </div>
-            </div>
           )}
 
           {step === 5 && (
@@ -336,13 +311,13 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions checkInActionsCenter">
-                <Link to="/dashboard" className="btn btnSecondary">
+                <Button variant="secondary" to="/dashboard">
                   Naar dashboard
-                </Link>
+                </Button>
 
-                <Link to="/inzichten" className="btn btnPrimary">
+                <Button variant="primary" to="/inzichten">
                   Bekijk inzichten
-                </Link>
+                </Button>
               </div>
             </div>
           )}
