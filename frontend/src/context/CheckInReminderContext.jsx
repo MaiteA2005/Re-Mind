@@ -6,7 +6,7 @@ import CheckInReminderPopup from "../components/checkin/CheckInReminderPopup";
 const CheckInReminderContext = createContext(null);
 
 const frequencyMap = {
-    "elke 5 minuten": 5,
+    "elke 5 minuten": 0.2,
     "Elk half uur": 30,
     "Elk uur": 60,
     "Elke 2 uur": 120,

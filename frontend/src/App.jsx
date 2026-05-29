@@ -32,7 +32,7 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <CheckInReminderProvider>{children}</CheckInReminderProvider>;
 }
 
 function PublicRoute({ children }) {

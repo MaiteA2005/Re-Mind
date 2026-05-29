@@ -12,6 +12,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
     ipcRenderer.removeAllListeners("open-timer-page");
     ipcRenderer.on("open-timer-page", handler);
+  },
+
+  onOpenCheckIn: (callback) => {
+    const handler = () => callback();
 
     ipcRenderer.removeAllListeners("open-checkin-page");
     ipcRenderer.on("open-checkin-page", handler);
