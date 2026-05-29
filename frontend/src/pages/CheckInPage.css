@@ -98,10 +98,6 @@
   font-size: 0.92rem;
 }
 
-.checkInStartButton {
-  min-width: 150px;
-}
-
 /* scale card */
 .checkInScaleCard {
   width: 100%;
@@ -244,20 +240,6 @@
   margin-top: 10px;
 }
 
-.checkInSuccessIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  background: #e8efe8;
-  color: #7e9a88;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-
 .checkInSummaryCard {
   width: 100%;
   background: #f1ead7;
@@ -352,12 +334,6 @@
   justify-content: center;
 }
 
-.checkInActionGroup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .checkInError {
   margin: 0 0 14px;
   padding: 12px 14px;
@@ -385,15 +361,5 @@
   .checkInActions {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .checkInActionGroup {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .checkInActionGroup .btn,
-  .checkInActions .btn {
-    width: 100%;
   }
 }
