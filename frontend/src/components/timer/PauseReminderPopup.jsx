@@ -18,7 +18,7 @@ function PauseReminderPopup({
 
   const handleTakeBreak = () => {
     onTakeBreak();
-    navigate("/timer/break");
+    navigate("/timer");
   };
 
   const handleSnooze = (minutes) => {
