@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, Navigate, useNavigate } from "react-router-d
 import { useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { TimerProvider, useTimer } from "./context/TimerContext";
+import { CheckInReminderProvider } from "./context/CheckInReminderContext";
 
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
@@ -70,6 +71,10 @@ function ElectronNavigationListener() {
     window.electronAPI?.onOpenTimer?.(() => {
       navigate("/timer");
     });
+
+    window.electronAPI?.onOpenCheckIn?.(() => {
+      navigate("/check-in");
+    });
   }, [navigate]);
 
   return null;
@@ -79,7 +84,8 @@ function App() {
   return (
     <HashRouter>
       <TimerProvider>
-      <ElectronNavigationListener />
+      <CheckInReminderProvider>
+        <ElectronNavigationListener />
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
 
@@ -219,6 +225,7 @@ function App() {
         />
       </Routes>
       <GlobalTimerPopups />
+      </CheckInReminderProvider>
       </TimerProvider>
     </HashRouter>
   );

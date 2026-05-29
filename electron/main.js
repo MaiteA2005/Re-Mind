@@ -82,6 +82,30 @@ ipcMain.on("show-break-notification", (_, data) => {
   notification.show();
 });
 
+ipcMain.on("show-checkin-notification", (_, data) => {
+  if (!Notification.isSupported()) return;
+
+  const notification = new Notification({
+    title: data?.title || "Re:Mind",
+    body: data?.body || "Tijd voor een check-in.",
+    icon: getIconPath(),
+  });
+
+  notification.on("click", () => {
+    if (!mainWindow) return;
+
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+
+    mainWindow.show();
+    mainWindow.focus();
+    mainWindow.webContents.send("open-checkin-page");
+  });
+
+  notification.show();
+});
+
 autoUpdater.on("update-downloaded", () => {
   dialog
     .showMessageBox({

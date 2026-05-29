@@ -394,15 +394,6 @@ function SettingsPage() {
                 }
               />
 
-              <SettingsToggleRow
-                title="Pauze suggesties"
-                description="Krijg suggesties voor pauzes."
-                checked={settings.pauseSuggestionsEnabled}
-                onChange={(event) =>
-                  updateField("pauseSuggestionsEnabled", event.target.checked)
-                }
-              />
-
               <SettingsField
                 label="Frequentie"
                 name="notificationFrequency"
@@ -411,10 +402,21 @@ function SettingsPage() {
                   updateField("notificationFrequency", event.target.value)
                 }
                 options={[
+                  { value: "Elke 5 minuten", label: "Elke 5 minuten" },
+                  { value: "Elk half uur", label: "Elk half uur" },
+                  { value: "Elk uur", label: "Elk uur" },
                   { value: "Elke 2 uur", label: "Elke 2 uur" },
                   { value: "Elke 3 uur", label: "Elke 3 uur" },
-                  { value: "1 keer per dag", label: "1 keer per dag" },
                 ]}
+              />
+
+              <SettingsToggleRow
+                title="Pauze suggesties"
+                description="Krijg suggesties voor pauzes."
+                checked={settings.pauseSuggestionsEnabled}
+                onChange={(event) =>
+                  updateField("pauseSuggestionsEnabled", event.target.checked)
+                }
               />
 
               <div className="settingsActions">
