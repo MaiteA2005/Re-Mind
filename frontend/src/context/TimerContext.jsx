@@ -573,9 +573,12 @@ export function TimerProvider({ children }) {
     await updateCurrentReminderAction("taken");
   };
 
-  const snoozeReminder = async () => {
+  const snoozeReminder = async (minutes = 5) => {
     setPauseReminderPopup(false);
-    setSnoozeUntilElapsed(elapsedTime + 5 * 60);
+
+    setSnoozeUntilElapsed(
+      elapsedTime + minutes * 60
+    );
 
     await updateCurrentReminderAction("snoozed");
   };

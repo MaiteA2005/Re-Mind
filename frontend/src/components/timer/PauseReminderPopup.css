@@ -17,6 +17,7 @@
   padding: 28px;
   text-align: center;
   box-shadow: 0 18px 48px rgba(31, 29, 27, 0.24);
+  transition: min-height 0.2s ease;
 }
 
 .pauseReminderIcon {
@@ -64,4 +65,14 @@
   border: none;
   background: transparent;
   color: #5f5d58;
+}
+
+.pauseReminderSnoozeOptions {
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.pauseReminderSnoozeOptions .btn {
+  width: 100%;
 }
