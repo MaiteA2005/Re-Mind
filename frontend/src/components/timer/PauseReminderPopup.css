@@ -40,12 +40,14 @@
   margin: 0 0 12px;
   color: #1f1d1b;
   font-size: 1.55rem;
+  font-family: var(--font-heading);
 }
 
 .pauseReminderPopup p {
   margin: 0 0 24px;
   color: #5f5d58;
   line-height: 1.55;
+  font-family: var(--font-body);
 }
 
 .pauseReminderActions {

@@ -8,6 +8,7 @@
 .recommendation-card h3 {
   margin: 0 0 0.25rem;
   font-size: 1rem;
+  font-family: var(--font-heading);
 }
 
 .recommendation-item {
@@ -29,10 +30,12 @@
 
 .recommendation-item h4 {
   margin: 0 0 0.25rem;
+  font-family: var(--font-heading);
 }
 
 .recommendation-item p {
   margin: 0;
   color: #5f6158;
   font-size: 0.82rem;
+  font-family: var(--font-body);
 }

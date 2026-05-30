@@ -17,11 +17,13 @@
   color: #78957f;
   font-size: 1.9rem;
   line-height: 1.15;
+  font-family: var(--font-heading);
 }
 
 .timerRunningCard p {
   margin: 20px 0 8px;
   color: #5f5d58;
+  font-family: var(--font-body);
 }
 
 .timerRunningCard strong {

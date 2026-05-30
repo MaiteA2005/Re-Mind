@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-heading);
 }
 
 .timerInfoTitleIcon {
@@ -32,6 +33,7 @@
 
 .timerInfoCard li {
   padding-left: 2px;
+  font-family: var(--font-body);
 }
 
 .timerInfoLink {
