@@ -67,7 +67,7 @@
 .dayClosingCard h2 {
   margin: 0 0 14px;
   color: #1f1d1b;
-  font-family: "Lora", serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   line-height: 1.2;
 }
@@ -100,7 +100,7 @@
 .dayClosingSummary h3 {
   margin: 0 0 20px;
   color: #25221f;
-  font-family: "Lora", serif;
+  font-family: var(--font-heading);
   font-size: 1.65rem;
 }
 

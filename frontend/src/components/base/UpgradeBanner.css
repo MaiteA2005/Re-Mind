@@ -27,7 +27,7 @@
 
 .banner h3 {
   margin: 0;
-  font-family: "Lora", serif;
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 700;
   line-height: 27px;
@@ -36,7 +36,7 @@
 
 .banner p {
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
   line-height: 22px;

@@ -92,7 +92,7 @@
 .pricing-card h2,
 .business-form h2,
 .success-modal h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 1.65rem;
   margin: 0 0 1.6rem;
 }
@@ -333,7 +333,7 @@
 }
 
 .success-modal h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   line-height: 1.2;
   margin: 0 0 1rem;
