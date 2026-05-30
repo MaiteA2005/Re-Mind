@@ -6,7 +6,7 @@ import CheckInReminderPopup from "../components/checkin/CheckInReminderPopup";
 const CheckInReminderContext = createContext(null);
 
 const frequencyMap = {
-    "elke 5 minuten": 0.2,
+    "elke 5 minuten": 5,
     "Elk half uur": 30,
     "Elk uur": 60,
     "Elke 2 uur": 120,
@@ -21,6 +21,7 @@ export function CheckInReminderProvider({ children }) {
 
     const intervalRef = useRef(null);
     const snoozeTimeoutRef = useRef(null);
+    const hasShownInitialReminderRef = useRef(false);
 
     const clearTimers = () => {
         if (intervalRef.current) {
@@ -60,11 +61,10 @@ export function CheckInReminderProvider({ children }) {
     useEffect(() => {
         clearTimers();
         setShowCheckInPopup(false);
-
-        if (!user) {
         setSettings(null);
-        return;
-        }
+        hasShownInitialReminderRef.current = false;
+
+        if (!user) return;
 
         refreshSettings();
 
@@ -82,6 +82,11 @@ export function CheckInReminderProvider({ children }) {
         if (!shouldShowReminders) return;
 
         const minutes = frequencyMap[settings.notificationFrequency] || 120;
+
+        if (!hasShownInitialReminderRef.current) {
+        showReminder();
+        hasShownInitialReminderRef.current = true;
+        }
 
         intervalRef.current = setInterval(() => {
         showReminder();
