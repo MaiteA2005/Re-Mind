@@ -6,7 +6,7 @@ import CheckInReminderPopup from "../components/checkin/CheckInReminderPopup";
 const CheckInReminderContext = createContext(null);
 
 const frequencyMap = {
-    "elke 5 minuten": 5,
+    "Elke 5 minuten": 5,
     "Elk half uur": 30,
     "Elk uur": 60,
     "Elke 2 uur": 120,
@@ -19,20 +19,24 @@ export function CheckInReminderProvider({ children }) {
     const [showCheckInPopup, setShowCheckInPopup] = useState(false);
     const [settings, setSettings] = useState(null);
 
-    const intervalRef = useRef(null);
-    const snoozeTimeoutRef = useRef(null);
+    const timeoutRef = useRef(null);
     const hasShownInitialReminderRef = useRef(false);
 
-    const clearTimers = () => {
-        if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+    const clearReminderTimeout = () => {
+        if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
         }
+    };
 
-        if (snoozeTimeoutRef.current) {
-        clearTimeout(snoozeTimeoutRef.current);
-        snoozeTimeoutRef.current = null;
-        }
+    const canShowReminders = (userSettings) => {
+        return Boolean(
+        userSettings?.notificationsEnabled && userSettings?.checkInReminders
+        );
+    };
+
+    const getFrequencyMinutes = (userSettings) => {
+        return frequencyMap[userSettings?.notificationFrequency] || 120;
     };
 
     const showReminder = () => {
@@ -42,6 +46,18 @@ export function CheckInReminderProvider({ children }) {
         title: "Re:Mind",
         body: "Tijd voor een korte check-in. Hoe voel je je momenteel?",
         });
+    };
+
+    const scheduleNextReminder = (minutes) => {
+        clearReminderTimeout();
+
+        timeoutRef.current = setTimeout(() => {
+        showReminder();
+
+        if (settings && canShowReminders(settings)) {
+            scheduleNextReminder(getFrequencyMinutes(settings));
+        }
+        }, minutes * 60 * 1000);
     };
 
     const refreshSettings = async () => {
@@ -59,60 +75,55 @@ export function CheckInReminderProvider({ children }) {
     };
 
     useEffect(() => {
-        clearTimers();
+        clearReminderTimeout();
         setShowCheckInPopup(false);
         setSettings(null);
         hasShownInitialReminderRef.current = false;
 
-        if (!user) return;
+    if (!user) return;
 
-        refreshSettings();
+    refreshSettings();
 
-        return () => clearTimers();
+    return () => clearReminderTimeout();
     }, [user]);
 
     useEffect(() => {
-        clearTimers();
+        clearReminderTimeout();
 
         if (!settings) return;
+        if (!canShowReminders(settings)) return;
 
-        const shouldShowReminders =
-        settings.notificationsEnabled && settings.checkInReminders;
-
-        if (!shouldShowReminders) return;
-
-        const minutes = frequencyMap[settings.notificationFrequency] || 120;
+        const minutes = getFrequencyMinutes(settings);
 
         if (!hasShownInitialReminderRef.current) {
-        showReminder();
-        hasShownInitialReminderRef.current = true;
+            showReminder();
+            hasShownInitialReminderRef.current = true;
         }
 
-        intervalRef.current = setInterval(() => {
-        showReminder();
-        }, minutes * 60 * 1000);
+        scheduleNextReminder(minutes);
 
-        return () => clearTimers();
+        return () => clearReminderTimeout();
     }, [settings]);
 
     const startCheckIn = async () => {
         setShowCheckInPopup(false);
+
+        if (settings && canShowReminders(settings)) {
+        scheduleNextReminder(getFrequencyMinutes(settings));
+        }
     };
 
     const snoozeCheckIn = async (minutes = 15) => {
         setShowCheckInPopup(false);
-
-        if (snoozeTimeoutRef.current) {
-        clearTimeout(snoozeTimeoutRef.current);
-        }
-
-        snoozeTimeoutRef.current = setTimeout(() => {
-        showReminder();
-        }, minutes * 60 * 1000);
+        scheduleNextReminder(minutes);
     };
 
     const dismissCheckIn = async () => {
         setShowCheckInPopup(false);
+
+        if (settings && canShowReminders(settings)) {
+        scheduleNextReminder(getFrequencyMinutes(settings));
+        }
     };
 
     return (
