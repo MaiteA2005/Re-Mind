@@ -26,4 +26,5 @@ Opstarten
 ### Electron publishen
 - version aanpassen in package.json
 - cd electron
+- $env:GH_TOKEN="jouw_github_token"
 - npm run release
