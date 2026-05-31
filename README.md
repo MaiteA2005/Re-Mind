@@ -20,7 +20,7 @@ Opstarten
 - npm start
 
 ### Electron Build
-- cd electon
+- cd electron
 - npm run dist
 
 ### Electron publishen
