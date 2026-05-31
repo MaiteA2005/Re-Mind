@@ -8,6 +8,7 @@ import pauseSuggestionRoutes from "./routes/pauseSuggestionRoutes.js";
 import pauseSessionRoutes from "./routes/pauseSessionRoutes.js";
 import checkInRoutes from "./routes/checkInRoutes.js";
 import dayClosingRoutes from "./routes/dayClosingRoutes.js";
+import focusTaskRoutes from "./routes/focusTaskRoutes.js";
 import timerSessionRoutes from "./routes/timerSessionRoutes.js";
 import businessRequestRoutes from "./routes/businessRequestRoutes.js";
 import pauseReminderRoutes from "./routes/pauseReminderRoutes.js";
@@ -29,6 +30,7 @@ app.use("/api/timer-sessions", timerSessionRoutes);
 app.use("/api/business-requests", businessRequestRoutes);
 app.use("/api/pause-reminders", pauseReminderRoutes);
 app.use("/api/favorite-pauses", favoritePauseRoutes);
+app.use("/api/focus-tasks", focusTaskRoutes);
 app.get("/", (req, res) => {
   res.send("API werkt");
 });
