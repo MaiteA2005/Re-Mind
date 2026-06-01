@@ -12,21 +12,110 @@ import {
   deleteFocusTask,
 } from "../../services/focusTaskService";
 
+function isSameDay(dateA, dateB = new Date()) {
+  const first = new Date(dateA);
+  const second = new Date(dateB);
+
+  return (
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate()
+  );
+}
+
+function isYesterday(date, today = new Date()) {
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  return isSameDay(date, yesterday);
+}
+
+function normalizeText(text) {
+  return text.trim().toLowerCase();
+}
+
+function getTaskKey(task) {
+  return `${task.day}-${task.source}-${normalizeText(task.text)}`;
+}
+
 function DashboardFocusAction({ focusLoading }) {
   const [isFocusPopupOpen, setIsFocusPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
   const [draftTask, setDraftTask] = useState("");
   const [tasks, setTasks] = useState([]);
-  const [recentDayClosings, setRecentDayClosings] = useState([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
-  const [loadingDayClosings, setLoadingDayClosings] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchTasks = async () => {
+  const loadFocusData = async () => {
     try {
       setLoadingTasks(true);
-      const data = await getMyFocusTasks();
-      setTasks(data);
+      setError("");
+
+      const [focusTasks, dayClosings] = await Promise.all([
+        getMyFocusTasks(),
+        getRecentDayClosings(),
+      ]);
+
+      const expectedDayClosingTasks = [];
+
+      dayClosings.forEach((dayClosing) => {
+        const text = dayClosing.tomorrowFocus?.trim();
+        if (!text) return;
+
+        if (isYesterday(dayClosing.createdAt)) {
+          expectedDayClosingTasks.push({
+            text,
+            day: "today",
+            source: "dayClosing",
+          });
+        }
+
+        if (isSameDay(dayClosing.createdAt)) {
+          expectedDayClosingTasks.push({
+            text,
+            day: "tomorrow",
+            source: "dayClosing",
+          });
+        }
+      });
+
+      const expectedKeys = new Set(expectedDayClosingTasks.map(getTaskKey));
+      const seenDayClosingKeys = new Set();
+
+      const tasksToKeep = [];
+      const tasksToDelete = [];
+
+      focusTasks.forEach((task) => {
+        if (task.source !== "dayClosing") {
+          tasksToKeep.push(task);
+          return;
+        }
+
+        const key = getTaskKey(task);
+
+        if (!expectedKeys.has(key) || seenDayClosingKeys.has(key)) {
+          tasksToDelete.push(task);
+          return;
+        }
+
+        seenDayClosingKeys.add(key);
+        tasksToKeep.push(task);
+      });
+
+      if (tasksToDelete.length > 0) {
+        await Promise.all(tasksToDelete.map((task) => deleteFocusTask(task._id)));
+      }
+
+      const existingKeys = new Set(tasksToKeep.map(getTaskKey));
+      const tasksToCreate = expectedDayClosingTasks.filter(
+        (task) => !existingKeys.has(getTaskKey(task))
+      );
+
+      const createdTasks = await Promise.all(
+        tasksToCreate.map((task) => createFocusTask(task))
+      );
+
+      setTasks([...createdTasks, ...tasksToKeep]);
     } catch (error) {
       console.error(error);
       setError("Focuslijst ophalen mislukt.");
@@ -35,84 +124,9 @@ function DashboardFocusAction({ focusLoading }) {
     }
   };
 
-  const fetchRecentDayClosings = async () => {
-    try {
-      setLoadingDayClosings(true);
-      const data = await getRecentDayClosings();
-      setRecentDayClosings(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoadingDayClosings(false);
-    }
-  };
-
   useEffect(() => {
-    fetchTasks();
-    fetchRecentDayClosings();
+    loadFocusData();
   }, []);
-
-  const todayFocusFromYesterday = recentDayClosings[1]?.tomorrowFocus?.trim();
-  const tomorrowFocusFromToday = recentDayClosings[0]?.tomorrowFocus?.trim();
-
-  useEffect(() => {
-    const syncDayClosingFocuses = async () => {
-      if (loadingTasks || loadingDayClosings) return;
-
-      try {
-        if (todayFocusFromYesterday) {
-          const alreadyExistsToday = tasks.some(
-            (task) =>
-              task.source === "dayClosing" &&
-              task.day === "today" &&
-              task.text.toLowerCase() ===
-                todayFocusFromYesterday.toLowerCase()
-          );
-
-          if (!alreadyExistsToday) {
-            const newTodayTask = await createFocusTask({
-              text: todayFocusFromYesterday,
-              day: "today",
-              source: "dayClosing",
-            });
-
-            setTasks((previous) => [newTodayTask, ...previous]);
-          }
-        }
-
-        if (tomorrowFocusFromToday) {
-          const alreadyExistsTomorrow = tasks.some(
-            (task) =>
-              task.source === "dayClosing" &&
-              task.day === "tomorrow" &&
-              task.text.toLowerCase() ===
-                tomorrowFocusFromToday.toLowerCase()
-          );
-
-          if (!alreadyExistsTomorrow) {
-            const newTomorrowTask = await createFocusTask({
-              text: tomorrowFocusFromToday,
-              day: "tomorrow",
-              source: "dayClosing",
-            });
-
-            setTasks((previous) => [newTomorrowTask, ...previous]);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        setError("Focus uit dagafsluiting toevoegen mislukt.");
-      }
-    };
-
-    syncDayClosingFocuses();
-  }, [
-    loadingTasks,
-    loadingDayClosings,
-    tasks,
-    todayFocusFromYesterday,
-    tomorrowFocusFromToday,
-  ]);
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => task.day === activeTab);
@@ -127,6 +141,17 @@ function DashboardFocusAction({ focusLoading }) {
 
     const value = draftTask.trim();
     if (!value) return;
+
+    const alreadyExists = tasks.some(
+      (task) =>
+        task.day === activeTab &&
+        normalizeText(task.text) === normalizeText(value)
+    );
+
+    if (alreadyExists) {
+      setDraftTask("");
+      return;
+    }
 
     try {
       const newTask = await createFocusTask({
@@ -232,7 +257,7 @@ function DashboardFocusAction({ focusLoading }) {
           {error && <p className="focusError">{error}</p>}
 
           <ul className="focusTaskList">
-            {focusLoading || loadingTasks || loadingDayClosings ? (
+            {focusLoading || loadingTasks ? (
               <li className="focusEmptyState">Focuslijst laden...</li>
             ) : filteredTasks.length === 0 ? (
               <li className="focusEmptyState">
