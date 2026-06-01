@@ -6,6 +6,7 @@ import instellingen_zwart from "../../assets/icons_zwart/instellingen_zwart.svg"
 import notificatie_zwart from "../../assets/icons_zwart/notificatie_zwart.svg";
 import abonnement_zwart from "../../assets/icons_zwart/abonnement_zwart.svg";
 import privacy_zwart from "../../assets/icons_zwart/privacy_zwart.svg";
+import werk_zwart from "../../assets/icons_zwart/werkdag_zwart.svg";
 
 // icons wit
 import profiel_wit from "../../assets/icons_wit/houding_check_wit.svg";
@@ -13,6 +14,7 @@ import instellingen_wit from "../../assets/icons_wit/instellingen_wit.svg";
 import notificatie_wit from "../../assets/icons_wit/notificatie_wit.svg";
 import abonnement_wit from "../../assets/icons_wit/abonnement_wit.svg";
 import privacy_wit from "../../assets/icons_wit/privacy_wit.svg";
+import werk_wit from "../../assets/icons_wit/werkdag_wit.svg";
 
 function SettingsTabs({ activeTab, onTabChange }) {
   const tabs = [
@@ -21,6 +23,12 @@ function SettingsTabs({ activeTab, onTabChange }) {
       label: "Profiel",
       icon: profiel_zwart,
       activeIcon: profiel_wit,
+    },
+    {
+      value: "workday",
+      label: "Werkdag",
+      icon: werk_zwart,
+      activeIcon: werk_wit,
     },
     {
       value: "personalization",

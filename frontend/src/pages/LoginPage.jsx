@@ -2,6 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/authService";
+
+import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
+import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
+
 import "./AuthPages.css";
 
 function LoginPage() {
@@ -15,6 +19,7 @@ function LoginPage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
     setFormData((prev) => ({
@@ -65,14 +70,28 @@ function LoginPage() {
 
           <label>
             Wachtwoord
-            <input
-              type="password"
-              name="password"
-              placeholder="Wachtwoord"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+
+            <div className="passwordInputWrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Wachtwoord"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+
+              <button
+                type="button"
+                className="passwordToggle"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                <img
+                  src={showPassword ? oogIcon : oogUitIcon}
+                  alt="Toon wachtwoord"
+                />
+              </button>
+            </div>
           </label>
 
           <button type="submit" className="authPrimaryButton" disabled={loading}>

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser, saveOnboarding } from "../services/authService";
+
+import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
+import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
+
 import "./AuthPages.css";
 
 const totalSteps = 6;
@@ -8,6 +12,7 @@ const totalSteps = 6;
 function OnboardingPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -106,14 +111,28 @@ function OnboardingPage() {
 
               <label>
                 Wachtwoord
-                <input
-                  type="password"
-                  placeholder="Wachtwoord"
-                  value={formData.password}
-                  onChange={(event) =>
-                    updateField("password", event.target.value)
-                  }
-                />
+
+                <div className="passwordInputWrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Wachtwoord"
+                    value={formData.password}
+                    onChange={(event) =>
+                      updateField("password", event.target.value)
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    className="passwordToggle"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    <img
+                      src={showPassword ? oogIcon : oogUitIcon}
+                      alt="Toon wachtwoord"
+                    />
+                  </button>
+                </div>
               </label>
             </div>
           </div>

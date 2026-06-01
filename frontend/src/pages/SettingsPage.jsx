@@ -26,7 +26,8 @@ import {
 
 import premium_groen from "../assets/icons_groen/premium_groen.svg";
 import premium_wit from "../assets/icons_wit/premium_wit.svg";
-import dropdownArrow from "../assets/icons_zwart/arrow_down_zwart.svg";
+import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
+import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
 
 import "./SettingsPage.css";
 
@@ -41,6 +42,10 @@ function SettingsPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [settings, setSettings] = useState({
     name: "",
     email: "",
@@ -49,6 +54,11 @@ function SettingsPage() {
     checkInReminders: true,
     pauseSuggestionsEnabled: true,
     notificationFrequency: "Elke 2 uur",
+    workdayStartTime: "09:00",
+    workdayEndTime: "17:00",
+    lunchStartTime: "12:00",
+    lunchDurationMinutes: 30,
+    calendarConnected: false,
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -70,6 +80,11 @@ function SettingsPage() {
           checkInReminders: user.checkInReminders ?? true,
           pauseSuggestionsEnabled: user.pauseSuggestionsEnabled ?? true,
           notificationFrequency: user.notificationFrequency || "Elke 2 uur",
+          workdayStartTime: user.workdayStartTime || "09:00",
+          workdayEndTime: user.workdayEndTime || "17:00",
+          lunchStartTime: user.lunchStartTime || "12:00",
+          lunchDurationMinutes: user.lunchDurationMinutes || 30,
+          calendarConnected: user.calendarConnected ?? false,
         });
       } catch (error) {
         setError(error.message);
@@ -311,35 +326,74 @@ function SettingsPage() {
               <div className="settingsSection">
                 <h3>Wachtwoord aanpassen</h3>
 
-                <SettingsField
-                  label="Huidig wachtwoord"
-                  name="currentPassword"
-                  type="password"
-                  value={passwordData.currentPassword}
-                  onChange={(event) =>
-                    updatePasswordField("currentPassword", event.target.value)
-                  }
-                />
+                <label className="settingsPasswordField">
+                  <span>Huidig wachtwoord</span>
 
-                <SettingsField
-                  label="Nieuw wachtwoord"
-                  name="newPassword"
-                  type="password"
-                  value={passwordData.newPassword}
-                  onChange={(event) =>
-                    updatePasswordField("newPassword", event.target.value)
-                  }
-                />
+                  <div className="settingsPasswordInput">
+                    <input
+                      name="currentPassword"
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={passwordData.currentPassword}
+                      onChange={(event) =>
+                        updatePasswordField("currentPassword", event.target.value)
+                      }
+                    />
 
-                <SettingsField
-                  label="Bevestig nieuw wachtwoord"
-                  name="confirmPassword"
-                  type="password"
-                  value={passwordData.confirmPassword}
-                  onChange={(event) =>
-                    updatePasswordField("confirmPassword", event.target.value)
-                  }
-                />
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrentPassword((previous) => !previous)}
+                      aria-label="Toon huidig wachtwoord"
+                    >
+                      <img src={showCurrentPassword ? oogIcon : oogUitIcon} alt="" />
+                    </button>
+                  </div>
+                </label>
+
+                <label className="settingsPasswordField">
+                  <span>Nieuw wachtwoord</span>
+
+                  <div className="settingsPasswordInput">
+                    <input
+                      name="newPassword"
+                      type={showNewPassword ? "text" : "password"}
+                      value={passwordData.newPassword}
+                      onChange={(event) =>
+                        updatePasswordField("newPassword", event.target.value)
+                      }
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword((previous) => !previous)}
+                      aria-label="Toon nieuw wachtwoord"
+                    >
+                      <img src={showNewPassword ? oogIcon : oogUitIcon} alt="" />
+                    </button>
+                  </div>
+                </label>
+
+                <label className="settingsPasswordField">
+                  <span>Bevestig nieuw wachtwoord</span>
+
+                  <div className="settingsPasswordInput">
+                    <input
+                      name="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={passwordData.confirmPassword}
+                      onChange={(event) =>
+                        updatePasswordField("confirmPassword", event.target.value)
+                      }
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword((previous) => !previous)}
+                      aria-label="Toon bevestiging wachtwoord"
+                    >
+                      <img src={showConfirmPassword ? oogIcon : oogUitIcon} alt="" />
+                    </button>
+                  </div>
+                </label>
 
                 <Button
                   variant="secondary"
@@ -349,6 +403,88 @@ function SettingsPage() {
                 >
                   {saving ? "Aanpassen..." : "Wachtwoord aanpassen"}
                 </Button>
+              </div>
+            </div>
+          </SettingsCard>
+        )}
+
+        {activeTab === "workday" && (
+          <SettingsCard>
+            <div className="settingsPanel">
+              <h2>Werkdag instellingen</h2>
+
+              <p className="settingsIntro">
+                Stel je standaard werkdag en middagpauze in. Deze gegevens kunnen later
+                gebruikt worden voor pauzeherinneringen en agenda-integratie.
+              </p>
+
+              <div className="settingsSection">
+                <SettingsField
+                  label="Werkdag start"
+                  name="workdayStartTime"
+                  type="time"
+                  value={settings.workdayStartTime}
+                  onChange={(event) =>
+                    updateField("workdayStartTime", event.target.value)
+                  }
+                />
+
+                <SettingsField
+                  label="Werkdag einde"
+                  name="workdayEndTime"
+                  type="time"
+                  value={settings.workdayEndTime}
+                  onChange={(event) =>
+                    updateField("workdayEndTime", event.target.value)
+                  }
+                />
+
+                <SettingsField
+                  label="Middagpauze start"
+                  name="lunchStartTime"
+                  type="time"
+                  value={settings.lunchStartTime}
+                  onChange={(event) =>
+                    updateField("lunchStartTime", event.target.value)
+                  }
+                />
+
+                <SettingsField
+                  label="Duur middagpauze"
+                  name="lunchDurationMinutes"
+                  value={settings.lunchDurationMinutes}
+                  onChange={(event) =>
+                    updateField("lunchDurationMinutes", Number(event.target.value))
+                  }
+                  options={[
+                    { value: 15, label: "15 minuten" },
+                    { value: 30, label: "30 minuten" },
+                    { value: 45, label: "45 minuten" },
+                    { value: 60, label: "1 uur" },
+                  ]}
+                />
+
+                <div className="settingsDivider" />
+
+                <SettingsToggleRow
+                  title="Agenda verbinden"
+                  description="Koppel later je agenda zodat Re:Mind rekening kan houden met meetings."
+                  checked={settings.calendarConnected}
+                  onChange={(event) =>
+                    updateField("calendarConnected", event.target.checked)
+                  }
+                />
+
+                <div className="settingsActions">
+                  <Button
+                    variant="primary"
+                    onClick={saveSettings}
+                    disabled={saving}
+                    full
+                  >
+                    {saving ? "Opslaan..." : "Werkdag instellingen opslaan"}
+                  </Button>
+                </div>
               </div>
             </div>
           </SettingsCard>

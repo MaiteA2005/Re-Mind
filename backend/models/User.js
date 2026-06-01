@@ -31,6 +31,31 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    workdayStartTime: {
+      type: String,
+      default: "09:00",
+    },
+
+    workdayEndTime: {
+      type: String,
+      default: "17:00",
+    },
+
+    lunchStartTime: {
+      type: String,
+      default: "12:00",
+    },
+
+    lunchDurationMinutes: {
+      type: Number,
+      default: 30,
+    },
+
+    calendarConnected: {
+      type: Boolean,
+      default: false,
+    },
+
     goals: {
       type: [String],
       default: [],

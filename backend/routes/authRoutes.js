@@ -9,14 +9,12 @@ import PauseSession from "../models/PauseSession.js";
 
 const router = express.Router();
 
-// Functie om JWT token te creëren
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
 
-// Endpoint voor gebruikersregistratie
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -61,7 +59,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Endpoint voor gebruikerslogin
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -106,12 +103,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Endpoint om huidige gebruikersgegevens op te halen
 router.get("/me", protect, async (req, res) => {
   res.status(200).json(req.user);
 });
 
-// Endpoint voor het updaten van onboarding gegevens
 router.patch("/onboarding", protect, async (req, res) => {
   try {
     const {
@@ -142,7 +137,6 @@ router.patch("/onboarding", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het updaten van abonnement en facturering
 router.patch("/subscription", protect, async (req, res) => {
   try {
     const { subscriptionPlan, billingCycle } = req.body;
@@ -165,7 +159,6 @@ router.patch("/subscription", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het updaten van gebruikersinstellingen
 router.patch("/settings", protect, async (req, res) => {
   try {
     const {
@@ -176,6 +169,11 @@ router.patch("/settings", protect, async (req, res) => {
       checkInReminders,
       pauseSuggestionsEnabled,
       notificationFrequency,
+      workdayStartTime,
+      workdayEndTime,
+      lunchStartTime,
+      lunchDurationMinutes,
+      calendarConnected,
     } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -188,6 +186,11 @@ router.patch("/settings", protect, async (req, res) => {
         checkInReminders,
         pauseSuggestionsEnabled,
         notificationFrequency,
+        workdayStartTime,
+        workdayEndTime,
+        lunchStartTime,
+        lunchDurationMinutes,
+        calendarConnected,
       },
       { new: true }
     ).select("-password");
