@@ -13,6 +13,9 @@ import API_URL from "../services/api";
 import { savePauseSession } from "../services/pauseSessionService";
 import CompleteBlackIcon from "../assets/icons_zwart/name_one_win_zwart.svg";
 import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
+import arrowDown from "../assets/icons_zwart/arrow_down_zwart.svg";
+import arrowUp from "../assets/icons_zwart/arrow_up_zwart.svg";
+
 import "./PausePage.css";
 
 function getDurationSeconds(duration) {
@@ -162,7 +165,11 @@ function PauseSessionPage() {
               onClick={() => setShowInstructions((prev) => !prev)}
             >
               <span>Instructies</span>
-              <span>{showInstructions ? "⌃" : "⌄"}</span>
+              <img
+                src={showInstructions ? arrowUp : arrowDown}
+                alt="pauseDropdownIcon"
+                className="pauseDropdownIcon"
+              />
             </button>
 
             {showInstructions && (

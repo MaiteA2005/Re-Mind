@@ -169,6 +169,12 @@
   pointer-events: none;
 }
 
+.pauseDropdownIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
 @media (max-width: 900px) {
   .pauseGrid {
     grid-template-columns: 1fr;
