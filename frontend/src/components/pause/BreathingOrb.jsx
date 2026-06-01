@@ -13,7 +13,7 @@ function BreathingOrb({
         <div className="breathingOrbWrapper">
         <div
             className={`breathingOrb breathingOrb-${phase || "idle"} ${
-            isStarted ? "isRunning" : ""
+                isStarted ? "isRunning" : ""
             }`}
             style={style}
         >

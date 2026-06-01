@@ -113,9 +113,12 @@
     transform: scale(0.78);
 }
 
-.breathingOrb.isRunning.breathingOrb-holdAfterInhale,
+.breathingOrb.isRunning.breathingOrb-holdAfterInhale {
+    transform: scale(1.12);
+}
+
 .breathingOrb.isRunning.breathingOrb-holdAfterExhale {
-    transform: scale(1);
+    transform: scale(0.78);
 }
 
 .breathingPhaseInfo {
