@@ -1,221 +1,252 @@
 import { useEffect, useMemo, useState } from "react";
+import { pauseIconMap } from "../../utils/pauseIconMap";
+import breath from "../../assets/icons_groen/ademhaling_groen.svg";
+import CompleteBlackIcon from "../../assets/icons_zwart/name_one_win_zwart.svg";
+
 import Button from "../base/Button";
 import BreathingOrb from "./BreathingOrb";
 import BreathingMethodOptions from "./BreathingMethodOptions";
 import "./BreathingExercise.css";
 
 const DEFAULT_PATTERN = {
-    inhale: 4,
-    holdAfterInhale: 4,
-    exhale: 4,
-    holdAfterExhale: 4,
+  inhale: 4,
+  secondInhale: 0,
+  holdAfterInhale: 4,
+  exhale: 4,
+  holdAfterExhale: 4,
 };
 
+function normalizePattern(pattern) {
+  return {
+    inhale: Number(pattern?.inhale || 0),
+    secondInhale: Number(pattern?.secondInhale || 0),
+    holdAfterInhale: Number(pattern?.holdAfterInhale || 0),
+    exhale: Number(pattern?.exhale || 0),
+    holdAfterExhale: Number(pattern?.holdAfterExhale || 0),
+  };
+}
+
 function buildPhases(pattern) {
-const phases = [];
+  const phases = [];
 
-if (pattern.inhale > 0) {
+  if (pattern.inhale > 0) {
     phases.push({
-    key: "inhale",
-    label: "Adem in",
-    duration: pattern.inhale,
+      key: "inhale",
+      label: "Adem in",
+      statLabel: "Inademen",
+      duration: pattern.inhale,
     });
-}
+  }
 
-if (pattern.secondInhale > 0) {
+  if (pattern.secondInhale > 0) {
     phases.push({
-    key: "secondInhale",
-    label: "Adem nog kort in",
-    duration: pattern.secondInhale,
+      key: "secondInhale",
+      label: "Adem nog kort in",
+      statLabel: "Kort inademen",
+      duration: pattern.secondInhale,
     });
-}
+  }
 
-if (pattern.holdAfterInhale > 0) {
+  if (pattern.holdAfterInhale > 0) {
     phases.push({
-    key: "holdAfterInhale",
-    label: "Houd vast",
-    duration: pattern.holdAfterInhale,
+      key: "holdAfterInhale",
+      label: "Houd vast",
+      statLabel: "Vasthouden",
+      duration: pattern.holdAfterInhale,
     });
-}
+  }
 
-if (pattern.exhale > 0) {
+  if (pattern.exhale > 0) {
     phases.push({
-    key: "exhale",
-    label: "Adem uit",
-    duration: pattern.exhale,
+      key: "exhale",
+      label: "Adem uit",
+      statLabel: "Uitademen",
+      duration: pattern.exhale,
     });
-}
+  }
 
-if (pattern.holdAfterExhale > 0) {
+  if (pattern.holdAfterExhale > 0) {
     phases.push({
-    key: "holdAfterExhale",
-    label: "Houd vast",
-    duration: pattern.holdAfterExhale,
+      key: "holdAfterExhale",
+      label: "Houd vast",
+      statLabel: "Vasthouden",
+      duration: pattern.holdAfterExhale,
     });
-}
+  }
 
-return phases;
+  return phases;
 }
 
 function formatPatternLabel(pattern) {
-    return [
-        pattern.inhale || 0,
-        pattern.holdAfterInhale || 0,
-        pattern.exhale || 0,
-        pattern.holdAfterExhale || 0,
-    ].join("-");
+  return [
+    pattern.inhale || 0,
+    pattern.secondInhale || 0,
+    pattern.holdAfterInhale || 0,
+    pattern.exhale || 0,
+    pattern.holdAfterExhale || 0,
+  ].join("-");
 }
 
 function BreathingExercise({ pause, onComplete }) {
-    const defaultPattern = pause?.breathingPattern || DEFAULT_PATTERN;
-    const methodOptions = pause?.methodOptions || [];
+  const iconSrc = pauseIconMap[pause?.icon] || breath;
 
-    const [selectedPattern, setSelectedPattern] = useState(defaultPattern);
-    const [isStarted, setIsStarted] = useState(false);
-    const [phaseIndex, setPhaseIndex] = useState(0);
-    const [secondsLeft, setSecondsLeft] = useState(0);
-    const [completedCycles, setCompletedCycles] = useState(0);
+  const methodOptions = useMemo(() => {
+    return Array.isArray(pause?.methodOptions) ? pause.methodOptions : [];
+  }, [pause?.methodOptions]);
 
-    const phases = useMemo(() => buildPhases(selectedPattern), [selectedPattern]);
+  const [selectedPattern, setSelectedPattern] = useState(() =>
+    normalizePattern(pause?.breathingPattern || DEFAULT_PATTERN)
+  );
 
-    const currentPhase = phases[phaseIndex] || phases[0];
+  const phases = useMemo(() => buildPhases(selectedPattern), [selectedPattern]);
 
-    useEffect(() => {
-        if (!currentPhase) return;
-        setSecondsLeft(currentPhase.duration);
-    }, [currentPhase]);
+  const [isStarted, setIsStarted] = useState(false);
+  const [breathingState, setBreathingState] = useState(() => ({
+    phaseIndex: 0,
+    secondsLeft: phases[0]?.duration || 0,
+  }));
 
-    useEffect(() => {
-        if (!isStarted || !currentPhase) return;
+  const currentPhase =
+    phases[breathingState.phaseIndex] || phases[0] || null;
 
-        const interval = setInterval(() => {
-        setSecondsLeft((current) => {
-            if (current > 1) return current - 1;
-
-            setPhaseIndex((previousIndex) => {
-            const nextIndex = previousIndex + 1;
-
-            if (nextIndex >= phases.length) {
-                setCompletedCycles((cycles) => cycles + 1);
-                return 0;
-            }
-
-            return nextIndex;
-            });
-
-            return currentPhase.duration;
-        });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [isStarted, currentPhase, phases.length]);
-
-    const handleStartToggle = () => {
-        setIsStarted((current) => !current);
-    };
-
-    const handleMethodChange = (option) => {
-        const nextPattern = {
-        inhale: option.inhale || 0,
-        secondInhale: option.secondInhale || 0,
-        holdAfterInhale: option.holdAfterInhale || 0,
-        exhale: option.exhale || 0,
-        holdAfterExhale: option.holdAfterExhale || 0,
-        };
-
-        setSelectedPattern(nextPattern);
-        setIsStarted(false);
-        setPhaseIndex(0);
-        setCompletedCycles(0);
-    };
-
-    const selectedLabel =
-        methodOptions.find(
-        (option) =>
-            option.inhale === selectedPattern.inhale &&
-            (option.secondInhale || 0) === (selectedPattern.secondInhale || 0) &&
-            option.holdAfterInhale === selectedPattern.holdAfterInhale &&
-            option.exhale === selectedPattern.exhale &&
-            option.holdAfterExhale === selectedPattern.holdAfterExhale
-        )?.label || formatPatternLabel(selectedPattern);
-
-    return (
-        <section className="breathingExercise">
-        <header className="breathingHeader">
-            <div>
-            <p className="breathingEyebrow">Ademhalingsoefening</p>
-            <h2>{pause?.title}</h2>
-            </div>
-
-            <Button variant="secondary" onClick={handleStartToggle}>
-            {isStarted ? "Pauzeer" : "Start"}
-            </Button>
-        </header>
-
-        <div className="breathingContent">
-            <div className="breathingMain">
-            <BreathingOrb
-                phase={currentPhase?.key}
-                phaseLabel={currentPhase?.label}
-                secondsLeft={secondsLeft}
-                phaseDuration={currentPhase?.duration}
-                isStarted={isStarted}
-            />
-
-            <div className="breathingPhaseInfo">
-                <h3>{isStarted ? currentPhase?.label : "Klaar om te starten"}</h3>
-                <p>
-                {isStarted
-                    ? `Nog ${secondsLeft}s`
-                    : "Volg het ritme van de adembol wanneer je start."}
-                </p>
-            </div>
-
-            <div className="breathingStats">
-                <div>
-                <span>Inademen</span>
-                <strong>{selectedPattern.inhale || 0}s</strong>
-                </div>
-
-                <div>
-                <span>Vasthouden</span>
-                <strong>{selectedPattern.holdAfterInhale || 0}s</strong>
-                </div>
-
-                <div>
-                <span>Uitademen</span>
-                <strong>{selectedPattern.exhale || 0}s</strong>
-                </div>
-
-                <div>
-                <span>Vasthouden</span>
-                <strong>{selectedPattern.holdAfterExhale || 0}s</strong>
-                </div>
-            </div>
-
-            <Button variant="secondary" full onClick={onComplete}>
-                Markeer als voltooid
-            </Button>
-            </div>
-
-            <aside className="breathingSide">
-            <BreathingMethodOptions
-                options={methodOptions}
-                selectedLabel={selectedLabel}
-                onSelect={handleMethodChange}
-            />
-
-            <div className="breathingTip">
-                <h3>Tip</h3>
-                <p>
-                Adem rustig door je neus in en laat je schouders ontspannen bij de
-                uitademing.
-                </p>
-            </div>
-            </aside>
-        </div>
-        </section>
+  useEffect(() => {
+    const nextPattern = normalizePattern(
+      pause?.breathingPattern || DEFAULT_PATTERN
     );
+    const nextPhases = buildPhases(nextPattern);
+
+    setSelectedPattern(nextPattern);
+    setBreathingState({
+      phaseIndex: 0,
+      secondsLeft: nextPhases[0]?.duration || 0,
+    });
+    setIsStarted(false);
+  }, [pause?.breathingPattern]);
+
+  useEffect(() => {
+    if (!isStarted || phases.length === 0) return;
+
+    const interval = setInterval(() => {
+      setBreathingState((current) => {
+        if (current.secondsLeft > 1) {
+          return {
+            ...current,
+            secondsLeft: current.secondsLeft - 1,
+          };
+        }
+
+        const nextPhaseIndex =
+          current.phaseIndex + 1 >= phases.length
+            ? 0
+            : current.phaseIndex + 1;
+
+        return {
+          phaseIndex: nextPhaseIndex,
+          secondsLeft: phases[nextPhaseIndex]?.duration || 0,
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isStarted, phases]);
+
+  const handleMethodChange = (option) => {
+    const nextPattern = normalizePattern(option);
+    const nextPhases = buildPhases(nextPattern);
+
+    setSelectedPattern(nextPattern);
+    setBreathingState({
+      phaseIndex: 0,
+      secondsLeft: nextPhases[0]?.duration || 0,
+    });
+    setIsStarted(false);
+  };
+
+  const selectedLabel =
+    methodOptions.find((option) => {
+      const normalizedOption = normalizePattern(option);
+
+      return (
+        normalizedOption.inhale === selectedPattern.inhale &&
+        normalizedOption.secondInhale === selectedPattern.secondInhale &&
+        normalizedOption.holdAfterInhale === selectedPattern.holdAfterInhale &&
+        normalizedOption.exhale === selectedPattern.exhale &&
+        normalizedOption.holdAfterExhale === selectedPattern.holdAfterExhale
+      );
+    })?.label || formatPatternLabel(selectedPattern);
+
+  return (
+    <section className="breathingExercise">
+      <div className="breathingStage">
+        <div className="breathingCenter">
+          <header className="breathingHeader">
+            <div className="breathingIconCircle">
+              <img src={iconSrc} alt={pause?.title || "Ademhaling"} />
+            </div>
+
+            <h2>{pause?.title}</h2>
+
+            <Button
+              variant="secondary"
+              onClick={() => setIsStarted((prev) => !prev)}
+            >
+              {isStarted ? "Pauzeer" : "Start"}
+            </Button>
+          </header>
+
+          <BreathingOrb
+            phase={currentPhase?.key}
+            phaseLabel={currentPhase?.label}
+            secondsLeft={breathingState.secondsLeft}
+            phaseDuration={currentPhase?.duration}
+            isStarted={isStarted}
+          />
+
+          <div className="breathingPhaseInfo">
+            <h3>{isStarted ? currentPhase?.label : "Klaar om te starten"}</h3>
+            <p>
+              {isStarted
+                ? `Nog ${breathingState.secondsLeft}s`
+                : "Volg het ritme van de adembol wanneer je start."}
+            </p>
+          </div>
+
+          <div className="breathingStats">
+            {phases.map((phase, index) => (
+              <div
+                key={`${phase.key}-${index}`}
+                className={
+                  index === breathingState.phaseIndex && isStarted
+                    ? "active"
+                    : ""
+                }
+              >
+                <span>{phase.statLabel}</span>
+                <strong>{phase.duration}s</strong>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            variant="secondary"
+            full
+            onClick={onComplete}
+            iconLeft={CompleteBlackIcon}
+          >
+            Markeer als voltooid
+          </Button>
+        </div>
+
+        <aside className="breathingSide">
+          <BreathingMethodOptions
+            options={methodOptions}
+            selectedLabel={selectedLabel}
+            onSelect={handleMethodChange}
+          />
+        </aside>
+      </div>
+    </section>
+  );
 }
 
 export default BreathingExercise;

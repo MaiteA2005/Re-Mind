@@ -3,6 +3,11 @@
   gap: 12px;
   width: 100%;
   max-width: 500px;
+  margin-top: 8px;
+}
+
+.pauseSessionButtons .btn {
+  flex: 1;
 }
 
 @media (max-width: 640px) {

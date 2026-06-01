@@ -1,9 +1,12 @@
 .pauseTimer {
-  margin-top: 24px;
+  width: 100%;
+  text-align: center;
+  margin: 48px 0 20px;
   font-size: 4.5rem;
   font-weight: 700;
   color: #1f1f1b;
   letter-spacing: 1px;
+  line-height: 1;
 }
 
 @media (max-width: 640px) {
