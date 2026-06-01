@@ -59,6 +59,24 @@ export async function getTomorrowFocus() {
   return data;
 }
 
+export async function getRecentDayClosings() {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_URL}/api/day-closings/recent`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Recente dagafsluitingen ophalen mislukt");
+  }
+
+  return data;
+}
+
 export async function completeTomorrowFocus(id) {
   const token = localStorage.getItem("token");
 

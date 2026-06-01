@@ -4,6 +4,7 @@ import "./DashboardFocusAction.css";
 
 import documentIcon from "../../assets/icons_zwart/notitie_zwart.svg";
 
+import { getRecentDayClosings } from "../../services/dayClosingService";
 import {
   getMyFocusTasks,
   createFocusTask,
@@ -11,15 +12,15 @@ import {
   deleteFocusTask,
 } from "../../services/focusTaskService";
 
-function DashboardFocusAction({ todayFocus, focusLoading }) {
+function DashboardFocusAction({ focusLoading }) {
   const [isFocusPopupOpen, setIsFocusPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
   const [draftTask, setDraftTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [recentDayClosings, setRecentDayClosings] = useState([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
+  const [loadingDayClosings, setLoadingDayClosings] = useState(true);
   const [error, setError] = useState("");
-
-  const importedTomorrowFocus = todayFocus?.tomorrowFocus?.trim();
 
   const fetchTasks = async () => {
     try {
@@ -34,38 +35,84 @@ function DashboardFocusAction({ todayFocus, focusLoading }) {
     }
   };
 
+  const fetchRecentDayClosings = async () => {
+    try {
+      setLoadingDayClosings(true);
+      const data = await getRecentDayClosings();
+      setRecentDayClosings(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingDayClosings(false);
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchRecentDayClosings();
   }, []);
 
+  const todayFocusFromYesterday = recentDayClosings[1]?.tomorrowFocus?.trim();
+  const tomorrowFocusFromToday = recentDayClosings[0]?.tomorrowFocus?.trim();
+
   useEffect(() => {
-    const addTomorrowFocusFromDayClosing = async () => {
-      if (!importedTomorrowFocus || loadingTasks) return;
-
-      const alreadyExists = tasks.some(
-        (task) =>
-          task.source === "dayClosing" &&
-          task.day === "tomorrow" &&
-          task.text.toLowerCase() === importedTomorrowFocus.toLowerCase()
-      );
-
-      if (alreadyExists) return;
+    const syncDayClosingFocuses = async () => {
+      if (loadingTasks || loadingDayClosings) return;
 
       try {
-        const newTask = await createFocusTask({
-          text: importedTomorrowFocus,
-          day: "tomorrow",
-          source: "dayClosing",
-        });
+        if (todayFocusFromYesterday) {
+          const alreadyExistsToday = tasks.some(
+            (task) =>
+              task.source === "dayClosing" &&
+              task.day === "today" &&
+              task.text.toLowerCase() ===
+                todayFocusFromYesterday.toLowerCase()
+          );
 
-        setTasks((previous) => [newTask, ...previous]);
+          if (!alreadyExistsToday) {
+            const newTodayTask = await createFocusTask({
+              text: todayFocusFromYesterday,
+              day: "today",
+              source: "dayClosing",
+            });
+
+            setTasks((previous) => [newTodayTask, ...previous]);
+          }
+        }
+
+        if (tomorrowFocusFromToday) {
+          const alreadyExistsTomorrow = tasks.some(
+            (task) =>
+              task.source === "dayClosing" &&
+              task.day === "tomorrow" &&
+              task.text.toLowerCase() ===
+                tomorrowFocusFromToday.toLowerCase()
+          );
+
+          if (!alreadyExistsTomorrow) {
+            const newTomorrowTask = await createFocusTask({
+              text: tomorrowFocusFromToday,
+              day: "tomorrow",
+              source: "dayClosing",
+            });
+
+            setTasks((previous) => [newTomorrowTask, ...previous]);
+          }
+        }
       } catch (error) {
         console.error(error);
+        setError("Focus uit dagafsluiting toevoegen mislukt.");
       }
     };
 
-    addTomorrowFocusFromDayClosing();
-  }, [importedTomorrowFocus, loadingTasks, tasks]);
+    syncDayClosingFocuses();
+  }, [
+    loadingTasks,
+    loadingDayClosings,
+    tasks,
+    todayFocusFromYesterday,
+    tomorrowFocusFromToday,
+  ]);
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => task.day === activeTab);
@@ -185,7 +232,7 @@ function DashboardFocusAction({ todayFocus, focusLoading }) {
           {error && <p className="focusError">{error}</p>}
 
           <ul className="focusTaskList">
-            {focusLoading || loadingTasks ? (
+            {focusLoading || loadingTasks || loadingDayClosings ? (
               <li className="focusEmptyState">Focuslijst laden...</li>
             ) : filteredTasks.length === 0 ? (
               <li className="focusEmptyState">

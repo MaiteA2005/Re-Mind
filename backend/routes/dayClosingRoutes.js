@@ -86,6 +86,24 @@ router.get("/tomorrow-focus", protect, async (req, res) => {
   }
 });
 
+router.get("/recent", protect, async (req, res) => {
+  try {
+    const dayClosings = await DayClosing.find({
+      userId: req.user._id,
+      tomorrowFocus: { $ne: "" },
+    })
+      .sort({ createdAt: -1 })
+      .limit(2);
+
+    res.status(200).json(dayClosings);
+  } catch (error) {
+    res.status(500).json({
+      message: "Recente dagafsluitingen ophalen mislukt",
+      error: error.message,
+    });
+  }
+});
+
 router.patch("/:id/focus-complete", protect, async (req, res) => {
   try {
     const focus = await DayClosing.findOneAndUpdate(
