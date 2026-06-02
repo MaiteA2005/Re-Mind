@@ -270,21 +270,17 @@ router.post("/forgot-password", async (req, res) => {
     const resetUrl = `${process.env.FRONTEND_URL}/#/reset-password/${resetToken}`;
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp-relay.brevo.com",
       port: 587,
       secure: false,
-      requireTLS: true,
-      connectionTimeout: 20000,
-      greetingTimeout: 20000,
-      socketTimeout: 20000,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.BREVO_SMTP_USER,
+        pass: process.env.BREVO_SMTP_PASS,
       },
     });
 
     await transporter.sendMail({
-      from: `"Re:Mind" <${process.env.EMAIL_USER}>`,
+      from: `"Re:Mind" <${process.env.BREVO_SMTP_USER}>`,
       to: user.email,
       subject: "Wachtwoord opnieuw instellen",
       html: `
