@@ -1,6 +1,9 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+
 import User from "../models/User.js";
 import protect from "../middleware/authMiddleware.js";
 
@@ -204,7 +207,6 @@ router.patch("/settings", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het updaten van het wachtwoord
 router.patch("/password", protect, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -239,7 +241,106 @@ router.patch("/password", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het exporteren van persoonlijke data
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is verplicht" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(200).json({
+        message: "Als dit e-mailadres bestaat, sturen we een resetlink.",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 1000 * 60 * 30;
+    await user.save();
+
+    const resetUrl = `${process.env.FRONTEND_URL}/#/reset-password/${resetToken}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"Re:Mind" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: "Wachtwoord opnieuw instellen",
+      html: `
+        <h2>Wachtwoord opnieuw instellen</h2>
+        <p>Klik op de knop hieronder om je wachtwoord opnieuw in te stellen.</p>
+        <a href="${resetUrl}">Wachtwoord wijzigen</a>
+        <p>Deze link is 30 minuten geldig.</p>
+      `,
+    });
+
+    res.status(200).json({
+      message: "Als dit e-mailadres bestaat, sturen we een resetlink.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Resetlink versturen mislukt",
+      error: error.message,
+    });
+  }
+});
+
+router.patch("/reset-password/:token", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ message: "Nieuw wachtwoord is verplicht" });
+    }
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Resetlink is ongeldig of verlopen",
+      });
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = "";
+    user.resetPasswordExpires = null;
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Wachtwoord succesvol aangepast",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Wachtwoord resetten mislukt",
+      error: error.message,
+    });
+  }
+});
+
 router.get("/export", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
@@ -260,7 +361,6 @@ router.get("/export", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het verwijderen van persoonlijke data
 router.delete("/data", protect, async (req, res) => {
   try {
     await CheckIn.deleteMany({ userId: req.user._id });
@@ -277,7 +377,6 @@ router.delete("/data", protect, async (req, res) => {
   }
 });
 
-// Endpoint voor het verwijderen van het account en alle data
 router.delete("/account", protect, async (req, res) => {
   try {
     await CheckIn.deleteMany({ userId: req.user._id });
