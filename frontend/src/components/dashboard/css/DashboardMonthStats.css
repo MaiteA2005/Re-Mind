@@ -1,0 +1,43 @@
+.monthSection {
+    width: 100%;
+}
+
+.cardMonth {
+    position: relative;
+    border-radius: 18px;
+    border: 1px solid #d8ceb5;
+    background: #f1ead7;
+    min-height: 160px;
+    overflow: hidden;
+}
+
+.monthStats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 20px 20px;
+}
+
+.monthStats > div {
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.38);
+    padding: 14px;
+}
+
+.monthStats span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.88rem;
+    color: #6a6c67;
+}
+
+.monthStats strong {
+    font-size: 1.12rem;
+    color: #2d2b28;
+}
+
+@media (max-width: 900px) {
+    .monthStats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
