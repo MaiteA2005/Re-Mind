@@ -189,7 +189,6 @@ function DashboardFocusAction({ focusLoading }) {
   const handleDeleteTask = async (taskId) => {
     try {
       await deleteFocusTask(taskId);
-
       setTasks((previous) => previous.filter((task) => task._id !== taskId));
     } catch (error) {
       console.error(error);
@@ -213,10 +212,8 @@ function DashboardFocusAction({ focusLoading }) {
       {isFocusPopupOpen && (
         <div className="focusPopup">
           <div className="focusPopupHeader">
-            <div>
-              <h3>Focuslijst</h3>
-              <p>Voeg doorheen de dag taken toe of vink ze af.</p>
-            </div>
+            <h3>Focuslijst</h3>
+            <p>Voeg doorheen de dag taken toe of vink ze af.</p>
           </div>
 
           <div className="focusTabs">
@@ -279,11 +276,15 @@ function DashboardFocusAction({ focusLoading }) {
                     {task.done && "✓"}
                   </button>
 
-                  <span>{task.text}</span>
+                  <div className="focusTaskContent">
+                    <span className="focusTaskText">{task.text}</span>
 
-                  {task.source === "dayClosing" && (
-                    <small>Uit dagafsluiting</small>
-                  )}
+                    {task.source === "dayClosing" && (
+                      <small className="focusTaskSource">
+                        Uit dagafsluiting
+                      </small>
+                    )}
+                  </div>
 
                   <button
                     type="button"
