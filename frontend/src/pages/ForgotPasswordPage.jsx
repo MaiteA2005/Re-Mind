@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/base/Button";
 import API_URL from "../services/api";
 import "./AuthPages.css";
+
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 
 function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
@@ -63,13 +66,15 @@ function ForgotPasswordPage() {
                 />
                 </label>
 
-                <button type="submit" className="authPrimaryButton" disabled={loading}>
-                {loading ? "Versturen..." : "Stuur reset link"}
-                </button>
+                <Button type="submit" className="authPrimaryButton" disabled={loading}>
+                    {loading ? "Versturen..." : "Stuur reset link"}
+                </Button>
 
-                <Link to="/login" className="authSmallBackLink">
-                ← Terug naar inloggen
-                </Link>
+                <Button to="/login" iconLeft={pijlLinks} variant='secondary'>
+                    Terug naar inloggen
+                </Button>
+
+
             </form>
             </div>
 
@@ -86,17 +91,16 @@ function ForgotPasswordPage() {
                 </p>
 
                 <div className="authModalActions">
-                <button
-                    type="button"
-                    className="authSecondaryButton"
+                <Button
+                    variant="secondary"
                     onClick={() => setShowModal(false)}
                 >
                     Probeer opnieuw
-                </button>
+                </Button>
 
-                <Link to="/login" className="authPrimaryButton">
+                <Button to="/login" variant="primary">
                     Wachtwoord wijzigen
-                </Link>
+                </Button>
                 </div>
             </div>
             </div>
