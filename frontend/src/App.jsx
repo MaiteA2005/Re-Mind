@@ -7,8 +7,6 @@ import { CheckInReminderProvider } from "./context/CheckInReminderContext";
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import OnboardingPage from "./pages/OnboardingPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 import DashboardPage from "./pages/DashboardPage";
 import CheckInPage from "./pages/CheckInPage";
