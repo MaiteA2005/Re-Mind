@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./PauseCard.css";
+import "./css/PauseCard.css";
 import { pauseIconMap } from "../../utils/pauseIconMap";
 
 import HeartDefault from "../../assets/icons_groen/hart_default_groen.svg";

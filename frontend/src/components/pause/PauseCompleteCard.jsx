@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./PauseCompleteCard.css";
+import "./css/PauseCompleteCard.css";
 
 import CompleteIcon from "../../assets/icons_groen/check_groen.svg";
 

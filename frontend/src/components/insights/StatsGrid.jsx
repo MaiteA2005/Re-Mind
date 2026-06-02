@@ -1,4 +1,4 @@
-import "./StatsGrid.css";
+import "./css/StatsGrid.css";
 
 function StatsGrid({ stats = [] }) {
   return (

@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./PauseBackButton.css";
+import "./css/PauseBackButton.css";
 
 import ArrowLeft from "../../assets/icons_zwart/pijl_links_zwart.svg";
 

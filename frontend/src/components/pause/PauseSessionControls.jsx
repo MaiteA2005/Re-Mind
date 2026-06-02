@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./PauseSessionControls.css";
+import "./css/PauseSessionControls.css";
 
 import pauseIcon from "../../assets/icons_zwart/pauze_zwart.svg";
 import playIcon from "../../assets/icons_zwart/play_zwart.svg";

@@ -1,4 +1,4 @@
-import "./DayDetailLocked.css";
+import "./css/DayDetailLocked.css";
 import Button from "../base/Button";
 import premiumGroen from "../../assets/icons_groen/premium_groen.svg";
 

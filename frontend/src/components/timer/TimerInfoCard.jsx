@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./TimerInfoCard.css";
+import "./css/TimerInfoCard.css";
 
 import infoIcon from "../../assets/icons_groen/uitroepteken_groen.svg";
 

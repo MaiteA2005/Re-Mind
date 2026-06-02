@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./SettingsPrivacy.css";
+import "./base/SettingsPrivacy.css";
 
 import download_zwart from "../../assets/icons_zwart/downloaden_zwart.svg";
 import delete_zwart from "../../assets/icons_zwart/verwijder_zwart.svg";

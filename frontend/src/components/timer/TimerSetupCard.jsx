@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./TimerSetupCard.css";
+import "./css/TimerSetupCard.css";
 import TimerOptionCard from "./TimerOptionCard";
 
 import playIconWit from "../../assets/icons_wit/play_wit.svg";

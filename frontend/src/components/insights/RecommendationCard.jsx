@@ -1,4 +1,4 @@
-import "./RecommendationCard.css";
+import "./css/RecommendationCard.css";
 import koffieGroen from "../../assets/icons_groen/koffie_groen.svg";
 import energieGroen from "../../assets/icons_groen/bliksem_groen.svg";
 import checkGroen from "../../assets/icons_groen/check_groen.svg";

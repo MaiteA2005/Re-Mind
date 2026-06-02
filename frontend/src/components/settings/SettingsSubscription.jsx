@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { updateSubscription } from "../../services/premiumService";
 import Button from "../base/Button";
 import premiumGroen from "../../assets/icons_groen/premium_groen.svg";
-import "./SettingsSubscription.css";
+import "./base/SettingsSubscription.css";
 
 function SettingsSubscription() {
   const { user, login } = useAuth();

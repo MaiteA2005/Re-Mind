@@ -1,4 +1,4 @@
-import "./PauseInfoCard.css";
+import "./css/PauseInfoCard.css";
 
 function PauseInfoCard({ title, text }) {
   return (

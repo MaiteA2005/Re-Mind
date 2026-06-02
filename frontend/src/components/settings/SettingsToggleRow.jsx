@@ -1,4 +1,4 @@
-import "./SettingsToggleRow.css";
+import "./css/SettingsToggleRow.css";
 
 function SettingsToggleRow({ title, description, checked, onChange }) {
   return (

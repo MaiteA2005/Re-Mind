@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./PauseMethodCard.css";
+import "./css/PauseMethodCard.css";
 
 function PauseMethodCard({ method }) {
   return (

@@ -6,7 +6,7 @@ import CompleteBlackIcon from "../../assets/icons_zwart/name_one_win_zwart.svg";
 import Button from "../base/Button";
 import BreathingOrb from "./BreathingOrb";
 import BreathingMethodOptions from "./BreathingMethodOptions";
-import "./BreathingExercise.css";
+import "./css/BreathingExercise.css";
 
 const DEFAULT_PATTERN = {
     inhale: 4,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./PauseReminderPopup.css";
+import "./css/PauseReminderPopup.css";
 
 import koffieGroen from "../../assets/icons_groen/koffie_groen.svg";
 

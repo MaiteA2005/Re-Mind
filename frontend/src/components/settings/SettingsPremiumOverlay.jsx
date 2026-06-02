@@ -1,7 +1,7 @@
 import Button from "../base/Button";
 import premium_groen from "../../assets/icons_groen/premium_groen.svg";
 
-import "./SettingsPremiumOverlay.css";
+import "./base/SettingsPremiumOverlay.css";
 
 function SettingsPremiumOverlay({
   icon = premium_groen,

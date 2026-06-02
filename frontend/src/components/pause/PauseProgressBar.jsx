@@ -1,4 +1,4 @@
-import "./PauseProgressBar.css";
+import "./css/PauseProgressBar.css";
 
 function PauseProgressBar({ progress }) {
   return (

@@ -1,5 +1,5 @@
 import { pauseIconMap } from "../../utils/pauseIconMap";
-import "./PauseHeader.css";
+import "./css/PauseHeader.css";
 
 function PauseHeader({ title, duration, icon }) {
   const iconSrc = pauseIconMap[icon] || posture;
