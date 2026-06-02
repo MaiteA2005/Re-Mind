@@ -1,0 +1,68 @@
+.dayDetail h2 {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+}
+
+.dayDetailCard {
+    min-height: 310px;
+    padding: 1.2rem;
+    background: #fffaf0;
+    border: 1px solid #8aa691;
+    border-radius: 12px;
+}
+
+.dayTimeline {
+    display: grid;
+    gap: 1rem;
+}
+
+.dayTimelineItem {
+    display: grid;
+    grid-template-columns: 42px 64px 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.dayTimelineIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #e7efe6;
+    color: #78977f;
+    font-weight: 700;
+}
+
+.dayTimelineIcon.pause {
+    background: #f1df9f;
+    color: #25221f;
+}
+
+.dayTimelineIcon.closing {
+    background: #dce9dc;  
+}
+
+.dayTimelineItem time {
+    color: #5f6158;
+    font-size: 0.9rem;
+}
+
+.dayTimelineItem h3 {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+}
+
+.dayTimelineItem p {
+    margin: 0;
+    color: #5f6158;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.dayDetailEmpty {
+    margin: 0;
+    color: #5f6158;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 import { formatDate } from "../utils/date";
 import MainLayout from "../components/layout/MainLayout";
@@ -15,6 +16,7 @@ import StatsGrid from "../components/insights/StatsGrid";
 import ChartCard from "../components/insights/ChartCard";
 import RecommendationCard from "../components/insights/RecommendationCard";
 import DayDetailLocked from "../components/insights/DayDetailLocked";
+import DayDetail from "../components/insights/DayDetail";
 
 import "./css/InsightsPage.css";
 
@@ -67,7 +69,16 @@ function formatHourLabel(date) {
   return `${hour}:00`;
 }
 
+
+
 function InsightsPage() {
+  const { user } = useAuth();
+  const isPremiumUser =
+    user?.subscription === "premium" ||
+    user?.plan === "premium" ||
+    user?.subscriptionPlan === "premium" ||
+    user?.isPremium === true;
+
   const [activeFilter, setActiveFilter] = useState("today");
 
   const [checkIns, setCheckIns] = useState([]);
@@ -307,11 +318,15 @@ function InsightsPage() {
   return (
     <MainLayout title="Inzichten" subtitle="Ontdek je patronen en trends">
       <section className="insights-page">
-        <UpgradeBanner />
+        {!isPremiumUser && <UpgradeBanner />}
 
         <InsightFilters
           activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
+          onFilterChange={(filter) => {
+            if (!isPremiumUser && filter !== "today") return;
+            setActiveFilter(filter);
+          }}
+          isPremium={isPremiumUser}
         />
 
         <p className="insights-date">{formatDate(new Date())}</p>
@@ -338,7 +353,15 @@ function InsightsPage() {
 
             <RecommendationCard recommendation={recommendation} />
 
-            <DayDetailLocked latestDayClosing={latestDayClosing} />
+            {isPremiumUser ? (
+              <DayDetail
+                checkIns={filteredCheckIns}
+                pauseSessions={filteredPauseSessions}
+                dayClosings={filteredDayClosings}
+              />
+            ) : (
+              <DayDetailLocked latestDayClosing={latestDayClosing} />
+            )}
           </>
         )}
       </section>

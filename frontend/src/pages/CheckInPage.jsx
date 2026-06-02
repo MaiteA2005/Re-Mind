@@ -18,8 +18,8 @@ function CheckInPage() {
   const [stress, setStress] = useState(1);
   const [energy, setEnergy] = useState(5);
   const [note, setNote] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const stressLabel =
     stress <= 3 ? "Laag" : stress <= 7 ? "Gemiddeld" : "Hoog";
@@ -48,20 +48,17 @@ function CheckInPage() {
   const goNext = () => setStep((prev) => Math.min(prev + 1, 5));
   const goBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
-  const handleSkip = () => {
-    setNote("");
-    finishCheckIn();
-  };
+  const finishCheckIn = async (customNote = note) => {
+    if (isSubmitting) return;
 
-  const finishCheckIn = async () => {
-    setLoading(true);
+    setIsSubmitting(true);
     setError("");
 
     try {
       await createCheckIn({
         stressLevel: stress,
         energyLevel: energy,
-        note,
+        note: customNote,
       });
 
       setStep(5);
@@ -69,8 +66,13 @@ function CheckInPage() {
       console.error(error);
       setError(error.message || "Check-in opslaan mislukt");
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSkip = () => {
+    setNote("");
+    finishCheckIn("");
   };
 
   return (
@@ -134,7 +136,7 @@ function CheckInPage() {
                   min="1"
                   max="10"
                   value={stress}
-                  onChange={(e) => setStress(Number(e.target.value))}
+                  onChange={(event) => setStress(Number(event.target.value))}
                   className="checkInRange"
                   style={getSliderStyle(stress)}
                 />
@@ -190,7 +192,7 @@ function CheckInPage() {
                   min="1"
                   max="10"
                   value={energy}
-                  onChange={(e) => setEnergy(Number(e.target.value))}
+                  onChange={(event) => setEnergy(Number(event.target.value))}
                   className="checkInRange"
                   style={getSliderStyle(energy)}
                 />
@@ -209,8 +211,6 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions">
-
-
                 <Button variant="secondary" onClick={goBack} iconLeft={pijlLinksIcon}>
                   Terug
                 </Button>
@@ -245,8 +245,10 @@ function CheckInPage() {
                   className="checkInTextarea"
                   placeholder="Bijv. Drukke vergadering net achter de rug."
                   value={note}
-                  onChange={(e) => setNote(e.target.value)}
+                  onChange={(event) => setNote(event.target.value)}
+                  disabled={isSubmitting}
                 />
+
                 <p className="checkInNoteHint">
                   Dit is optioneel, je notitie helpt bij het begrijpen van je
                   situatie.
@@ -254,19 +256,32 @@ function CheckInPage() {
               </div>
 
               <div className="checkInActions">
-                <Button variant="secondary" onClick={goBack} iconLeft={pijlLinksIcon}>
+                <Button
+                  variant="secondary"
+                  onClick={goBack}
+                  iconLeft={pijlLinksIcon}
+                  disabled={isSubmitting}
+                >
                   Terug
                 </Button>
 
-                <Button variant="secondary" onClick={handleSkip}>
+                <Button
+                  variant="secondary"
+                  onClick={handleSkip}
+                  disabled={isSubmitting}
+                >
                   Overslaan
                 </Button>
 
-                <Button variant="primary" onClick={finishCheckIn} >
-                  {loading ? "Opslaan..." : "Afronden"}
+                <Button
+                  variant="primary"
+                  onClick={() => finishCheckIn()}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Opslaan..." : "Afronden"}
                 </Button>
-                </div>
               </div>
+            </div>
           )}
 
           {step === 5 && (
