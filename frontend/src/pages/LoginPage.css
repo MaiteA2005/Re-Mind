@@ -1,0 +1,77 @@
+.loginPage {
+    align-items: center;
+}
+
+.loginCard {
+    width: 100%;
+    max-width: 680px;
+    text-align: center;
+    transform: translateY(-10px);
+}
+
+.loginCard h1 {
+    margin: 0 0 40px;
+    color: #232320;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    line-height: 1.15;
+}
+
+.loginCard .authForm {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    margin-bottom: 0;
+    padding: 34px;
+    border-radius: 20px;
+    background: #f3ecd8;
+    display: grid;
+    gap: 18px;
+    text-align: left;
+}
+
+.loginCard .authForm label {
+    display: grid;
+    gap: 10px;
+    color: #25221f;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.loginCard .authForm input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #ddd8cb;
+    border-radius: 10px;
+    padding: 0 16px;
+    background: #ffffff;
+    color: #25221f;
+    font-family: var(--font-body);
+    font-size: 1rem;
+}
+
+.forgotPasswordLink {
+    display: block;
+    margin-top: -4px;
+    color: #78957f;
+    font-size: 0.92rem;
+    text-align: right;
+    text-decoration: underline;
+}
+
+.loginActions {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.loginSubmitButton,
+.loginRegisterButton {
+    min-width: 250px;
+}
+
+.loginRegisterButton span {
+    text-decoration: underline;
+}

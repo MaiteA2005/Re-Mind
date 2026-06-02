@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/authService";
 
+import logoGroen from "../assets/logo_groen.svg";
 import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
 import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
 
 import "./AuthPages.css";
+import "./LoginPage.css";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -45,12 +47,14 @@ function LoginPage() {
   };
 
   return (
-    <main className="authPage">
-      <section className="authCard">
-        <Link to="/welcome" className="authBackLink">
-          ← Terug
-        </Link>
+    <main className="authPage loginPage">
+      <img src={logoGroen} alt="Re:Mind" className="authCornerLogo" />
 
+      <Link to="/welcome" className="authBackButton">
+        ← Terug
+      </Link>
+
+      <section className="authCard loginCard">
         <h1>Inloggen</h1>
 
         {error && <p className="authError">{error}</p>}
@@ -70,7 +74,6 @@ function LoginPage() {
 
           <label>
             Wachtwoord
-
             <div className="passwordInputWrapper">
               <input
                 type={showPassword ? "text" : "password"}
@@ -85,22 +88,27 @@ function LoginPage() {
                 type="button"
                 className="passwordToggle"
                 onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={
+                  showPassword ? "Verberg wachtwoord" : "Toon wachtwoord"
+                }
               >
-                <img
-                  src={showPassword ? oogIcon : oogUitIcon}
-                  alt="Toon wachtwoord"
-                />
+                <img src={showPassword ? oogIcon : oogUitIcon} alt="" />
               </button>
             </div>
           </label>
-
-          <button type="submit" className="authPrimaryButton" disabled={loading}>
-            {loading ? "Bezig..." : "Naar mijn dashboard"}
-          </button>
         </form>
 
-        <Link to="/onboarding" className="authTextLink">
-          Nog geen account? Meld je aan
+        <button
+          type="submit"
+          className="authPrimaryButton loginSubmitButton"
+          disabled={loading}
+          onClick={handleSubmit}
+        >
+          {loading ? "Bezig..." : "Naar mijn dashboard"}
+        </button>
+
+        <Link to="/onboarding" className="authSecondaryButton loginRegisterButton">
+          Nog geen account? <span>Meld je aan</span>
         </Link>
       </section>
     </main>

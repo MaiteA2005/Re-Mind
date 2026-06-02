@@ -1,5 +1,7 @@
 .authPage {
+  position: relative;
   min-height: 100vh;
+  overflow: hidden;
   background: #fbfaf6;
   display: flex;
   align-items: center;
@@ -7,171 +9,88 @@
   padding: 32px;
 }
 
-.authCard,
-.onboardingCard {
-  width: 100%;
-  max-width: 560px;
+.authPage::after {
+  content: "";
+  position: fixed;
+  right: -70px;
+  bottom: -120px;
+  width: 430px;
+  height: 430px;
+  background-image: url("../assets/watermark.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right bottom;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.authCornerLogo {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  width: 150px;
+  z-index: 5;
+}
+
+.authBackButton {
+  position: fixed;
+  top: 86px;
+  left: 28px;
+  width: 150px;
+  min-height: 42px;
+  border: 1px solid #d8d0be;
+  border-radius: 10px;
+  background: transparent;
+  color: #25221f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: 0.2s ease;
+  z-index: 5;
+}
+
+.authBackButton:hover {
   background: #f3ecd8;
-  border: 1px solid #e2dccd;
-  border-radius: 18px;
-  padding: 32px;
-}
-
-.authLogo {
-  color: #78907f;
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 24px;
-}
-
-.authCard h1,
-.onboardingCard h1 {
-  margin: 0 0 12px;
-  color: #232320;
-  font-size: 2rem;
-}
-
-.authCard p,
-.onboardingCard p {
-  margin: 0 0 24px;
-  color: #5f625c;
-  line-height: 1.6;
-}
-
-.authActions,
-.onboardingActions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
 }
 
 .authPrimaryButton,
 .authSecondaryButton {
+  min-width: 170px;
+  min-height: 46px;
   border-radius: 10px;
-  padding: 12px 18px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 10px 24px;
+  font-family: inherit;
+  font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
-  text-align: center;
   border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
 }
 
 .authPrimaryButton {
-  background: #7f9988;
-  color: #ffffff;
-  flex: 1;
+  background: #78957f;
+  color: #fffdf8;
+}
+
+.authPrimaryButton:hover {
+  background: #698670;
 }
 
 .authSecondaryButton {
-  background: #fbfaf6;
-  color: #33332f;
-  border-color: #ddd8cb;
-  flex: 1;
+  background: transparent;
+  color: #25221f;
+  border-color: #d8d0be;
 }
 
-.authBackLink,
-.authTextLink {
-  display: inline-block;
-  color: #4f5f53;
-  text-decoration: none;
-  margin-bottom: 20px;
-  font-size: 0.95rem;
-}
-
-.authTextLink {
-  margin-top: 18px;
-  margin-bottom: 0;
-}
-
-.authForm {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.authForm label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: #33332f;
-  font-weight: 600;
-}
-
-.authForm input {
-  border: 1px solid #ddd8cb;
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: #ffffff;
-  font-size: 0.95rem;
-}
-
-.onboardingTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.onboardingTop span {
-  color: #78907f;
-  font-weight: 600;
-}
-
-.optionList,
-.optionGrid {
-  display: grid;
-  gap: 12px;
-}
-
-.optionGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.optionButton {
-  border: 1px solid #ddd8cb;
-  background: #fbfaf6;
-  color: #33332f;
-  padding: 14px 16px;
-  border-radius: 12px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.optionButton.active {
-  background: #7f9988;
-  color: #ffffff;
-  border-color: #7f9988;
-}
-
-.onboardingStep.center {
-  text-align: center;
-}
-
-.tipsList {
-  background: #fbfaf6;
-  border: 1px solid #ddd8cb;
-  border-radius: 12px;
-  padding: 16px;
-  text-align: left;
-}
-
-.tipsList p {
-  margin: 0 0 10px;
-}
-
-.tipsList p:last-child {
-  margin-bottom: 0;
-}
-
-.authError {
-  background: #f7dddd;
-  color: #8a2f2f;
-  border: 1px solid #e2aaaa;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
+.authSecondaryButton:hover {
+  background: #f3ecd8;
 }
 
 .passwordInputWrapper {
@@ -180,57 +99,21 @@
 }
 
 .passwordInputWrapper input {
-  width: 100%;
-  padding-right: 52px;
+  padding-right: 46px;
 }
 
 .passwordToggle {
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: 14px;
   transform: translateY(-50%);
-
-  width: 22px;
-  height: 22px;
-
   border: none;
   background: transparent;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   cursor: pointer;
+  padding: 0;
 }
 
 .passwordToggle img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+  width: 18px;
   opacity: 0.7;
-}
-
-.passwordToggle:hover img {
-  opacity: 1;
-}
-
-@media (max-width: 640px) {
-  .authPage {
-    padding: 20px;
-  }
-
-  .authCard,
-  .onboardingCard {
-    padding: 24px;
-  }
-
-  .authActions,
-  .onboardingActions {
-    flex-direction: column;
-  }
-
-  .optionGrid {
-    grid-template-columns: 1fr;
-  }
 }

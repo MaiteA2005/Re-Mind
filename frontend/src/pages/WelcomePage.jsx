@@ -1,25 +1,23 @@
 import { Link } from "react-router-dom";
+import logoGroen from "../assets/logo_groen.svg";
 import "./AuthPages.css";
+import "./WelcomePage.css";
 
 function WelcomePage() {
   return (
-    <main className="authPage">
-      <section className="authCard">
-        <div className="authLogo">Re:Mind</div>
+    <main className="authPage welcomePage">
+      <section className="authCard welcomeCard">
+        <h1>Welkom bij</h1>
 
-        <h1>Welkom bij Re:Mind</h1>
-        <p>
-          Je digitale balanscoach die je helpt om stress te beheren en energie
-          te vinden in je werkdag.
-        </p>
+        <img src={logoGroen} alt="Re:Mind" className="welcomeLogo" />
 
-        <div className="authActions">
-          <Link to="/onboarding" className="authPrimaryButton">
-            Aanmelden
+        <div className="welcomeActions">
+          <Link to="/login" className="authPrimaryButton">
+            Inloggen
           </Link>
 
-          <Link to="/login" className="authSecondaryButton">
-            Inloggen
+          <Link to="/onboarding" className="authSecondaryButton">
+            Aanmelden
           </Link>
         </div>
       </section>
