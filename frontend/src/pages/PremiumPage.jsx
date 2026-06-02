@@ -42,7 +42,6 @@ const premiumFeatures = [
   { icon: kalender, text: "Vergelijk je voortgang over tijd" },
   { icon: trend, text: "Zie trends in je energie en focus" },
   { icon: spark, text: "Aanbevelingen op maat van jouw ritme" },
-  { icon: instellingen, text: "Uitgebreide personalisatie opties" },
 ];
 
 const businessFeatures = [
