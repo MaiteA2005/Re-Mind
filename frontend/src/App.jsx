@@ -7,6 +7,8 @@ import { CheckInReminderProvider } from "./context/CheckInReminderContext";
 import WelcomePage from "./pages/WelcomePage";
 import LoginPage from "./pages/LoginPage";
 import OnboardingPage from "./pages/OnboardingPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 import DashboardPage from "./pages/DashboardPage";
 import CheckInPage from "./pages/CheckInPage";
@@ -89,141 +91,159 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/welcome" replace />} />
 
-        <Route 
-          path="/welcome"
-          element={
-            <PublicRoute>
-              <WelcomePage />
-            </PublicRoute>
-          }
-        />
+          <Route 
+            path="/welcome"
+            element={
+              <PublicRoute>
+                <WelcomePage />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/onboarding"
-          element={
-            <PublicRoute>
-              <OnboardingPage />
-            </PublicRoute>
-          }
-        />
+          <Route
+            path="/onboarding"
+            element={
+              <PublicRoute>
+                <OnboardingPage />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPasswordPage />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/check-in"
-          element={
-            <ProtectedRoute>
-              <CheckInPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <PublicRoute>
+                <ResetPasswordPage />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/pause"
-          element={
-            <ProtectedRoute>
-              <PausePage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/pause/breathing"
-          element={
-            <ProtectedRoute>
-              <BreathingOverviewPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/check-in"
+            element={
+              <ProtectedRoute>
+                <CheckInPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/pause/:slug"
-          element={
-            <ProtectedRoute>
-              <PauseDetailPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/pause"
+            element={
+              <ProtectedRoute>
+                <PausePage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/pause/:slug/session"
-          element={
-            <ProtectedRoute>
-              <PauseSessionPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/pause/breathing"
+            element={
+              <ProtectedRoute>
+                <BreathingOverviewPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/pause/:slug/complete"
-          element={
-            <ProtectedRoute>
-              <PauseCompletePage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/pause/:slug"
+            element={
+              <ProtectedRoute>
+                <PauseDetailPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/inzichten"
-          element={
-            <ProtectedRoute>
-              <InsightsPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/pause/:slug/session"
+            element={
+              <ProtectedRoute>
+                <PauseSessionPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/dagafsluiting"
-          element={
-            <ProtectedRoute>
-              <DagAfsluitingPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/pause/:slug/complete"
+            element={
+              <ProtectedRoute>
+                <PauseCompletePage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/timer"
-          element={
-            <ProtectedRoute>
-              <TimerPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/inzichten"
+            element={
+              <ProtectedRoute>
+                <InsightsPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/premium"
-          element={
-            <ProtectedRoute>
-              <PremiumPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/dagafsluiting"
+            element={
+              <ProtectedRoute>
+                <DagAfsluitingPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/instellingen"
-          element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/timer"
+            element={
+              <ProtectedRoute>
+                <TimerPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/premium"
+            element={
+              <ProtectedRoute>
+                <PremiumPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/instellingen"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       <GlobalTimerPopups />
       </CheckInReminderProvider>
       </TimerProvider>

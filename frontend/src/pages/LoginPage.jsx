@@ -94,6 +94,10 @@ function LoginPage() {
             </div>
           </label>
 
+          <Link to="/forgot-password" className="authTextLink">
+            Wachtwoord vergeten?
+          </Link>
+
           <button type="submit" className="authPrimaryButton" disabled={loading}>
             {loading ? "Bezig..." : "Naar mijn dashboard"}
           </button>
