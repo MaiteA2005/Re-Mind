@@ -9,7 +9,7 @@ import TimerInfoCard from "../components/timer/TimerInfoCard";
 
 import { useTimer } from "../context/TimerContext.jsx";
 
-import "./TimerPage.css";
+import "./css/TimerPage.css";
 
 function TimerPage() {
   const navigate = useNavigate();

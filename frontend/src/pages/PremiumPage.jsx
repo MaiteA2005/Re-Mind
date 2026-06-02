@@ -6,7 +6,7 @@ import {
   updateSubscription,
   createBusinessRequest,
 } from "../services/premiumService";
-import "./PremiumPage.css";
+import "./css/PremiumPage.css";
 
 // zwart
 import premium_zwart from "../assets/icons_zwart/premium_zwart.svg";

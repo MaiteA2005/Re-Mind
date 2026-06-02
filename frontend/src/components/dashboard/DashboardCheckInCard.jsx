@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./DashboardCheckInCard.css";
+import "./css/DashboardCheckInCard.css";
 
 import checkinIcon from "../../assets/icons_groen/check-in_groen.svg";
 import pijlRechtsIcon from "../../assets/icons_wit/pijl_rechts_wit.svg";

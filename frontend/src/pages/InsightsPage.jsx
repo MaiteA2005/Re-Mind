@@ -16,7 +16,7 @@ import ChartCard from "../components/insights/ChartCard";
 import RecommendationCard from "../components/insights/RecommendationCard";
 import DayDetailLocked from "../components/insights/DayDetailLocked";
 
-import "./InsightsPage.css";
+import "./css/InsightsPage.css";
 
 function getAverage(items, key) {
   if (!items.length) return "-";

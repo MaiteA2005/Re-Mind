@@ -3,7 +3,7 @@ import Button from "../components/base/Button";
 import MainLayout from "../components/layout/MainLayout";
 import { formatDateTime } from "../utils/date";
 import { createCheckIn } from "../services/checkInService";
-import "./CheckInPage.css";
+import "./css/CheckInPage.css";
 
 import checkinIcon from "../assets/icons_groen/check-in_groen.svg";
 import infoIcon from "../assets/info_blauw.svg";

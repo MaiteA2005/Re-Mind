@@ -10,8 +10,8 @@ import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
 import checkGroen from "../assets/icons_groen/check_groen.svg";
 
-import "./AuthPages.css";
-import "./OnboardingPage.css";
+import "./css/AuthPages.css";
+import "./css/OnboardingPage.css";
 
 const totalSteps = 7;
 

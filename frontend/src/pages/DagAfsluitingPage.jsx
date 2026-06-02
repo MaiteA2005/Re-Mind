@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createDayClosing } from "../services/dayClosingService";
 import MainLayout from "../components/layout/MainLayout";
-import "./DagAfsluitingPage.css";
+import "./css/DagAfsluitingPage.css";
 
 // Icons
 import dagafsluitingGroen from "../assets/icons_groen/maan_groen.svg";

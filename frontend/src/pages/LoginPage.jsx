@@ -10,8 +10,8 @@ import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
 import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 import pijlRechts from "../assets/icons_zwart/pijl_rechts_zwart.svg";
 
-import "./AuthPages.css";
-import "./LoginPage.css";
+import "./css/AuthPages.css";
+import "./css/LoginPage.css";
 
 function LoginPage() {
   const navigate = useNavigate();

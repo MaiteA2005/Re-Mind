@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./DashboardMonthLocked.css";
+import "./css/DashboardMonthLocked.css";
 
 import inzichtenIcon from "../../assets/icons_groen/inzichten_groen.svg";
 import premiumIconGroen from "../../assets/icons_groen/premium_groen.svg";

@@ -12,7 +12,7 @@ import PauseMethodCard from "../components/pause/PauseMethodCard";
 import PlayWhiteIcon from "../assets/icons_wit/play_wit.svg";
 import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 
-import "./PausePage.css";
+import "./css/PausePage.css";
 
 function PauseDetailPage() {
   const { slug } = useParams();

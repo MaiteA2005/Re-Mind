@@ -29,7 +29,7 @@ import premium_wit from "../assets/icons_wit/premium_wit.svg";
 import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
 import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
 
-import "./SettingsPage.css";
+import "./css/SettingsPage.css";
 
 function SettingsPage() {
   const navigate = useNavigate();

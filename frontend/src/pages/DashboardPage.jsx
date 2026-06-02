@@ -15,9 +15,10 @@ import DashboardCheckInCard from "../components/dashboard/DashboardCheckInCard";
 import DashboardTodayCard from "../components/dashboard/DashboardTodayCard";
 import DashboardPauseSummary from "../components/dashboard/DashboardPauseSummary";
 import DashboardMonthLocked from "../components/dashboard/DashboardMonthLocked";
+import DashboardMonthStats from "../components/dashboard/DashboardMonthStats";
 import DashboardActionGrid from "../components/dashboard/DashboardActionGrid";
 
-import "./DashboardPage.css";
+import "./css/DashboardPage.css";
 
 function getTodayItems(items, dateKey = "createdAt") {
   const today = new Date().toDateString();
@@ -30,6 +31,11 @@ function getTodayItems(items, dateKey = "createdAt") {
 function DashboardPage() {
   const { user } = useAuth();
   const greeting = getGreeting();
+  const isPremiumUser =
+    user?.subscription === "premium" ||
+    user?.plan === "premium" ||
+    user?.subscriptionPlan === "premium" ||
+    user?.isPremium === true;
 
   const [pauseSessions, setPauseSessions] = useState([]);
   const [pauseLoading, setPauseLoading] = useState(true);
@@ -136,7 +142,7 @@ function DashboardPage() {
       }
     >
       <div className="dashboard">
-        <UpgradeBanner />
+        {!isPremiumUser && <UpgradeBanner />}
 
         <DashboardCheckInCard latestCheckIn={checkIns[0]} />
 
@@ -159,7 +165,14 @@ function DashboardPage() {
           </div>
         </section>
 
-        <DashboardMonthLocked />
+        {isPremiumUser ? (
+          <DashboardMonthStats
+            checkIns={checkIns}
+            pauseSessions={pauseSessions}
+          />
+        ) : (
+          <DashboardMonthLocked />
+        )}
 
         <DashboardActionGrid />
       </div>

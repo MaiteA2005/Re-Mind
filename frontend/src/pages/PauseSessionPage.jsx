@@ -16,7 +16,7 @@ import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 import arrowDown from "../assets/icons_zwart/arrow_down_zwart.svg";
 import arrowUp from "../assets/icons_zwart/arrow_up_zwart.svg";
 
-import "./PausePage.css";
+import "./css/PausePage.css";
 
 function getDurationSeconds(duration) {
   if (!duration) return 60;

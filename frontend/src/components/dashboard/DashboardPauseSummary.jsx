@@ -1,5 +1,5 @@
 import Button from "../base/Button";
-import "./DashboardPauseSummary.css";
+import "./css/DashboardPauseSummary.css";
 
 import sterrenIcon from "../../assets/icons_groen/stretchen_groen.svg";
 import koffieIcon from "../../assets/icons_groen/koffie_groen.svg";

@@ -10,7 +10,7 @@ import {
   removeFavoritePause,
 } from "../services/favoritePauseService";
 
-import "./PausePage.css";
+import "./css/PausePage.css";
 
 function PausePage() {
   const [activeTab, setActiveTab] = useState("short");

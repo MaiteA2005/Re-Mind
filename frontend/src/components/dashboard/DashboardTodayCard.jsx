@@ -1,4 +1,4 @@
-import "./DashboardTodayCard.css";
+import "./css/DashboardTodayCard.css";
 
 import inzichtenIcon from "../../assets/icons_groen/inzichten_groen.svg";
 

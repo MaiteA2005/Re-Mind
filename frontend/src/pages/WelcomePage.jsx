@@ -5,8 +5,8 @@ import logoGroen from "../assets/logo_groen.svg";
 import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
 import pijlRechtsZ from "../assets/icons_zwart/pijl_rechts_zwart.svg";
 
-import "./AuthPages.css";
-import "./WelcomePage.css";
+import "./css/AuthPages.css";
+import "./css/WelcomePage.css";
 
 function WelcomePage() {
   return (

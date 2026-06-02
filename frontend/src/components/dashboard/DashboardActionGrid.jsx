@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./DashboardActionGrid.css";
+import "./css/DashboardActionGrid.css";
 
 import timerIcon from "../../assets/icons_groen/timer_groen.svg";
 import inzichtenIcon from "../../assets/icons_groen/inzichten_groen.svg";

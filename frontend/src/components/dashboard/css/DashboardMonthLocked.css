@@ -8,6 +8,7 @@
   border: 1px solid #d8ceb5;
   background: #f1ead7;
   min-height: 160px;
+  overflow: hidden;
 }
 
 .monthStats {

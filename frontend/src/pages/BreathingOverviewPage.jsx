@@ -11,7 +11,7 @@ import { getFavoritePauses, addFavoritePause, removeFavoritePause,} from "../ser
 
 import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
 
-import "./PausePage.css";
+import "./css/PausePage.css";
 
 function BreathingOverviewPage() {
     const navigate = useNavigate();

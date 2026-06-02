@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Button from "../base/Button";
-import "./DashboardFocusAction.css";
+import "./css/DashboardFocusAction.css";
 
 import documentIcon from "../../assets/icons_zwart/notitie_zwart.svg";
 

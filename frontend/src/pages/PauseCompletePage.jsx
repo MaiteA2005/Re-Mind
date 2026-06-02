@@ -5,7 +5,7 @@ import Button from "../components/base/Button";
 import API_URL from "../services/api";
 
 import PauseCompleteCard from "../components/pause/PauseCompleteCard";
-import "./PausePage.css";
+import "./css/PausePage.css";
 
 function PauseCompletePage() {
   const { slug } = useParams();
