@@ -1,5 +1,4 @@
-.settingsCard,
-.settingsPremiumWrapper {
+.settingsCard {
   width: 100%;
   max-width: 800px;
   background: #f1ead8;
@@ -7,14 +6,7 @@
   padding: 26px 28px;
 }
 
-.settingsPremiumWrapper {
-  position: relative;
-  overflow: hidden;
-  min-height: 615px;
-}
-
-.settingsPanel h2,
-.settingsCenterPanel h2 {
+.settingsPanel h2 {
   margin: 0 0 24px;
   color: #1f1d1b;
   font-size: 1.55rem;

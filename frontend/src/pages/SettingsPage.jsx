@@ -7,10 +7,8 @@ import SettingsTabs from "../components/settings/SettingsTabs";
 import SettingsCard from "../components/settings/SettingsCard";
 import SettingsField from "../components/settings/SettingsField";
 import SettingsToggleRow from "../components/settings/SettingsToggleRow";
-import SettingsPersonalization from "../components/settings/SettingsPersonalization";
 import SettingsSubscription from "../components/settings/SettingsSubscription";
 import SettingsPrivacy from "../components/settings/SettingsPrivacy";
-import SettingsPremiumOverlay from "../components/settings/SettingsPremiumOverlay";
 import SettingsMessage from "../components/settings/SettingsMessage";
 
 import Button from "../components/base/Button";
@@ -495,39 +493,6 @@ function SettingsPage() {
                 </div>
               </div>
             </div>
-          </SettingsCard>
-        )}
-
-        {activeTab === "personalization" && (
-          <SettingsCard premium={!isPremiumUser}>
-            {isPremiumUser ? (
-              <SettingsPersonalization
-                settings={settings}
-                updateField={updateField}
-                saveSettings={saveSettings}
-                saving={saving}
-              />
-            ) : (
-              <>
-                <div className="settingsPanelBlurred">
-                  <SettingsPersonalization
-                    settings={settings}
-                    updateField={() => {}}
-                    saveSettings={() => {}}
-                    saving={false}
-                  />
-                </div>
-
-                <SettingsPremiumOverlay
-                  icon={premium_groen}
-                  title="Ontgrendel personalisatie instellingen"
-                  text="Upgrade naar Premium om Re:Mind volledig naar jouw wensen aan te passen"
-                  buttonLabel="Upgrade naar Premium"
-                  buttonIcon={premium_wit}
-                  onUpgrade={handleUpgrade}
-                />
-              </>
-            )}
           </SettingsCard>
         )}
 

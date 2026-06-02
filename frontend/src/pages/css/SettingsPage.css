@@ -8,10 +8,10 @@
 
 .settingsPage .filterTabs {
   width: 100%;
-  max-width: 950px;
+  max-width: 800px;
   margin-bottom: 32px;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .settingsPage .filterTab {
@@ -65,48 +65,6 @@
 
 .settingsSection .settingsField {
   margin-bottom: 0;
-}
-
-.settingsPanelBlurred {
-  filter: blur(5px);
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.settingsCenterPanel {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.settingsCenterPanel h2 {
-  margin: 24px 0 12px;
-  font-size: 2rem;
-  color: #1f1d1b;
-}
-
-.settingsCenterPanel p {
-  max-width: 520px;
-  margin: 0 0 32px;
-  color: #5f5d58;
-  line-height: 1.7;
-}
-
-.settingsIconCircle {
-  width: 84px;
-  height: 84px;
-  border-radius: 999px;
-  background: #eef2ea;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.settingsIconCircle img {
-  width: 34px;
-  height: 34px;
 }
 
 .settingsError,
@@ -196,9 +154,5 @@
 
   .settingsPanel h2 {
     font-size: 1.4rem;
-  }
-
-  .settingsCenterPanel h2 {
-    font-size: 1.7rem;
   }
 }
