@@ -45,6 +45,7 @@ function SettingsPage() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
 
   const [settings, setSettings] = useState({
     name: "",
@@ -71,6 +72,13 @@ function SettingsPage() {
     const fetchUser = async () => {
       try {
         const user = await getCurrentUser();
+
+        setIsPremiumUser(
+          user?.subscription === "premium" ||
+            user?.plan === "premium" ||
+            user?.subscriptionPlan === "premium" ||
+            user?.isPremium === true
+        );
 
         setSettings({
           name: user.name || "",
@@ -491,19 +499,35 @@ function SettingsPage() {
         )}
 
         {activeTab === "personalization" && (
-          <SettingsCard premium>
-            <div className="settingsPanelBlurred">
-              <SettingsPersonalization />
-            </div>
+          <SettingsCard premium={!isPremiumUser}>
+            {isPremiumUser ? (
+              <SettingsPersonalization
+                settings={settings}
+                updateField={updateField}
+                saveSettings={saveSettings}
+                saving={saving}
+              />
+            ) : (
+              <>
+                <div className="settingsPanelBlurred">
+                  <SettingsPersonalization
+                    settings={settings}
+                    updateField={() => {}}
+                    saveSettings={() => {}}
+                    saving={false}
+                  />
+                </div>
 
-            <SettingsPremiumOverlay
-              icon={premium_groen}
-              title="Ontgrendel personalisatie instellingen"
-              text="Upgrade naar Premium om Re:Mind volledig naar jouw wensen aan te passen"
-              buttonLabel="Upgrade naar Premium"
-              buttonIcon={premium_wit}
-              onUpgrade={handleUpgrade}
-            />
+                <SettingsPremiumOverlay
+                  icon={premium_groen}
+                  title="Ontgrendel personalisatie instellingen"
+                  text="Upgrade naar Premium om Re:Mind volledig naar jouw wensen aan te passen"
+                  buttonLabel="Upgrade naar Premium"
+                  buttonIcon={premium_wit}
+                  onUpgrade={handleUpgrade}
+                />
+              </>
+            )}
           </SettingsCard>
         )}
 

@@ -1,4 +1,4 @@
-import "./base/SettingsField.css";
+import "./css/SettingsField.css";
 
 function SettingsField({
   label,

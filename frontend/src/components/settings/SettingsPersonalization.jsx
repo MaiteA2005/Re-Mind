@@ -1,6 +1,6 @@
 import Button from "../base/Button";
 import SettingsField from "./SettingsField";
-import "./base/SettingsPersonalization.css";
+import "./css/SettingsPersonalization.css";
 
 import premium_wit from "../../assets/icons_wit/premium_wit.svg";
 

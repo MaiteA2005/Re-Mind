@@ -1,4 +1,4 @@
-import "./base/SettingsCard.css";
+import "./css/SettingsCard.css";
 
 function SettingsCard({ children, premium = false }) {
   return (

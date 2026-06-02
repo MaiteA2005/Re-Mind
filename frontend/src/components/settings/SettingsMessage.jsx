@@ -1,4 +1,4 @@
-import "./base/SettingsMessage.css";
+import "./css/SettingsMessage.css";
 
 function SettingsMessage({ type = "success", children }) {
   if (!children) return null;
