@@ -1,32 +1,32 @@
 .welcomePage {
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .welcomeCard {
-  width: 100%;
-  max-width: 720px;
-  text-align: center;
-  transform: translateY(-40px);
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    transform: translateY(-40px);
 }
 
 .welcomeCard h1 {
-  margin: 0 0 28px;
-  color: #232320;
-  font-family: var(--font-heading);
-  font-size: 3.2rem;
-  line-height: 1.15;
+    margin: 0 0 28px;
+    color: #232320;
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    line-height: 1.15;
 }
 
 .welcomeLogo {
-  width: min(540px, 80vw);
-  display: block;
-  margin: 0 auto 70px;
+    width: min(540px, 80vw);
+    display: block;
+    margin: 0 auto 70px;
 }
 
 .welcomeActions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
 }
