@@ -24,7 +24,9 @@ function ForgotPasswordPage() {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Resetlink versturen mislukt");
+            throw new Error(
+                data.error || data.message || "Resetlink versturen mislukt"
+            );
         }
 
         setShowModal(true);
