@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser, saveOnboarding } from "../services/authService";
+import Button from "../components/base/Button";
 
 import logoGroen from "../assets/logo_groen.svg";
 import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
 import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
+import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
+import checkGroen from "../assets/icons_groen/check_groen.svg";
 
 import "./AuthPages.css";
 import "./OnboardingPage.css";
@@ -76,13 +80,16 @@ function OnboardingPage() {
     <main className="authPage onboardingPage">
       <img src={logoGroen} alt="Re:Mind" className="authCornerLogo" />
 
+      {step === 1 && (
+        <Link to="/welcome" className="authBackButton">
+          <img src={pijlLinks} alt="" className="backIcon"/>
+          Terug
+        </Link>
+      )}
+
       <section className="onboardingCard">
         {step === 1 && (
           <div className="onboardingIntro">
-            <Link to="/welcome" className="authBackButton">
-              ← Terug
-            </Link>
-
             <h1>Welkom bij Re:Mind</h1>
             <p>
               Je digitale balanscoach die je helpt om stress te beheren en
@@ -93,20 +100,22 @@ function OnboardingPage() {
               <h2>Hoe werkt het?</h2>
 
               <ul>
-                <li>Check-ins gedurende de dag om je stress en energie te monitoren</li>
-                <li>Persoonlijke pauzesuggesties op het juiste moment</li>
-                <li>Wekelijkse inzichten in je werkbalans</li>
-                <li>Dagafsluiting voor betere reflectie</li>
+                <li><img src={checkGroen} alt="Check-in" /> Check-ins gedurende de dag om je stress en energie te monitoren</li>
+                <li><img src={checkGroen} alt="Pauze" /> Persoonlijke pauzesuggesties op het juiste moment</li>
+                <li><img src={checkGroen} alt="Inzichten" /> Wekelijkse inzichten in je werkbalans</li>
+                <li><img src={checkGroen} alt="Reflectie" /> Dagafsluiting voor betere reflectie</li>
               </ul>
             </div>
 
-            <button type="button" className="authPrimaryButton" onClick={nextStep}>
-              Laten we beginnen →
-            </button>
+            <div className="onboardingIntroActions"> 
+              <Button variant="secondary" to="/login">
+                Al een account? <span className="aanmeldBtnLink">Log in</span>
+              </Button>
 
-            <Link to="/login" className="authSecondaryButton onboardingLoginButton">
-              Al een account? <span>Log in</span>
-            </Link>
+              <Button variant="primary" onClick={nextStep} iconRight={pijlRechts}>
+                Laten we beginnen
+              </Button>
+            </div>
           </div>
         )}
 
@@ -317,49 +326,36 @@ function OnboardingPage() {
               <h2>Tips om te starten:</h2>
 
               <div>
-                <span>1.</span>
-                <p>
-                  <strong>Check regelmatig in</strong>
-                  Hoe vaker je incheckt, hoe beter we je kunnen helpen
-                </p>
+                <h3>1. Check regelmatig in</h3>
+                <p> Hoe vaker je incheckt, hoe beter we je kunnen helpen</p>
               </div>
 
               <div>
-                <span>2.</span>
-                <p>
-                  <strong>Neem pauzes serieus</strong>
-                  Ook korte pauzes maken een groot verschil
-                </p>
+                <h3>2. Neem pauzes serieus</h3>
+                <p>Ook korte pauzes maken een groot verschil</p>
               </div>
 
               <div>
-                <span>3.</span>
-                <p>
-                  <strong>Bekijk je wekelijkse inzichten</strong>
-                  Leer je patronen kennen en verbeter je balans
-                </p>
+                <h3>3. Bekijk je wekelijkse inzichten</h3>
+                <p>Leer je patronen kennen en verbeter je balans</p>
               </div>
             </div>
 
-            <button
-              type="button"
-              className="authPrimaryButton dashboardButton"
-              onClick={finishOnboarding}
-            >
+            <Button variant="primary" onClick={finishOnboarding}>
               Naar mijn dashboard
-            </button>
+            </Button>
           </div>
         )}
 
         {step > 1 && step < 7 && (
           <div className="onboardingActions">
-            <button type="button" className="authSecondaryButton" onClick={previousStep}>
-              ← Terug
-            </button>
+            <Button variant="secondary" onClick={previousStep} iconLeft={pijlLinks}>
+              Terug
+            </Button>
 
-            <button type="button" className="authPrimaryButton" onClick={nextStep}>
-              {step === 6 ? "Afronden" : "Volgende"} →
-            </button>
+            <Button variant="primary" onClick={nextStep} iconRight={pijlRechts}>
+              {step === 6 ? "Afronden" : "Volgende"}
+            </Button>
           </div>
         )}
       </section>

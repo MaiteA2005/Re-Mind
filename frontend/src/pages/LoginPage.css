@@ -51,27 +51,17 @@
     font-size: 1rem;
 }
 
-.forgotPasswordLink {
-    display: block;
-    margin-top: -4px;
-    color: #78957f;
-    font-size: 0.92rem;
-    text-align: right;
-    text-decoration: underline;
-}
-
 .loginActions {
     margin-top: 48px;
     display: flex;
     justify-content: center;
-    gap: 0;
+    gap: 10px;
 }
 
-.loginSubmitButton,
-.loginRegisterButton {
-    min-width: 250px;
-}
-
-.loginRegisterButton span {
+.loginBtnLink {
     text-decoration: underline;
+    cursor: pointer;
+    padding: 0 8px;
+    color: #25221f;
+    font-family: var(--font-body);
 }

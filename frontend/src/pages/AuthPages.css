@@ -57,42 +57,6 @@
   background: #f3ecd8;
 }
 
-.authPrimaryButton,
-.authSecondaryButton {
-  min-width: 170px;
-  min-height: 46px;
-  border-radius: 10px;
-  padding: 10px 24px;
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  border: 1px solid transparent;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s ease;
-}
-
-.authPrimaryButton {
-  background: #78957f;
-  color: #fffdf8;
-}
-
-.authPrimaryButton:hover {
-  background: #698670;
-}
-
-.authSecondaryButton {
-  background: transparent;
-  color: #25221f;
-  border-color: #d8d0be;
-}
-
-.authSecondaryButton:hover {
-  background: #f3ecd8;
-}
-
 .passwordInputWrapper {
   position: relative;
   width: 100%;
@@ -104,9 +68,12 @@
 
 .passwordToggle {
   position: absolute;
-  top: 50%;
+  top: 0;
   right: 14px;
-  transform: translateY(-50%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -114,6 +81,7 @@
 }
 
 .passwordToggle img {
-  width: 18px;
+  width: 22px;
+  height: 22px;
   opacity: 0.7;
 }

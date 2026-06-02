@@ -32,8 +32,11 @@
 }
 
 .onboardingIntro .authBackButton {
+  position: fixed;
   top: 86px;
   left: 28px;
+  width: 150px;
+  z-index: 5;
 }
 
 .onboardingInfoCard {
@@ -63,9 +66,30 @@
 }
 
 .onboardingInfoCard li::before {
-  content: "✓";
   margin-right: 12px;
   color: #78957f;
+}
+
+.onboardingInfoCard img {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.onboardingIntroActions {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.aanmeldBtnLink {
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 8px;
+    color: #25221f;
+    font-family: var(--font-body);
 }
 
 .onboardingProgress {
@@ -150,6 +174,7 @@
 }
 
 .optionCheck {
+  content: "✓";
   width: 18px;
   height: 18px;
   border: 1px solid #8aa08d;

@@ -2,10 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/authService";
+import Button from "../components/base/Button";
 
 import logoGroen from "../assets/logo_groen.svg";
 import oogIcon from "../assets/icons_zwart/oog_zwart.svg";
 import oogUitIcon from "../assets/icons_zwart/oog_uit_zwart.svg";
+import pijlLinks from "../assets/icons_zwart/pijl_links_zwart.svg";
+import pijlRechts from "../assets/icons_zwart/pijl_rechts_zwart.svg";
 
 import "./AuthPages.css";
 import "./LoginPage.css";
@@ -51,7 +54,8 @@ function LoginPage() {
       <img src={logoGroen} alt="Re:Mind" className="authCornerLogo" />
 
       <Link to="/welcome" className="authBackButton">
-        ← Terug
+        <img src={pijlLinks} alt="" className="backIcon" />
+        Terug
       </Link>
 
       <section className="authCard loginCard">
@@ -98,18 +102,15 @@ function LoginPage() {
           </label>
         </form>
 
-        <button
-          type="submit"
-          className="authPrimaryButton loginSubmitButton"
-          disabled={loading}
-          onClick={handleSubmit}
-        >
-          {loading ? "Bezig..." : "Naar mijn dashboard"}
-        </button>
+        <div className="loginActions"> 
+          <Button variant="secondary" to="/onboarding">
+            Nog geen account? <span className="loginBtnLink"> Meld je aan </span>
+          </Button>
 
-        <Link to="/onboarding" className="authSecondaryButton loginRegisterButton">
-          Nog geen account? <span>Meld je aan</span>
-        </Link>
+          <Button variant="primary" disabled={loading} onClick={handleSubmit}>
+            {loading ? "Bezig..." : "Naar mijn dashboard"}
+          </Button>
+        </div>
       </section>
     </main>
   );

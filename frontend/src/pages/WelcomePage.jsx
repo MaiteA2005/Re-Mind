@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
+import Button from "../components/base/Button";
+
 import logoGroen from "../assets/logo_groen.svg";
+import pijlRechts from "../assets/icons_wit/pijl_rechts_wit.svg";
+import pijlRechtsZ from "../assets/icons_zwart/pijl_rechts_zwart.svg";
+
 import "./AuthPages.css";
 import "./WelcomePage.css";
 
@@ -12,13 +17,13 @@ function WelcomePage() {
         <img src={logoGroen} alt="Re:Mind" className="welcomeLogo" />
 
         <div className="welcomeActions">
-          <Link to="/login" className="authPrimaryButton">
+          <Button to="/login" variant="primary" iconRight={pijlRechts}>
             Inloggen
-          </Link>
+          </Button>
 
-          <Link to="/onboarding" className="authSecondaryButton">
+          <Button to="/onboarding" variant="secondary" iconRight={pijlRechtsZ}>
             Aanmelden
-          </Link>
+          </Button>
         </div>
       </section>
     </main>
