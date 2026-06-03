@@ -1,6 +1,6 @@
 {
   "name": "re-mind-electron",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Re-Mind desktop app",
   "main": "main.js",
   "scripts": {
