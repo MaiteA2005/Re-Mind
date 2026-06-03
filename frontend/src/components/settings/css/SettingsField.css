@@ -18,9 +18,14 @@
   border-radius: 7px;
   background: #fffdf8;
   padding: 0 12px;
+
   color: #2f2d29;
   font-family: inherit;
   font-size: 0.95rem;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .settingsField span {
@@ -31,11 +36,11 @@
 }
 
 .settingsField select.customSelect {
-  appearance: none;
-  background-image: url("../../assets/icons_zwart/arrow_down_zwart.svg");
+  background-image: url("../../../assets/icons_zwart/arrow_down_zwart.svg");
   background-repeat: no-repeat;
-  background-position: right 16px center;
+  background-position: right 14px center;
   background-size: 16px;
+  cursor: pointer;
 }
 
 .settingsField select.customSelect:focus {
