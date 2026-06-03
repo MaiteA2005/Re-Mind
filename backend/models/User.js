@@ -98,6 +98,17 @@ const userSchema = new mongoose.Schema(
       default: "free",
     },
 
+    businessRole: {
+      type: String,
+      enum: ["none", "admin", "member"],
+      default: "none",
+    },
+
+    businessName: {
+      type: String,
+      default: "",
+    },
+
     billingCycle: {
       type: String,
       enum: ["monthly", "yearly"],

@@ -1,6 +1,7 @@
 import express from "express";
 import BusinessRequest from "../models/BusinessRequest.js";
 import protect from "../middleware/authMiddleware.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
@@ -10,7 +11,8 @@ router.post("/", protect, async (req, res) => {
 
     if (!company || !contact || !email || !teamSize) {
       return res.status(400).json({
-        message: "Bedrijfsnaam, contactpersoon, email en teamgrootte zijn verplicht",
+        message:
+          "Bedrijfsnaam, contactpersoon, email en teamgrootte zijn verplicht",
       });
     }
 
@@ -22,9 +24,24 @@ router.post("/", protect, async (req, res) => {
       teamSize,
       phone,
       message,
+      status: "approved",
     });
 
-    res.status(201).json(request);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        subscriptionPlan: "business",
+        businessRole: "admin",
+        businessName: company,
+      },
+      { new: true }
+    ).select("-password");
+
+    res.status(201).json({
+      message: "Business aanvraag opgeslagen en bedrijfslicentie geactiveerd",
+      request,
+      user: updatedUser,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Aanvraag kon niet opgeslagen worden",
