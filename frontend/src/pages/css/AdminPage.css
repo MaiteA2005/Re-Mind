@@ -1,0 +1,257 @@
+.adminShell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    background: #fbf8f2;
+}
+
+.adminSidebar {
+    min-height: 100vh;
+    background: #e9e2cf;
+    border-right: 1px solid #d8d0be;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.adminSidebarTop {
+    padding: 24px 18px;
+}
+
+.adminSidebarLogo {
+    width: 145px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.adminSidebarTop p {
+    margin: 0 0 34px;
+    color: #5f5d58;
+    font-size: 0.82rem;
+}
+
+.adminSidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.adminSidebarNav a,
+.adminBackToApp {
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #25221f;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.adminSidebarNav a.active {
+    background: #78957f;
+    color: #fffdf8;
+}
+
+.adminSidebarNav img,
+.adminBackToApp img {
+    width: 16px;
+    height: 16px;
+}
+
+.adminBackToApp {
+    width: calc(100% - 36px);
+    margin: 18px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.adminMain {
+    min-width: 0;
+}
+
+.adminHeader {
+    padding: 28px 36px 24px;
+    background: #f1ead8;
+    border-bottom: 1px solid #d8d0be;
+}
+
+.adminHeader h1 {
+    margin: 0 0 8px;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: #1f1d1b;
+}
+
+.adminHeader p {
+    margin: 0;
+    color: #5f5d58;
+}
+
+.adminContent {
+    padding: 28px 36px 52px;
+}
+
+.adminStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.adminStatCard {
+    background: #f1ead8;
+    border: 1px solid #d8d0be;
+    border-radius: 9px;
+    padding: 18px;
+}
+
+.adminStatCard span {
+    display: block;
+    margin-bottom: 12px;
+    color: #5f5d58;
+}
+
+.adminStatCard strong {
+    font-size: 1.8rem;
+    color: #1f1d1b;   
+}
+
+.adminPanel,
+.adminSettingsCard {
+    background: #fffdf8;
+    border: 1px solid #8aa691;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.adminPanel h2,
+.adminSettingsCard h2 {
+    margin: 0 0 18px;
+    font-size: 1rem;
+    color: #1f1d1b;
+}
+
+.adminMemberList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.adminMemberRow {
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: #f3f3ec;
+    border-radius: 9px;
+}
+
+.adminAvatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: #78957f;
+    color: #fffdf8;
+    display: grid;
+    place-items: center;
+    font-size: 0.78rem;
+}
+
+.adminMemberRow h3 {
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+}
+
+.adminMemberRow p,
+.adminMemberRow span {
+    margin: 0;
+    color: #5f5d58;
+    font-size: 0.82rem;
+}
+
+.adminPrivacyBox,
+.adminInfoBox {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid #d8d0be;
+    border-radius: 8px;
+    background: #f3f0e5;
+    color: #5f5d58;
+}
+
+.adminPrivacyBox p {
+    margin: 4px 0 0;
+}
+
+.adminSettingsStack {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.adminSettingsCard {
+    background: #f1ead8;
+    border-color: #e1d8c2;
+}
+
+.adminSettingsCard p {
+    margin: -8px 0 18px;
+    color: #5f5d58;
+    font-size: 0.88rem;
+}
+
+.adminSettingsCard label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.adminSettingsCard input {
+    height: 38px;
+    border: 1px solid #d8d0be;
+    border-radius: 7px;
+    background: #fffdf8;
+    padding: 0 12px;
+    font-family: inherit;
+}
+
+.adminTwoColumns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.adminButtonRow {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.adminCheckbox {
+    flex-direction: row !important;
+    align-items: center;
+    font-weight: 400 !important;
+}
+
+@media (max-width: 900px) {
+    .adminShell {
+        grid-template-columns: 1fr;
+    }
+
+    .adminSidebar {
+        min-height: auto;
+    }
+
+    .adminStatsGrid,
+    .adminTwoColumns {
+        grid-template-columns: 1fr;
+    }
+}

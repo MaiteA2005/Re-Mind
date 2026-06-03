@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Button from "../components/base/Button";
 import { useAuth } from "../context/AuthContext";
@@ -91,6 +92,7 @@ function PricingCard({ children, highlighted = false }) {
 
 function PremiumPage() {
   const { user, login } = useAuth();
+  const navigate = useNavigate();
 
   const [billing, setBilling] = useState("monthly");
   const [view, setView] = useState("plans");
@@ -115,6 +117,9 @@ function PremiumPage() {
   const isPremiumUser = currentPlan === "premium";
   const isCurrentPremiumBilling =
     isPremiumUser && currentBilling === billing;
+
+  const isBusinessAdmin =
+    currentPlan === "business" && user?.businessRole === "admin";
 
   const premiumPrice = useMemo(
     () => (billing === "monthly" ? "€2,99" : "€33,00"),
@@ -182,9 +187,10 @@ function PremiumPage() {
     setError("");
 
     try {
-      await createBusinessRequest(form);
-      setSuccessType("business");
-      setShowSuccess(true);
+      const updatedUser = await createBusinessRequest(form);
+
+      login(updatedUser);
+      navigate("/admin/team");
     } catch (error) {
       setError(error.message || "Aanvraag versturen mislukt");
     } finally {
@@ -361,8 +367,8 @@ function PremiumPage() {
                 </p>
               </div>
 
-              <Button className="success-button" to="/dashboard" iconLeft={pijlLinksWit}>
-                Terug naar dashboard
+              <Button className="success-button" to="/admin/team" iconLeft={pijlLinksWit}>
+                Ga naar dashboard
               </Button>
             </section>
           </div>
@@ -478,13 +484,21 @@ function PremiumPage() {
             <FeatureList features={businessFeatures} variant="spark" />
 
             <div className="business-actions">
-              <Button variant="secondary" onClick={() => setView("business")}>
-                Contacteer ons
-              </Button>
+              {isBusinessAdmin ? (
+                <Button variant="primary" onClick={() => navigate("/admin/team")}>
+                  Beheren
+                </Button>
+              ) : (
+                <>
+                  <Button variant="secondary" onClick={() => setView("business")}>
+                    Contacteer ons
+                  </Button>
 
-              <Button variant="primary" onClick={() => setView("business")}>
-                Aanvragen
-              </Button>
+                  <Button variant="primary" onClick={() => setView("business")}>
+                    Aanvragen
+                  </Button>
+                </>
+              )}
             </div>
           </PricingCard>
         </div>

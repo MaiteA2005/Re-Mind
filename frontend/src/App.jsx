@@ -22,6 +22,8 @@ import DagAfsluitingPage from "./pages/DagAfsluitingPage";
 import TimerPage from "./pages/TimerPage";
 import SettingsPage from "./pages/SettingsPage";
 import PremiumPage from "./pages/PremiumPage";
+import AdminTeamPage from "./pages/AdminTeamPage";
+import AdminSettingsPage from "./pages/AdminSettingsPage";
 
 import PauseReminderPopup from "./components/timer/PauseReminderPopup";
 
@@ -215,6 +217,24 @@ function App() {
             }
           />
 
+          <Route 
+            path="/admin/team"
+            element={
+              <ProtectedRoute>
+                <AdminTeamPage />
+              </ProtectedRoute>
+            }  
+          />
+
+          <Route 
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <AdminSettingsPage />
+              </ProtectedRoute>
+            }  
+          />
+          
           <Route
             path="/instellingen"
             element={

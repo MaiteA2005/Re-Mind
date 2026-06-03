@@ -42,5 +42,7 @@ export async function createBusinessRequest(formData) {
     throw new Error(data.message || "Aanvraag versturen mislukt");
   }
 
+  localStorage.setItem("user", JSON.stringify(data));
+
   return data;
 }
