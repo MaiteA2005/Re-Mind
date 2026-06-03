@@ -189,7 +189,9 @@ function PremiumPage() {
     try {
       const updatedUser = await createBusinessRequest(form);
 
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       login(updatedUser);
+
       navigate("/admin/team");
     } catch (error) {
       setError(error.message || "Aanvraag versturen mislukt");

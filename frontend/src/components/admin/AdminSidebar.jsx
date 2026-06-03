@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import logo from "../../assets/logo_groen.svg";
 
@@ -14,22 +15,39 @@ import pijlLinksWhite from "../../assets/icons_wit/pijl_links_wit.svg";
 
 function AdminSidebar() {
     const navigate = useNavigate();
+    const { user } = useAuth();
+    
+    const businessName =
+    user?.businessName ||
+    JSON.parse(localStorage.getItem("user") || "{}")?.businessName ||
+    "Bedrijf";
 
     return (
         <aside className="adminSidebar">
         <div className="adminSidebarTop">
             <img src={logo} alt="Re:Mind" className="adminSidebarLogo" />
-            <p>[Naam bedrijf]</p>
+            <p>{businessName}</p>
 
             <nav className="adminSidebarNav">
             <NavLink to="/admin/team">
-                <img src={teamBlack} alt="" />
-                Team
+                {({ isActive }) => (
+                <>
+                    <img src={isActive ? teamWhite : teamBlack} alt="" />
+                    Team
+                </>
+                )}
             </NavLink>
 
             <NavLink to="/admin/settings">
-                <img src={instellingenBlack} alt="" />
-                Instellingen
+                {({ isActive }) => (
+                <>
+                    <img
+                    src={isActive ? instellingenWhite : instellingenBlack}
+                    alt=""
+                    />
+                    Instellingen
+                </>
+                )}
             </NavLink>
             </nav>
         </div>

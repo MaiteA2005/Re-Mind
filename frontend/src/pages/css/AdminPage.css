@@ -6,9 +6,13 @@
 }
 
 .adminSidebar {
-    min-height: 100vh;
-    background: #e9e2cf;
-    border-right: 1px solid #d8d0be;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    
+    background: #f1ead8;
+    border-right: 1px solid #d8cfb8;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

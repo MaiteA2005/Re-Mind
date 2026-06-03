@@ -1,8 +1,17 @@
+import { useAuth } from "../context/AuthContext";
+
 import AdminLayout from "../components/admin/AdminLayout";
 import Button from "../components/base/Button";
 import "./css/AdminPage.css";
 
 function AdminSettingsPage() {
+    const { user } = useAuth();
+
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+    const businessName = user?.businessName || storedUser?.businessName || "Bedrijf";
+    const adminEmail = user?.email || storedUser?.email || "Email";
+
     return (
         <AdminLayout
         title="Instellingen"
@@ -14,12 +23,20 @@ function AdminSettingsPage() {
 
             <label>
                 Bedrijfsnaam
-                <input type="text" placeholder="[Naam]" />
+                <input 
+                    type="text" 
+                    value={businessName} 
+                    readOnly
+                />
             </label>
 
             <label>
                 Admin email
-                <input type="email" placeholder="[Email]" />
+                <input 
+                    type="email" 
+                    value={adminEmail} 
+                    readOnly
+                />
             </label>
             </section>
 
@@ -52,7 +69,7 @@ function AdminSettingsPage() {
 
             <label>
                 Pauze frequentie
-                <input type="text" placeholder="[hoeveelheid/uur]" />
+                <input type="text" placeholder= "[hoeveelheid/uur]" />
             </label>
             </section>
 
