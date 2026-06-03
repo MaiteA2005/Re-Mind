@@ -243,3 +243,28 @@
   font-size: 2.2rem;
   text-align: center;
 }
+
+.lunchDurationSelect {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #ddd8cb;
+  border-radius: 10px;
+  padding: 0 52px 0 16px;
+
+  background-color: #ffffff;
+
+  background-image: url("../../assets/icons_zwart/arrow_down_zwart.svg");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 18px;
+
+  color: #25221f;
+  font-family: var(--font-body);
+  font-size: 1rem;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
+}

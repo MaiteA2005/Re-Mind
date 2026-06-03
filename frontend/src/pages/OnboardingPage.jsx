@@ -13,7 +13,7 @@ import checkGroen from "../assets/icons_groen/check_groen.svg";
 import "./css/AuthPages.css";
 import "./css/OnboardingPage.css";
 
-const totalSteps = 7;
+const totalSteps = 8;
 
 function OnboardingPage() {
   const navigate = useNavigate();
@@ -28,6 +28,10 @@ function OnboardingPage() {
     workload: "",
     goals: [],
     notificationsEnabled: true,
+    workdayStartTime: "09:00",
+    workdayEndTime: "17:00",
+    lunchStartTime: "12:00",
+    lunchDurationMinutes: 30,
   });
 
   const updateField = (name, value) => {
@@ -67,6 +71,10 @@ function OnboardingPage() {
         workload: formData.workload,
         goals: formData.goals,
         notificationsEnabled: formData.notificationsEnabled,
+        workdayStartTime: formData.workdayStartTime,
+        workdayEndTime: formData.workdayEndTime,
+        lunchStartTime: formData.lunchStartTime,
+        lunchDurationMinutes: formData.lunchDurationMinutes,
       });
 
       navigate("/dashboard");
@@ -119,7 +127,7 @@ function OnboardingPage() {
           </div>
         )}
 
-        {step > 1 && step < 7 && (
+        {step > 1 && step < 8 && (
           <div className="onboardingProgress">
             <div className="onboardingProgressTrack">
               <div
@@ -214,6 +222,64 @@ function OnboardingPage() {
 
         {step === 4 && (
           <div className="onboardingStep">
+            <h1>Hoe ziet je werkdag eruit?</h1>
+            <p>Zo kunnen we je pauzes en check-ins beter afstemmen op je dag.</p>
+
+            <div className="authForm">
+              <label>
+                Werkdag start
+                <input
+                  type="time"
+                  value={formData.workdayStartTime}
+                  onChange={(event) =>
+                    updateField("workdayStartTime", event.target.value)
+                  }
+                />
+              </label>
+
+              <label>
+                Werkdag einde
+                <input
+                  type="time"
+                  value={formData.workdayEndTime}
+                  onChange={(event) =>
+                    updateField("workdayEndTime", event.target.value)
+                  }
+                />
+              </label>
+
+              <label>
+                Middagpauze start
+                <input
+                  type="time"
+                  value={formData.lunchStartTime}
+                  onChange={(event) =>
+                    updateField("lunchStartTime", event.target.value)
+                  }
+                />
+              </label>
+
+              <label>
+                Duur middagpauze
+                <select
+                  value={formData.lunchDurationMinutes}
+                  onChange={(event) =>
+                    updateField("lunchDurationMinutes", Number(event.target.value))
+                  }
+                  className="lunchDurationSelect"
+                >
+                  <option value={15}>15 minuten</option>
+                  <option value={30}>30 minuten</option>
+                  <option value={45}>45 minuten</option>
+                  <option value={60}>1 uur</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="onboardingStep">
             <h1>Hoe ervaar je momenteel je werkdruk?</h1>
             <p>Er is geen goed of fout antwoord - we willen je huidige situatie begrijpen.</p>
 
@@ -240,7 +306,7 @@ function OnboardingPage() {
           </div>
         )}
 
-        {step === 5 && (
+        {step === 6 && (
           <div className="onboardingStep">
             <h1>Wat wil je bereiken met Re:Mind?</h1>
             <p>Selecteer alles wat op jou van toepassing is.</p>
@@ -270,7 +336,7 @@ function OnboardingPage() {
           </div>
         )}
 
-        {step === 6 && (
+        {step === 7 && (
           <div className="onboardingStep">
             <h1>Mogen we je herinneren aan je check-ins?</h1>
             <p>Vriendelijke notificaties helpen je om je balans bij te houden.</p>
@@ -313,7 +379,7 @@ function OnboardingPage() {
           </div>
         )}
 
-        {step === 7 && (
+        {step === 8 && (
           <div className="onboardingStep onboardingFinish">
             <p className="finishIntro">Je bent klaar, {formData.name || "Naam"}!</p>
 
@@ -347,14 +413,14 @@ function OnboardingPage() {
           </div>
         )}
 
-        {step > 1 && step < 7 && (
+        {step > 1 && step < 8 && (
           <div className="onboardingActions">
             <Button variant="secondary" onClick={previousStep} iconLeft={pijlLinks}>
               Terug
             </Button>
 
             <Button variant="primary" onClick={nextStep} iconRight={pijlRechts}>
-              {step === 6 ? "Afronden" : "Volgende"}
+              {step === 7 ? "Afronden" : "Volgende"}
             </Button>
           </div>
         )}
