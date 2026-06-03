@@ -4,11 +4,13 @@ import { formatDate, getGreeting } from "../utils/date";
 import { getMyPauseSessions } from "../services/pauseStatsService";
 import { getMyCheckIns } from "../services/checkInService";
 import { useAuth } from "../context/AuthContext";
+import { useTimer } from "../context/TimerContext";
 import {
   getTomorrowFocus,
   completeTomorrowFocus,
 } from "../services/dayClosingService";
 
+import Button from "../components/base/Button";
 import UpgradeBanner from "../components/base/UpgradeBanner";
 import DashboardFocusAction from "../components/dashboard/DashboardFocusAction";
 import DashboardCheckInCard from "../components/dashboard/DashboardCheckInCard";
@@ -28,9 +30,35 @@ function getTodayItems(items, dateKey = "createdAt") {
   });
 }
 
+function getTodayDismissKey(userId) {
+  const today = new Date().toISOString().split("T")[0];
+  return `workday-start-notice-dismissed-${userId}-${today}`;
+}
+
+function isCurrentTimeAfter(timeString) {
+  if (!timeString) return false;
+
+  const [hours, minutes] = timeString.split(":").map(Number);
+
+  const now = new Date();
+  const compareTime = new Date();
+
+  compareTime.setHours(hours, minutes, 0, 0);
+
+  return now >= compareTime;
+}
+
 function DashboardPage() {
   const { user } = useAuth();
+  const {
+    activeTimer,
+    isRunning,
+    changeTimerType,
+    startTimer,
+  } = useTimer();
+
   const greeting = getGreeting();
+
   const isPremiumUser =
     user?.subscription === "premium" ||
     user?.plan === "premium" ||
@@ -45,6 +73,8 @@ function DashboardPage() {
 
   const [todayFocus, setTodayFocus] = useState(null);
   const [focusLoading, setFocusLoading] = useState(true);
+
+  const [showStartWorkdayNotice, setShowStartWorkdayNotice] = useState(false);
 
   useEffect(() => {
     const fetchPauseSessions = async () => {
@@ -91,6 +121,29 @@ function DashboardPage() {
     fetchTodayFocus();
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+
+    const workdayStartTime =
+      user?.settings?.workdayStartTime || user?.workdayStartTime || "09:00";
+
+    const userId = user._id || user.id;
+    const dismissedKey = getTodayDismissKey(userId);
+    const dismissedToday = localStorage.getItem(dismissedKey) === "true";
+
+    const workdayTimerIsRunning = activeTimer === "workday" && isRunning;
+
+    if (
+      isCurrentTimeAfter(workdayStartTime) &&
+      !workdayTimerIsRunning &&
+      !dismissedToday
+    ) {
+      setShowStartWorkdayNotice(true);
+    } else {
+      setShowStartWorkdayNotice(false);
+    }
+  }, [user, activeTimer, isRunning]);
+
   const pausesToday = useMemo(
     () => getTodayItems(pauseSessions, "completedAt"),
     [pauseSessions]
@@ -100,7 +153,7 @@ function DashboardPage() {
     () => getTodayItems(checkIns, "createdAt"),
     [checkIns]
   );
-  
+
   const averageStress =
     checkInsToday.length > 0
       ? (
@@ -128,6 +181,31 @@ function DashboardPage() {
     }
   };
 
+  const handleDismissWorkdayNotice = () => {
+    const userId = user?._id || user?.id;
+
+    if (userId) {
+      const dismissedKey = getTodayDismissKey(userId);
+      localStorage.setItem(dismissedKey, "true");
+    }
+
+    setShowStartWorkdayNotice(false);
+  };
+
+  const handleStartWorkdayTimer = () => {
+    if (activeTimer !== "workday") {
+      changeTimerType("workday");
+
+      setTimeout(() => {
+        startTimer();
+      }, 0);
+    } else {
+      startTimer();
+    }
+
+    setShowStartWorkdayNotice(false);
+  };
+
   return (
     <MainLayout
       title={`${greeting}, ${user?.name || "gebruiker"}`}
@@ -142,6 +220,28 @@ function DashboardPage() {
       }
     >
       <div className="dashboard">
+        {showStartWorkdayNotice && (
+          <section className="workdayStartNotice">
+            <div>
+              <h3>Je werkdag is gestart</h3>
+              <p>
+                Wil je je werkdagtimer starten zodat Re:Mind je dag kan
+                opvolgen?
+              </p>
+            </div>
+
+            <div className="workdayStartNoticeActions">
+              <Button variant="secondary" onClick={handleDismissWorkdayNotice}>
+                Wegklikken
+              </Button>
+
+              <Button variant="primary" onClick={handleStartWorkdayTimer}>
+                Timer starten
+              </Button>
+            </div>
+          </section>
+        )}
+
         {!isPremiumUser && <UpgradeBanner />}
 
         <DashboardCheckInCard latestCheckIn={checkIns[0]} />
