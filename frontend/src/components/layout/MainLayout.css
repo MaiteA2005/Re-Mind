@@ -6,11 +6,22 @@
 
 .layoutContent {
   flex: 1;
-  padding: 32px;
+  display: flex;
+  flex-direction: column;
 }
 
-.layoutBody {
-  width: 100%;
+.mainContent {
+  background: #fbf8f2;
+}
+
+.mainHeader {
+  background: #f1ead8;
+  border-bottom: 1px solid #d8cfb8;
+  padding: 32px 40px;
+}
+
+.mainBody {
+  padding: 32px 40px;
 }
 
 @media (max-width: 1024px) {

@@ -8,16 +8,19 @@ function MainLayout({ title, subtitle, variant = "default", action, children }) 
       <Sidebar />
 
       <main className="layoutContent">
-        <PageHeader
-          title={title}
-          subtitle={subtitle}
-          variant={variant}
-          action={action}
-        />
+        <div className="mainHeader">
+          <PageHeader
+            title={title}
+            subtitle={subtitle}
+            variant={variant}
+            action={action}
+          />
+        </div>
 
-        <section className="layoutBody">
+
+        <div className="mainBody">
           {children}
-        </section>
+        </div>
       </main>
     </div>
   );
