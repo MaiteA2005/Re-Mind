@@ -1,0 +1,68 @@
+.insightsTrendsCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f5f7ef;
+    border: 1px solid #78977f;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.insightsTrendsColumn {
+    padding: 2rem;
+}
+
+.insightsTrendsColumn + .insightsTrendsColumn {
+    border-left: 1px solid #78977f;
+}
+
+.insightsTrendsColumn h3 {
+    margin: 0 0 1.5rem;
+    font-size: 1.2rem;
+    color: #1f1d1b;
+}
+
+.insightsTrendItem {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+}
+
+.insightsTrendIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #e8eee2;
+    color: #78977f;
+    font-weight: 700;
+}
+
+.insightsTrendItem h4 {
+    margin: 0 0 0.3rem;
+    font-size: 1.05rem;
+}
+
+.insightsTrendItem p {
+    margin: 0;
+    color: #5f6158;
+    line-height: 1.45;
+}
+
+.insightsTrendIcon img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+@media (max-width: 900px) {
+    .insightsTrendsCard {
+        grid-template-columns: 1fr;
+    }
+
+    .insightsTrendsColumn + .insightsTrendsColumn {
+        border-left: none;
+        border-top: 1px solid #78977f;
+    }
+}

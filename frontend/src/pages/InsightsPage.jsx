@@ -16,6 +16,7 @@ import ChartCard from "../components/insights/ChartCard";
 import RecommendationCard from "../components/insights/RecommendationCard";
 import DayDetail from "../components/insights/DayDetail";
 import DayDetailLocked from "../components/insights/DayDetailLocked";
+import InsightsTrendsCard from "../components/insights/InsightsTrendsCard";
 
 import "./css/InsightsPage.css";
 
@@ -838,7 +839,15 @@ function InsightsPage() {
               />
             </div>
 
-            <RecommendationCard recommendation={recommendation} />
+            {activeFilter === "today" ? (
+              <RecommendationCard recommendation={recommendation} />
+            ) : (
+              <InsightsTrendsCard
+                period={activeFilter}
+                checkIns={filteredCheckIns}
+                pauseReminders={filteredPauseReminders}
+              />
+            )}
 
             {isPremiumUser ? (
               <DayDetail
