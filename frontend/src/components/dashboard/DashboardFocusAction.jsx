@@ -212,8 +212,6 @@ function DashboardFocusAction({ focusLoading }) {
       {isFocusPopupOpen && (
         <div className="focusPopup">
           <div className="focusPopupHeader">
-            <h3>Focuslijst</h3>
-            <p>Voeg doorheen de dag taken toe of vink ze af.</p>
           </div>
 
           <div className="focusTabs">
@@ -276,15 +274,11 @@ function DashboardFocusAction({ focusLoading }) {
                     {task.done && "✓"}
                   </button>
 
-                  <div className="focusTaskContent">
-                    <span className="focusTaskText">{task.text}</span>
+                  <span>{task.text}</span>
 
-                    {task.source === "dayClosing" && (
-                      <small className="focusTaskSource">
-                        Uit dagafsluiting
-                      </small>
-                    )}
-                  </div>
+                  {task.source === "dayClosing" && (
+                    <small>Uit dagafsluiting</small>
+                  )}
 
                   <button
                     type="button"
