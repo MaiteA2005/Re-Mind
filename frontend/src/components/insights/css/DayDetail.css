@@ -2,67 +2,141 @@
     margin: 0 0 1rem;
     font-family: var(--font-heading);
     font-size: 1.6rem;
+    color: #1f1d1b;
 }
 
 .dayDetailCard {
     min-height: 310px;
-    padding: 1.2rem;
+    padding: 2rem 2.4rem;
     background: #fffaf0;
     border: 1px solid #8aa691;
-    border-radius: 12px;
+    border-radius: 16px;
 }
 
-.dayTimeline {
+.detailTimeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.detailTimeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 24px;
+    width: 2px;
+    background: #5f6158;
+    opacity: 0.5;
+}
+
+.detailTimelineItem {
+    position: relative;
     display: grid;
-    gap: 1rem;
+    align-items: center;
+    column-gap: 2rem;
+    min-height: 76px;
 }
 
-.dayTimelineItem {
-    display: grid;
-    grid-template-columns: 42px 64px 1fr;
-    gap: 1rem;
-    align-items: start;
+.todayTimeline .detailTimelineItem {
+    grid-template-columns: 48px 80px minmax(240px, auto) 1fr;
+}   
+
+.insightTimeline .detailTimelineItem {
+    grid-template-columns: 48px 120px 1fr;
 }
 
-.dayTimelineIcon {
-    width: 34px;
-    height: 34px;
+.detailTimelineIcon {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
     border-radius: 999px;
     display: grid;
     place-items: center;
-    background: #e7efe6;
-    color: #78977f;
+    font-size: 1.7rem;
     font-weight: 700;
+    color: #1f1d1b;
 }
 
-.dayTimelineIcon.pause {
-    background: #f1df9f;
-    color: #25221f;
+.detailTimelineIcon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
-.dayTimelineIcon.closing {
-    background: #dce9dc;  
+.detailTimelineIcon.checkin {
+    background: #efd37f;
 }
 
-.dayTimelineItem time {
+.detailTimelineIcon.pause {
+    background: #a8cee2;
+}
+
+.detailTimelineIcon.energy {
+    background: #b8d2bd;
+}
+
+.detailTimelineIcon.closing {
+    background: #69b892;
+}
+
+.detailTimelineIcon.warning {
+    background: #df7c7f;
+}
+
+.detailTimelineIcon.noData {
+    background: #d9d9d9;
+}
+
+.detailTimelineItem time,
+.detailTimelineItem strong {
     color: #5f6158;
-    font-size: 0.9rem;
-}
-
-.dayTimelineItem h3 {
-    margin: 0 0 0.25rem;
-    font-family: var(--font-heading);
     font-size: 1rem;
+    font-weight: 500;
 }
 
-.dayTimelineItem p {
+.detailTimelineItem h3 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1f1d1b;
+}
+
+.detailTimelineItem p {
     margin: 0;
     color: #5f6158;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 1.45;
+}
+
+.insightTimelineItem p {
+    max-width: 980px;
+    color: #1f1d1b;
+    font-size: 1.05rem;
 }
 
 .dayDetailEmpty {
     margin: 0;
     color: #5f6158;
+}
+
+@media (max-width: 900px) {
+    .dayDetailCard {
+        padding: 1.4rem;
+    }
+
+    .todayTimeline .detailTimelineItem,
+    .insightTimeline .detailTimelineItem {
+        grid-template-columns: 48px 1fr;
+        row-gap: 0.25rem;
+    }
+
+    .detailTimelineItem time,
+    .detailTimelineItem strong,
+    .detailTimelineItem h3,
+    .detailTimelineItem p {
+        grid-column: 2;
+    }
 }
