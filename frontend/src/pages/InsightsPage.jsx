@@ -102,8 +102,43 @@ function getPeriodRange(activeFilter) {
   };
 }
 
+function getComparePeriodRange(activeFilter, offset = 1) {
+  const now = new Date();
+
+  if (activeFilter === "week") {
+    const compareDate = new Date(now);
+    compareDate.setDate(now.getDate() - offset * 7);
+
+    return {
+      start: getStartOfWeek(compareDate),
+      end: getEndOfWeek(compareDate),
+    };
+  }
+
+  if (activeFilter === "month") {
+    const compareDate = new Date(
+      now.getFullYear(),
+      now.getMonth() - offset,
+      1
+    );
+
+    return {
+      start: getStartOfMonth(compareDate),
+      end: getEndOfMonth(compareDate),
+    };
+  }
+
+  return null;
+}
+
 function filterByPeriod(items, activeFilter, dateKey = "createdAt") {
   const { start, end } = getPeriodRange(activeFilter);
+
+  return filterByCustomRange(items, { start, end }, dateKey);
+}
+
+function filterByCustomRange(items, range, dateKey = "createdAt") {
+  if (!range) return [];
 
   return items.filter((item) => {
     if (!item?.[dateKey]) return false;
@@ -111,7 +146,7 @@ function filterByPeriod(items, activeFilter, dateKey = "createdAt") {
     const itemDate = new Date(item[dateKey]);
     if (!isValidDate(itemDate)) return false;
 
-    return itemDate >= start && itemDate <= end;
+    return itemDate >= range.start && itemDate <= range.end;
   });
 }
 
@@ -169,9 +204,339 @@ function getPeriodDateLabel(activeFilter) {
   return formatDateRange(start, end);
 }
 
+function getCompareLabel(activeFilter, compareRange) {
+  if (!compareRange) return "";
+
+  if (activeFilter === "week") {
+    return `${formatDate(compareRange.start)} - ${formatDate(compareRange.end)}`;
+  }
+
+  if (activeFilter === "month") {
+    return compareRange.start.toLocaleDateString("nl-BE", {
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  return "";
+}
+
+function getComparisonOptions(activeFilter) {
+  if (activeFilter === "week") {
+    return [
+      { value: 1, label: "Vorige week" },
+      { value: 2, label: "2 weken geleden" },
+      { value: 3, label: "3 weken geleden" },
+      { value: 4, label: "4 weken geleden" },
+    ];
+  }
+
+  if (activeFilter === "month") {
+    return [
+      { value: 1, label: "Vorige maand" },
+      { value: 2, label: "2 maanden geleden" },
+      { value: 3, label: "3 maanden geleden" },
+      { value: 4, label: "4 maanden geleden" },
+    ];
+  }
+
+  return [];
+}
+
+function buildStressEnergyData({
+  activeFilter,
+  filteredCheckIns,
+  compareCheckIns = [],
+  compareEnabled = false,
+}) {
+  if (activeFilter === "week") {
+    const labels = ["ma", "di", "wo", "do", "vr", "za", "zo"];
+
+    const grouped = labels.reduce((acc, label) => {
+      acc[label] = { stress: [], energy: [] };
+      return acc;
+    }, {});
+
+    const compareGrouped = labels.reduce((acc, label) => {
+      acc[label] = { stress: [], energy: [] };
+      return acc;
+    }, {});
+
+    filteredCheckIns.forEach((checkIn) => {
+      const label = formatDayLabel(checkIn.createdAt);
+      if (!grouped[label]) return;
+
+      grouped[label].stress.push(checkIn.stressLevel);
+      grouped[label].energy.push(checkIn.energyLevel);
+    });
+
+    compareCheckIns.forEach((checkIn) => {
+      const label = formatDayLabel(checkIn.createdAt);
+      if (!compareGrouped[label]) return;
+
+      compareGrouped[label].stress.push(checkIn.stressLevel);
+      compareGrouped[label].energy.push(checkIn.energyLevel);
+    });
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Stress",
+          data: labels.map((label) =>
+            getAverageFromNumbers(grouped[label].stress)
+          ),
+          borderColor: "#df7c7f",
+          backgroundColor: "#df7c7f",
+          tension: 0.35,
+        },
+        {
+          label: "Energie",
+          data: labels.map((label) =>
+            getAverageFromNumbers(grouped[label].energy)
+          ),
+          borderColor: "#78977f",
+          backgroundColor: "#78977f",
+          tension: 0.35,
+        },
+        ...(compareEnabled
+          ? [
+              {
+                label: "Stress vergelijking",
+                data: labels.map((label) =>
+                  getAverageFromNumbers(compareGrouped[label].stress)
+                ),
+                borderColor: "#efb0b0",
+                backgroundColor: "#efb0b0",
+                borderDash: [6, 6],
+                tension: 0.35,
+              },
+              {
+                label: "Energie vergelijking",
+                data: labels.map((label) =>
+                  getAverageFromNumbers(compareGrouped[label].energy)
+                ),
+                borderColor: "#b8cdbd",
+                backgroundColor: "#b8cdbd",
+                borderDash: [6, 6],
+                tension: 0.35,
+              },
+            ]
+          : []),
+      ],
+    };
+  }
+
+  if (activeFilter === "month") {
+    const labels = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
+
+    const grouped = labels.reduce((acc, label) => {
+      acc[label] = { stress: [], energy: [] };
+      return acc;
+    }, {});
+
+    const compareGrouped = labels.reduce((acc, label) => {
+      acc[label] = { stress: [], energy: [] };
+      return acc;
+    }, {});
+
+    filteredCheckIns.forEach((checkIn) => {
+      const label = formatWeekLabel(checkIn.createdAt);
+      if (!grouped[label]) return;
+
+      grouped[label].stress.push(checkIn.stressLevel);
+      grouped[label].energy.push(checkIn.energyLevel);
+    });
+
+    compareCheckIns.forEach((checkIn) => {
+      const label = formatWeekLabel(checkIn.createdAt);
+      if (!compareGrouped[label]) return;
+
+      compareGrouped[label].stress.push(checkIn.stressLevel);
+      compareGrouped[label].energy.push(checkIn.energyLevel);
+    });
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Stress",
+          data: labels.map((label) =>
+            getAverageFromNumbers(grouped[label].stress)
+          ),
+          borderColor: "#df7c7f",
+          backgroundColor: "#df7c7f",
+          tension: 0.35,
+        },
+        {
+          label: "Energie",
+          data: labels.map((label) =>
+            getAverageFromNumbers(grouped[label].energy)
+          ),
+          borderColor: "#78977f",
+          backgroundColor: "#78977f",
+          tension: 0.35,
+        },
+        ...(compareEnabled
+          ? [
+              {
+                label: "Stress vergelijking",
+                data: labels.map((label) =>
+                  getAverageFromNumbers(compareGrouped[label].stress)
+                ),
+                borderColor: "#efb0b0",
+                backgroundColor: "#efb0b0",
+                borderDash: [6, 6],
+                tension: 0.35,
+              },
+              {
+                label: "Energie vergelijking",
+                data: labels.map((label) =>
+                  getAverageFromNumbers(compareGrouped[label].energy)
+                ),
+                borderColor: "#b8cdbd",
+                backgroundColor: "#b8cdbd",
+                borderDash: [6, 6],
+                tension: 0.35,
+              },
+            ]
+          : []),
+      ],
+    };
+  }
+
+  const sortedCheckIns = [...filteredCheckIns].sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  );
+
+  return {
+    labels: sortedCheckIns.map((checkIn) => formatTimeLabel(checkIn.createdAt)),
+    datasets: [
+      {
+        label: "Stress",
+        data: sortedCheckIns.map((checkIn) => checkIn.stressLevel),
+        borderColor: "#df7c7f",
+        backgroundColor: "#df7c7f",
+        tension: 0.35,
+      },
+      {
+        label: "Energie",
+        data: sortedCheckIns.map((checkIn) => checkIn.energyLevel),
+        borderColor: "#78977f",
+        backgroundColor: "#78977f",
+        tension: 0.35,
+      },
+    ],
+  };
+}
+
+function buildPauseBehaviorData({
+  activeFilter,
+  filteredPauseReminders,
+  comparePauseReminders = [],
+  compareEnabled = false,
+}) {
+  const labels =
+    activeFilter === "week"
+      ? ["ma", "di", "wo", "do", "vr", "za", "zo"]
+      : activeFilter === "month"
+      ? ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+      : [];
+
+  const grouped = labels.reduce((acc, label) => {
+    acc[label] = { taken: 0, missed: 0 };
+    return acc;
+  }, {});
+
+  const compareGrouped = labels.reduce((acc, label) => {
+    acc[label] = { taken: 0, missed: 0 };
+    return acc;
+  }, {});
+
+  filteredPauseReminders.forEach((reminder) => {
+    const label =
+      activeFilter === "week"
+        ? formatDayLabel(reminder.createdAt)
+        : activeFilter === "month"
+        ? formatWeekLabel(reminder.createdAt)
+        : formatHourLabel(reminder.createdAt);
+
+    if (!label) return;
+
+    if (!grouped[label]) {
+      grouped[label] = { taken: 0, missed: 0 };
+    }
+
+    if (reminder.action === "taken") grouped[label].taken += 1;
+
+    if (reminder.action === "missed" || reminder.action === "ignored") {
+      grouped[label].missed += 1;
+    }
+  });
+
+  comparePauseReminders.forEach((reminder) => {
+    const label =
+      activeFilter === "week"
+        ? formatDayLabel(reminder.createdAt)
+        : activeFilter === "month"
+        ? formatWeekLabel(reminder.createdAt)
+        : formatHourLabel(reminder.createdAt);
+
+    if (!label) return;
+
+    if (!compareGrouped[label]) {
+      compareGrouped[label] = { taken: 0, missed: 0 };
+    }
+
+    if (reminder.action === "taken") compareGrouped[label].taken += 1;
+
+    if (reminder.action === "missed" || reminder.action === "ignored") {
+      compareGrouped[label].missed += 1;
+    }
+  });
+
+  const finalLabels =
+    activeFilter === "today" ? Object.keys(grouped).sort() : labels;
+
+  return {
+    labels: finalLabels,
+    datasets: [
+      {
+        label: "Pauze genomen",
+        data: finalLabels.map((label) => grouped[label]?.taken || 0),
+        backgroundColor: "#78977f",
+      },
+      {
+        label: "Pauze gemist",
+        data: finalLabels.map((label) => grouped[label]?.missed || 0),
+        backgroundColor: "#df7c7f",
+      },
+      ...(compareEnabled
+        ? [
+            {
+              label: "Pauze genomen vergelijking",
+              data: finalLabels.map((label) => compareGrouped[label]?.taken || 0),
+              backgroundColor: "#b8cdbd",
+            },
+            {
+              label: "Pauze gemist vergelijking",
+              data: finalLabels.map(
+                (label) => compareGrouped[label]?.missed || 0
+              ),
+              backgroundColor: "#efb0b0",
+            },
+          ]
+        : []),
+    ],
+  };
+}
+
 function InsightsPage() {
   const { user } = useAuth();
+
   const [activeFilter, setActiveFilter] = useState("today");
+  const [compareEnabled, setCompareEnabled] = useState(false);
+  const [compareOffset, setCompareOffset] = useState(1);
 
   const [checkIns, setCheckIns] = useState([]);
   const [pauseSessions, setPauseSessions] = useState([]);
@@ -184,6 +549,13 @@ function InsightsPage() {
     user?.plan === "premium" ||
     user?.subscriptionPlan === "premium" ||
     user?.isPremium === true;
+
+  useEffect(() => {
+    if (activeFilter === "today") {
+      setCompareEnabled(false);
+      setCompareOffset(1);
+    }
+  }, [activeFilter]);
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -210,6 +582,11 @@ function InsightsPage() {
     fetchInsights();
   }, []);
 
+  const compareRange = useMemo(
+    () => getComparePeriodRange(activeFilter, compareOffset),
+    [activeFilter, compareOffset]
+  );
+
   const filteredCheckIns = useMemo(
     () => filterByPeriod(checkIns, activeFilter),
     [checkIns, activeFilter]
@@ -228,6 +605,22 @@ function InsightsPage() {
   const filteredPauseReminders = useMemo(
     () => filterByPeriod(pauseReminders, activeFilter),
     [pauseReminders, activeFilter]
+  );
+
+  const compareCheckIns = useMemo(
+    () =>
+      compareEnabled && activeFilter !== "today"
+        ? filterByCustomRange(checkIns, compareRange)
+        : [],
+    [checkIns, compareRange, compareEnabled, activeFilter]
+  );
+
+  const comparePauseReminders = useMemo(
+    () =>
+      compareEnabled && activeFilter !== "today"
+        ? filterByCustomRange(pauseReminders, compareRange)
+        : [],
+    [pauseReminders, compareRange, compareEnabled, activeFilter]
   );
 
   const stats = useMemo(() => {
@@ -276,171 +669,32 @@ function InsightsPage() {
     ];
   }, [filteredCheckIns, filteredPauseReminders, activeFilter]);
 
-  const stressEnergyChartData = useMemo(() => {
-    if (activeFilter === "week") {
-      const labels = ["ma", "di", "wo", "do", "vr", "za", "zo"];
+  const stressEnergyChartData = useMemo(
+    () =>
+      buildStressEnergyData({
+        activeFilter,
+        filteredCheckIns,
+        compareCheckIns,
+        compareEnabled,
+      }),
+    [activeFilter, filteredCheckIns, compareCheckIns, compareEnabled]
+  );
 
-      const grouped = labels.reduce((acc, label) => {
-        acc[label] = { stress: [], energy: [] };
-        return acc;
-      }, {});
-
-      filteredCheckIns.forEach((checkIn) => {
-        const label = formatDayLabel(checkIn.createdAt);
-        if (!grouped[label]) return;
-
-        grouped[label].stress.push(checkIn.stressLevel);
-        grouped[label].energy.push(checkIn.energyLevel);
-      });
-
-      return {
-        labels,
-        datasets: [
-          {
-            label: "Stress",
-            data: labels.map((label) =>
-              getAverageFromNumbers(grouped[label].stress)
-            ),
-            borderColor: "#df7c7f",
-            backgroundColor: "#df7c7f",
-            tension: 0.35,
-          },
-          {
-            label: "Energie",
-            data: labels.map((label) =>
-              getAverageFromNumbers(grouped[label].energy)
-            ),
-            borderColor: "#78977f",
-            backgroundColor: "#78977f",
-            tension: 0.35,
-          },
-        ],
-      };
-    }
-
-    if (activeFilter === "month") {
-      const labels = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
-
-      const grouped = labels.reduce((acc, label) => {
-        acc[label] = { stress: [], energy: [] };
-        return acc;
-      }, {});
-
-      filteredCheckIns.forEach((checkIn) => {
-        const label = formatWeekLabel(checkIn.createdAt);
-        if (!grouped[label]) return;
-
-        grouped[label].stress.push(checkIn.stressLevel);
-        grouped[label].energy.push(checkIn.energyLevel);
-      });
-
-      return {
-        labels,
-        datasets: [
-          {
-            label: "Stress",
-            data: labels.map((label) =>
-              getAverageFromNumbers(grouped[label].stress)
-            ),
-            borderColor: "#df7c7f",
-            backgroundColor: "#df7c7f",
-            tension: 0.35,
-          },
-          {
-            label: "Energie",
-            data: labels.map((label) =>
-              getAverageFromNumbers(grouped[label].energy)
-            ),
-            borderColor: "#78977f",
-            backgroundColor: "#78977f",
-            tension: 0.35,
-          },
-        ],
-      };
-    }
-
-    const sortedCheckIns = [...filteredCheckIns].sort(
-      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-    );
-
-    return {
-      labels: sortedCheckIns.map((checkIn) =>
-        formatTimeLabel(checkIn.createdAt)
-      ),
-      datasets: [
-        {
-          label: "Stress",
-          data: sortedCheckIns.map((checkIn) => checkIn.stressLevel),
-          borderColor: "#df7c7f",
-          backgroundColor: "#df7c7f",
-          tension: 0.35,
-        },
-        {
-          label: "Energie",
-          data: sortedCheckIns.map((checkIn) => checkIn.energyLevel),
-          borderColor: "#78977f",
-          backgroundColor: "#78977f",
-          tension: 0.35,
-        },
-      ],
-    };
-  }, [filteredCheckIns, activeFilter]);
-
-  const pauseBehaviorChartData = useMemo(() => {
-    const labels =
-      activeFilter === "week"
-        ? ["ma", "di", "wo", "do", "vr", "za", "zo"]
-        : activeFilter === "month"
-        ? ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
-        : [];
-
-    const grouped = labels.reduce((acc, label) => {
-      acc[label] = { taken: 0, missed: 0 };
-      return acc;
-    }, {});
-
-    filteredPauseReminders.forEach((reminder) => {
-      const label =
-        activeFilter === "week"
-          ? formatDayLabel(reminder.createdAt)
-          : activeFilter === "month"
-          ? formatWeekLabel(reminder.createdAt)
-          : formatHourLabel(reminder.createdAt);
-
-      if (!label) return;
-
-      if (!grouped[label]) {
-        grouped[label] = { taken: 0, missed: 0 };
-      }
-
-      if (reminder.action === "taken") {
-        grouped[label].taken += 1;
-      }
-
-      if (reminder.action === "missed" || reminder.action === "ignored") {
-        grouped[label].missed += 1;
-      }
-    });
-
-    const finalLabels =
-      activeFilter === "today" ? Object.keys(grouped).sort() : labels;
-
-    return {
-      labels: finalLabels,
-      datasets: [
-        {
-          label: "Pauze genomen",
-          data: finalLabels.map((label) => grouped[label]?.taken || 0),
-          backgroundColor: "#78977f",
-        },
-        {
-          label: "Pauze gemist",
-          data: finalLabels.map((label) => grouped[label]?.missed || 0),
-          backgroundColor: "#df7c7f",
-        },
-      ],
-    };
-  }, [filteredPauseReminders, activeFilter]);
+  const pauseBehaviorChartData = useMemo(
+    () =>
+      buildPauseBehaviorData({
+        activeFilter,
+        filteredPauseReminders,
+        comparePauseReminders,
+        compareEnabled,
+      }),
+    [
+      activeFilter,
+      filteredPauseReminders,
+      comparePauseReminders,
+      compareEnabled,
+    ]
+  );
 
   const recommendation = useMemo(() => {
     const averageStress =
@@ -501,22 +755,68 @@ function InsightsPage() {
   }, [filteredCheckIns, filteredPauseReminders]);
 
   const latestDayClosing = filteredDayClosings[0] || dayClosings[0] || null;
+  const comparisonOptions = getComparisonOptions(activeFilter);
+  const compareLabel = getCompareLabel(activeFilter, compareRange);
 
   return (
     <MainLayout title="Inzichten" subtitle="Ontdek je patronen en trends">
       <section className="insights-page">
         {!isPremiumUser && <UpgradeBanner />}
 
-        <InsightFilters
-          activeFilter={activeFilter}
-          onFilterChange={(filter) => {
-            if (!isPremiumUser && filter !== "today") return;
-            setActiveFilter(filter);
-          }}
-          isPremium={isPremiumUser}
-        />
+        <div className="insightsTopControls">
+          <InsightFilters
+            activeFilter={activeFilter}
+            onFilterChange={(filter) => {
+              if (!isPremiumUser && filter !== "today") return;
+              setActiveFilter(filter);
+            }}
+            isPremium={isPremiumUser}
+          />
 
-        <p className="insights-date">{getPeriodDateLabel(activeFilter)}</p>
+          {activeFilter !== "today" && isPremiumUser && (
+            <div className="insightsCompareControls">
+              <label className="compareToggle">
+                <span>
+                  Vergelijk met vorige {activeFilter === "week" ? "week" : "maand"}
+                </span>
+
+                <input
+                  type="checkbox"
+                  checked={compareEnabled}
+                  onChange={(event) => setCompareEnabled(event.target.checked)}
+                />
+
+                <span className="compareSlider" />
+              </label>
+            </div>
+          )}
+        </div>
+
+        <div className="insightsDateCompareRow">
+          <p className="insights-date">
+            {getPeriodDateLabel(activeFilter)}
+            {compareEnabled && compareLabel && (
+              <span> • vergelijking: {compareLabel}</span>
+            )}
+          </p>
+
+          {activeFilter !== "today" && isPremiumUser && (
+            <div className="compareSelectSlot">
+              <select
+                value={compareOffset}
+                onChange={(event) => setCompareOffset(Number(event.target.value))}
+                className={`compareSelect ${compareEnabled ? "" : "isHidden"}`}
+                disabled={!compareEnabled}
+              >
+                {comparisonOptions.map((option) => (
+                  <option value={option.value} key={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
 
         {loading ? (
           <p>Inzichten laden...</p>
